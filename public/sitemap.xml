@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <!-- ============================================ -->
+  <!-- MAIN PAGES - High Priority -->
+  <!-- ============================================ -->
+  
+  <!-- Homepage -->
+  <url>
+    <loc>https://egypttravelpro.com/</loc>
+    <lastmod>2026-02-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://egypttravelpro.com/logo.jpg</image:loc>
+      <image:title>Egypt Travel Pro - Plan Your Perfect Egyptian Journey</image:title>
+    </image:image>
+  </url>
+  
+  <!-- Plan Trip Page -->
+  <url>
+    <loc>https://egypttravelpro.com/plan-trip</loc>
+    <lastmod>2026-02-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <!-- Trips Listing Page -->
+  <url>
+    <loc>https://egypttravelpro.com/trips</loc>
+    <lastmod>2026-02-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <!-- Destinations Page -->
+  <url>
+    <loc>https://egypttravelpro.com/destinations</loc>
+    <lastmod>2026-02-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <!-- Gallery Page -->
+  <url>
+    <loc>https://egypttravelpro.com/gallery</loc>
+    <lastmod>2026-02-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Blog Listing Page -->
+  <url>
+    <loc>https://egypttravelpro.com/blog</loc>
+    <lastmod>2026-02-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <!-- ============================================ -->
+  <!-- TRIP DETAIL PAGES -->
+  <!-- ============================================ -->
+  
+  <!-- Ancient Egypt Explorer Trip -->
+  <url>
+    <loc>https://egypttravelpro.com/trips/ancient-egypt-explorer</loc>
+    <lastmod>2026-02-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=800</image:loc>
+      <image:title>Ancient Egypt Explorer - 7 Day Egypt Tour</image:title>
+      <image:caption>Discover pyramids, temples, and ancient treasures in Egypt</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Red Sea Adventure Trip -->
+  <url>
+    <loc>https://egypttravelpro.com/trips/red-sea-adventure</loc>
+    <lastmod>2026-02-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800</image:loc>
+      <image:title>Red Sea Adventure - Diving and Beach Paradise</image:title>
+      <image:caption>Diving, snorkeling, and beach paradise in Egypt's Red Sea</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Nile Cruise Journey Trip -->
+  <url>
+    <loc>https://egypttravelpro.com/trips/nile-cruise-journey</loc>
+    <lastmod>2026-02-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=800</image:loc>
+      <image:title>Nile Cruise Journey - Luxury Cruise Through Ancient History</image:title>
+      <image:caption>Sail the legendary Nile River from Luxor to Aswan</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Desert Safari Experience Trip -->
+  <url>
+    <loc>https://egypttravelpro.com/trips/desert-safari-experience</loc>
+    <lastmod>2026-02-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=800</image:loc>
+      <image:title>Desert Safari Experience - Egypt's Western Desert</image:title>
+      <image:caption>Explore the White Desert, Black Desert, and Bahariya Oasis</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Alexandria Mediterranean Trip -->
+  <url>
+    <loc>https://egypttravelpro.com/trips/alexandria-mediterranean</loc>
+    <lastmod>2026-02-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=800</image:loc>
+      <image:title>Alexandria Mediterranean Tour - Coastal Beauty</image:title>
+      <image:caption>Discover Alexandria's rich Greco-Roman heritage</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Complete Egypt Discovery Trip -->
+  <url>
+    <loc>https://egypttravelpro.com/trips/complete-egypt-discovery</loc>
+    <lastmod>2026-02-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?w=800</image:loc>
+      <image:title>Complete Egypt Discovery - 14 Day Ultimate Adventure</image:title>
+      <image:caption>The ultimate Egypt experience - Cairo, Luxor, Aswan, Abu Simbel, and Red Sea</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- ============================================ -->
+  <!-- BLOG POST PAGES -->
+  <!-- ============================================ -->
+  
+  <!-- Cairo Blog Post -->
+  <url>
+    <loc>https://egypttravelpro.com/blog/cairo-heart-of-history-and-life</loc>
+    <lastmod>2026-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=1200</image:loc>
+      <image:title>Cairo – The Heart of History and Life</image:title>
+      <image:caption>Discover Cairo's Pyramids, Egyptian Museum, and Khan El Khalili</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Alexandria Blog Post -->
+  <url>
+    <loc>https://egypttravelpro.com/blog/alexandria-bride-of-mediterranean</loc>
+    <lastmod>2026-01-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=1200</image:loc>
+      <image:title>Alexandria – The Bride of the Mediterranean</image:title>
+      <image:caption>Experience Alexandria's coastal charm and ancient library</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Luxor Blog Post -->
+  <url>
+    <loc>https://egypttravelpro.com/blog/luxor-open-air-museum-nile</loc>
+    <lastmod>2026-01-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=1200</image:loc>
+      <image:title>Luxor – An Open-Air Museum on the Nile</image:title>
+      <image:caption>Valley of the Kings, Karnak Temple, and hot-air balloon rides</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Aswan Blog Post -->
+  <url>
+    <loc>https://egypttravelpro.com/blog/aswan-magic-south-calm-nile</loc>
+    <lastmod>2026-02-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=1200</image:loc>
+      <image:title>Aswan – The Magic of the South</image:title>
+      <image:caption>Nubian culture, Philae Temple, and Abu Simbel excursions</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Sharm El-Sheikh Blog Post -->
+  <url>
+    <loc>https://egypttravelpro.com/blog/sharm-el-sheikh-adventure-relaxation-red-sea</loc>
+    <lastmod>2026-02-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=1200</image:loc>
+      <image:title>Sharm El-Sheikh – Adventure and Relaxation</image:title>
+      <image:caption>Red Sea diving, coral reefs, and luxury beach resorts</image:caption>
+    </image:image>
+  </url>
+  
+  <!-- Best Time to Visit Egypt Blog Post -->
+  <url>
+    <loc>https://egypttravelpro.com/blog/best-time-visit-egypt</loc>
+    <lastmod>2026-01-10</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=1200</image:loc>
+      <image:title>Best Time to Visit Egypt – Seasonal Guide</image:title>
+      <image:caption>Complete guide to Egypt weather, crowds, and special events</image:caption>
+    </image:image>
+  </url>
+  
+</urlset>

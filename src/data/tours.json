@@ -1,0 +1,101 @@
+[
+  {
+    "id": 1,
+    "name": "Cairo & Giza Pyramids Tour",
+    "duration": "3 Days / 2 Nights",
+    "price": "$299",
+    "description": "Explore the iconic pyramids of Giza, visit the Great Sphinx, and discover ancient Egyptian treasures in the Egyptian Museum.",
+    "image": "https://images.unsplash.com/photo-1552658450-8febaf00b447?w=500&h=300&fit=crop",
+    "highlights": ["Pyramids of Giza", "Great Sphinx", "Egyptian Museum", "Camel Ride"],
+    "rating": 4.8,
+    "reviews": 324
+  },
+  {
+    "id": 2,
+    "name": "Luxor & Valley of the Kings",
+    "duration": "4 Days / 3 Nights",
+    "price": "$399",
+    "description": "Journey through ancient Thebes exploring Karnak Temple, Luxor Temple, and the mystical Valley of the Kings.",
+    "image": "https://images.unsplash.com/photo-1570452436286-6fab97f4f8ea?w=500&h=300&fit=crop",
+    "highlights": ["Karnak Temple", "Valley of the Kings", "Luxor Temple", "Hot Air Balloon"],
+    "rating": 4.9,
+    "reviews": 412
+  },
+  {
+    "id": 3,
+    "name": "Aswan & Abu Simbel Cruise",
+    "duration": "5 Days / 4 Nights",
+    "price": "$499",
+    "description": "Sail along the Nile River discovering colossal temples and experiencing authentic Egyptian culture in Aswan and Abu Simbel.",
+    "image": "https://images.unsplash.com/photo-1551604141-6d4124a4e8b8?w=500&h=300&fit=crop",
+    "highlights": ["Nile Cruise", "Abu Simbel", "Philae Temple", "Nubian Village Visit"],
+    "rating": 4.7,
+    "reviews": 298
+  },
+  {
+    "id": 4,
+    "name": "Red Sea Beach & Diving",
+    "duration": "2 Days / 1 Night",
+    "price": "$199",
+    "description": "Relax at pristine Red Sea beaches with world-class diving opportunities among vibrant coral reefs and exotic marine life.",
+    "image": "https://images.unsplash.com/photo-1505142468610-359e7d316be0?w=500&h=300&fit=crop",
+    "highlights": ["Scuba Diving", "Coral Reefs", "Beach Resort", "Water Sports"],
+    "rating": 4.6,
+    "reviews": 187
+  },
+  {
+    "id": 5,
+    "name": "Alexandria Mediterranean City",
+    "duration": "3 Days / 2 Nights",
+    "price": "$329",
+    "description": "Discover the pearl of the Mediterranean with its ancient libraries, stunning coastal views, and rich historical monuments.",
+    "image": "https://images.unsplash.com/photo-1516919865863-e71c28e26bf3?w=500&h=300&fit=crop",
+    "highlights": ["Catacombs", "Citadel of Qaitbay", "Bibliotheca Alexandrina", "Coastal Walk"],
+    "rating": 4.5,
+    "reviews": 156
+  },
+  {
+    "id": 6,
+    "name": "Sinai Desert & Mount Moses",
+    "duration": "4 Days / 3 Nights",
+    "price": "$379",
+    "description": "Experience the majestic Sinai desert, climb Mount Moses at sunrise, and visit Saint Catherine's Monastery.",
+    "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500&h=300&fit=crop",
+    "highlights": ["Mount Moses Sunrise", "Saint Catherine's Monastery", "Bedouin Culture", "Desert Safari"],
+    "rating": 4.8,
+    "reviews": 267
+  },
+  {
+    "id": 7,
+    "name": "Nile Delta & Ismailiyah Tour",
+    "duration": "3 Days / 2 Nights",
+    "price": "$269",
+    "description": "Explore the Suez Canal region, visit Ismailiyah, and experience the lush greenery of the Nile Delta.",
+    "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500&h=300&fit=crop",
+    "highlights": ["Suez Canal", "Ismailiyah Museum", "Gardens Tour", "Local Markets"],
+    "rating": 4.4,
+    "reviews": 142
+  },
+  {
+    "id": 8,
+    "name": "Islamic Cairo Heritage Tour",
+    "duration": "2 Days / 1 Night",
+    "price": "$199",
+    "description": "Walk through historic Islamic Cairo exploring magnificent mosques, madrasas, and bustling Khan el-Khalili bazaar.",
+    "image": "https://images.unsplash.com/photo-1542435503-a027a49f4ded?w=500&h=300&fit=crop",
+    "highlights": ["Al-Azhar Mosque", "Khan el-Khalili", "Islamic Architecture", "Local Food Tour"],
+    "rating": 4.7,
+    "reviews": 301
+  },
+  {
+    "id": 9,
+    "name": "Fayoum Oasis Adventure",
+    "duration": "3 Days / 2 Nights",
+    "price": "$289",
+    "description": "Discover the enchanting Fayoum Oasis with its crystal-clear lakes, waterfalls, and unique desert landscape.",
+    "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500&h=300&fit=crop",
+    "highlights": ["Qarun Lake", "Wadi El Rayan Waterfalls", "Desert Photography", "Oasis Villages"],
+    "rating": 4.6,
+    "reviews": 178
+  }
+]

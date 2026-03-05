@@ -1,0 +1,191 @@
+[
+  {
+    "id": 1,
+    "name": "Red Sea Snorkeling & Coral Reef Explorer",
+    "location": "Sharm El-Sheikh",
+    "duration": "Full Day (8 Hours)",
+    "price": "$65",
+    "rating": 4.9,
+    "reviews": 287,
+    "description": "Explore pristine coral reefs and encounter colorful tropical fish in crystal-clear Red Sea waters. Includes boat transport, snorkeling equipment, and guided exploration.",
+    "image": "https://images.unsplash.com/photo-1505142468610-359e7d316be0?w=500&h=300&fit=crop",
+    "includes": [
+      "Hotel pickup & drop-off",
+      "Snorkeling gear",
+      "Boat journey",
+      "Professional guide",
+      "Breakfast & lunch"
+    ],
+    "highlights": ["Coral Reefs", "Tropical Fish", "Marine Life", "Clear Waters"],
+    "departureTime": "7:00 AM",
+    "returnTime": "3:00 PM"
+  },
+  {
+    "id": 2,
+    "name": "Scuba Diving Adventure - Beginners & Certified",
+    "location": "Sharm El-Sheikh",
+    "duration": "Full Day (8 Hours)",
+    "price": "$89",
+    "rating": 4.8,
+    "reviews": 156,
+    "description": "Experience world-class diving at top Red Sea dive sites. Options for beginners (Discover Scuba) and certified divers. Professional PADI-certified instructors included.",
+    "image": "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=500&h=300&fit=crop",
+    "includes": [
+      "Dive certification (if needed)",
+      "Diving equipment",
+      "2-3 dive dives",
+      "Experienced instructor",
+      "Breakfast, lunch & snacks"
+    ],
+    "highlights": ["World-Class Diving", "PADI Certified", "Multiple Dives", "Expert Guides"],
+    "departureTime": "6:30 AM",
+    "returnTime": "4:00 PM"
+  },
+  {
+    "id": 3,
+    "name": "Bedouin Desert Safari & Sunset Experience",
+    "location": "Sharm El-Sheikh",
+    "duration": "Full Day (6 Hours)",
+    "price": "$55",
+    "rating": 4.7,
+    "reviews": 198,
+    "description": "Ride quad bikes through golden sand dunes, visit traditional Bedouin villages, and enjoy authentic dinner under the stars with breathtaking sunset views.",
+    "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500&h=300&fit=crop",
+    "includes": [
+      "Quad bike rental",
+      "Hotel transfer",
+      "Bedouin village visit",
+      "Camel ride",
+      "BBQ dinner & beverages"
+    ],
+    "highlights": ["Desert Dunes", "Bedouin Culture", "Sunset", "BBQ Dinner"],
+    "departureTime": "2:00 PM",
+    "returnTime": "9:00 PM"
+  },
+  {
+    "id": 4,
+    "name": "Ras Muhammad National Park Boat Tour",
+    "location": "Sharm El-Sheikh",
+    "duration": "Full Day (7 Hours)",
+    "price": "$72",
+    "rating": 4.8,
+    "reviews": 224,
+    "description": "Visit Egypt's first national marine park featuring dramatic cliffs, pristine beaches, and exceptional snorkeling at three stunning coral reefs.",
+    "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500&h=300&fit=crop",
+    "includes": [
+      "Speedboat transport",
+      "Hotel pick-up/drop-off",
+      "Snorkeling equipment",
+      "Professional guide",
+      "Breakfast & lunch"
+    ],
+    "highlights": ["National Park", "Three Reef Sites", "Beach Time", "Marine Life"],
+    "departureTime": "8:00 AM",
+    "returnTime": "3:30 PM"
+  },
+  {
+    "id": 5,
+    "name": "Paradise Island & Lagoon Beach Day",
+    "location": "Sharm El-Sheikh",
+    "duration": "Full Day (7 Hours)",
+    "price": "$48",
+    "rating": 4.6,
+    "reviews": 142,
+    "description": "Relax on pristine white sand beaches with turquoise lagoon waters. Includes snorkeling, beach time, and authentic Egyptian lunch.",
+    "image": "https://images.unsplash.com/photo-1551632440-16f81a50d1da?w=500&h=300&fit=crop",
+    "includes": [
+      "Boat transport",
+      "Snorkeling gear",
+      "Beach cabana",
+      "Egyptian lunch",
+      "Soft drinks"
+    ],
+    "highlights": ["White Sand Beach", "Lagoon Waters", "Snorkeling", "Beach Relax"],
+    "departureTime": "9:00 AM",
+    "returnTime": "4:00 PM"
+  },
+  {
+    "id": 6,
+    "name": "Water Sports Combo - Jet Ski & Parasailing",
+    "location": "Sharm El-Sheikh",
+    "duration": "Half Day (4 Hours)",
+    "price": "$95",
+    "rating": 4.7,
+    "reviews": 89,
+    "description": "Experience thrilling water sports with jet ski rides and parasailing over the Red Sea. Perfect for adventure seekers. Professional instructors ensure safety.",
+    "image": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=500&h=300&fit=crop",
+    "includes": [
+      "Jet ski rental (30 min)",
+      "Parasailing experience",
+      "Safety equipment",
+      "Professional instructor",
+      "Snacks & beverages"
+    ],
+    "highlights": ["Jet Ski", "Parasailing", "Adrenaline Rush", "Red Sea Views"],
+    "departureTime": "9:00 AM or 2:00 PM",
+    "returnTime": "1:00 PM or 6:00 PM"
+  },
+  {
+    "id": 7,
+    "name": "Dolphin Watching Cruise",
+    "location": "Sharm El-Sheikh",
+    "duration": "Full Day (6 Hours)",
+    "price": "$58",
+    "rating": 4.9,
+    "reviews": 312,
+    "description": "Cruise the Red Sea in search of playful dolphins. Includes swimming opportunities, snorkeling at coral sites, and gourmet lunch on board.",
+    "image": "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=500&h=300&fit=crop",
+    "includes": [
+      "Luxury cruise boat",
+      "Hotel transfer",
+      "Snorkeling equipment",
+      "Dolphin watching guide",
+      "Breakfast & lunch"
+    ],
+    "highlights": ["Dolphins", "Snorkeling", "Luxury Cruise", "Marine Life"],
+    "departureTime": "7:30 AM",
+    "returnTime": "2:00 PM"
+  },
+  {
+    "id": 8,
+    "name": "Glass Bottom Boat & Marine Life Tour",
+    "location": "Sharm El-Sheikh",
+    "duration": "Half Day (4 Hours)",
+    "price": "$42",
+    "rating": 4.5,
+    "reviews": 167,
+    "description": "Perfect for non-swimmers! Observe coral reefs and marine life through glass floor without getting wet. Includes hotel transfer and refreshments.",
+    "image": "https://images.unsplash.com/photo-1583212292454-1fe6229603b7?w=500&h=300&fit=crop",
+    "includes": [
+      "Glass bottom boat",
+      "Hotel pick-up/drop-off",
+      "Marine guide commentary",
+      "Soft drinks & snacks",
+      "Life jacket"
+    ],
+    "highlights": ["Glass Floor View", "No Swimming Required", "Marine Life", "Family Friendly"],
+    "departureTime": "10:00 AM or 3:00 PM",
+    "returnTime": "2:00 PM or 7:00 PM"
+  },
+  {
+    "id": 9,
+    "name": "Tiran Island Snorkeling Expedition",
+    "location": "Sharm El-Sheikh",
+    "duration": "Full Day (8 Hours)",
+    "price": "$75",
+    "rating": 4.8,
+    "reviews": 201,
+    "description": "Explore Tiran Island's famous Strait, known for exceptional marine biodiversity. Multiple snorkel sites with guides identifying unique species.",
+    "image": "https://images.unsplash.com/photo-1511316695145-4992006ffddb?w=500&h=300&fit=crop",
+    "includes": [
+      "Speedboat to island",
+      "3 snorkel sites",
+      "Snorkeling gear",
+      "Expert guide",
+      "Breakfast, lunch & drinks"
+    ],
+    "highlights": ["Tiran Island", "Three Snorkel Sites", "Marine Biodiversity", "Expert Guides"],
+    "departureTime": "7:00 AM",
+    "returnTime": "4:00 PM"
+  }
+]

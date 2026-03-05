@@ -1,0 +1,41 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://egypttravelpro.com/sitemap.xml
+
+# SEO-Optimized robots.txt for Google
+# Allow crawling of all resources for optimal indexing
+# Block sensitive/config directories (none in public build)
+# Allow JS, CSS, images, video, and fonts
+
+# Googlebot-specific rules
+User-agent: Googlebot
+Allow: /
+
+# Bingbot-specific rules
+User-agent: Bingbot
+Allow: /
+
+# Explicitly allow all important asset types
+Allow: /*.js$
+Allow: /*.css$
+Allow: /*.jpg$
+Allow: /*.jpeg$
+Allow: /*.png$
+Allow: /*.webp$
+Allow: /*.svg$
+Allow: /*.mp4$
+Allow: /*.woff$
+Allow: /*.woff2$
+Allow: /*.ttf$
+
+# Block backup/source/config files (not present, but defensive)
+Disallow: /*.env$
+Disallow: /*.bak$
+Disallow: /*.log$
+Disallow: /*.git$
+Disallow: /*.DS_Store$
+
+# Block search results if any exist (defensive for SPA)
+Disallow: /search
+Disallow: /?s=

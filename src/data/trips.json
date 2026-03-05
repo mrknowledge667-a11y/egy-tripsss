@@ -1,0 +1,981 @@
+[
+  {
+    "id": 1,
+    "title": "Pyramids of Giza & Cairo Highlights",
+    "slug": "pyramids-giza-cairo-highlights",
+    "description": "Explore the iconic Great Pyramids of Giza, the Sphinx, and the Egyptian Museum in Cairo. This private guided tour covers Egypt's most famous ancient landmarks with an expert Egyptologist, offering skip-the-line access and comfortable air-conditioned transport.",
+    "shortDescription": "Private guided tour of the Pyramids, Sphinx & Egyptian Museum",
+    "duration": 2,
+    "price": 349,
+    "currency": "USD",
+    "image": "/assets/images/pyramids-giza-golden-hour.webp",
+    "heroImage": "/assets/images/sphinx-pyramids-panorama.webp",
+    "destinations": [1],
+    "experiences": [1, 2],
+    "travelStyle": "Culture",
+    "rating": 4.9,
+    "reviews": 214,
+    "highlights": [
+      "Visit the Great Pyramid of Khufu — last standing Wonder of the Ancient World",
+      "Photo stop at the panoramic viewpoint of all three pyramids",
+      "See the Great Sphinx and Valley Temple up close",
+      "Explore the Egyptian Museum's Tutankhamun treasures",
+      "Private Egyptologist guide & air-conditioned vehicle"
+    ],
+    "included": [
+      "1 night 5-star hotel in Cairo",
+      "Daily breakfast",
+      "Licensed Egyptologist guide",
+      "All entrance fees & tickets",
+      "Private airport transfers",
+      "Bottled water & snacks"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Giza Plateau — Pyramids & Sphinx",
+        "description": "Morning pickup from your Cairo hotel. Drive to the Giza Plateau to explore the Great Pyramid of Khufu, Pyramid of Khafre, Pyramid of Menkaure, the Great Sphinx, and the Valley Temple. Lunch at a restaurant overlooking the pyramids.",
+        "activities": ["Great Pyramid of Khufu", "Panoramic photo stop", "Great Sphinx", "Valley Temple", "Pyramid-view lunch"]
+      },
+      {
+        "day": 2,
+        "title": "Egyptian Museum & Old Cairo",
+        "description": "Visit the world-renowned Egyptian Museum to see King Tutankhamun's golden mask and royal mummies. Explore Coptic Cairo and the vibrant Khan el-Khalili bazaar. Transfer to the airport or your next destination.",
+        "activities": ["Egyptian Museum", "Royal Mummies Hall", "Coptic Cairo", "Khan el-Khalili Bazaar", "Airport transfer"]
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Luxor Valley of the Kings & Temples",
+    "slug": "luxor-valley-kings-temples",
+    "description": "Discover Luxor — the world's greatest open-air museum. Visit the Valley of the Kings, Karnak Temple, Luxor Temple, and the Temple of Hatshepsut on a private guided tour with an expert Egyptologist. Perfect for history lovers visiting Upper Egypt.",
+    "shortDescription": "Explore ancient Thebes — temples, tombs & the Valley of the Kings",
+    "duration": 3,
+    "price": 549,
+    "currency": "USD",
+    "image": "/assets/images/valley-of-kings-luxor.webp",
+    "heroImage": "/assets/images/karnak-temple-columns-luxor.webp",
+    "destinations": [2],
+    "experiences": [1, 2, 5],
+    "travelStyle": "Culture",
+    "rating": 4.95,
+    "reviews": 178,
+    "highlights": [
+      "Enter royal tombs in the Valley of the Kings",
+      "Walk through the massive Karnak Temple complex",
+      "See Luxor Temple illuminated at sunset",
+      "Visit the mortuary Temple of Hatshepsut",
+      "Photo stop at the Colossi of Memnon"
+    ],
+    "included": [
+      "2 nights 5-star hotel in Luxor",
+      "Daily breakfast & 1 lunch",
+      "Licensed Egyptologist guide",
+      "All entrance fees",
+      "Private air-conditioned vehicle",
+      "Airport/train station transfers"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Arrival & Karnak Temple",
+        "description": "Arrive in Luxor and transfer to your hotel. Afternoon visit to the awe-inspiring Karnak Temple complex — the largest ancient religious site ever built. Evening visit to Luxor Temple lit up at night.",
+        "activities": ["Hotel check-in", "Karnak Temple", "Luxor Temple at sunset"]
+      },
+      {
+        "day": 2,
+        "title": "Valley of the Kings & West Bank",
+        "description": "Cross to Luxor's West Bank to explore the Valley of the Kings, where pharaohs like Tutankhamun and Ramses II were buried. Visit the Temple of Hatshepsut and the Colossi of Memnon.",
+        "activities": ["Valley of the Kings", "Temple of Hatshepsut", "Colossi of Memnon", "Alabaster workshop"]
+      },
+      {
+        "day": 3,
+        "title": "Free Morning & Departure",
+        "description": "Enjoy a free morning to explore Luxor's East Bank, visit the Luxor Museum, or shop at the local souq. Transfer to the airport or train station.",
+        "activities": ["Free morning", "Optional Luxor Museum", "Departure transfer"]
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Nile Cruise — Luxor to Aswan",
+    "slug": "nile-cruise-luxor-aswan",
+    "description": "Sail the legendary Nile River aboard a 5-star cruise ship from Luxor to Aswan. Visit Edfu Temple, Kom Ombo, Philae Temple, and the Aswan High Dam. Includes all meals, guided excursions, and onboard entertainment — the quintessential Egypt experience.",
+    "shortDescription": "5-star Nile cruise with guided temple visits & all meals",
+    "duration": 5,
+    "price": 1299,
+    "currency": "USD",
+    "image": "/assets/images/nile-cruise-ship-sunset.webp",
+    "heroImage": "/assets/images/nile-river-aerial-view-luxor.webp",
+    "destinations": [2, 3, 6],
+    "experiences": [1, 2, 5],
+    "travelStyle": "Relax",
+    "rating": 4.95,
+    "reviews": 312,
+    "highlights": [
+      "5-star luxury Nile cruise with sundeck pool",
+      "Guided visits to Edfu, Kom Ombo & Philae temples",
+      "Valley of the Kings & Karnak Temple excursions",
+      "Aswan High Dam & Unfinished Obelisk",
+      "Traditional Nubian village experience"
+    ],
+    "included": [
+      "4 nights on 5-star Nile cruise",
+      "Full board — breakfast, lunch & dinner",
+      "All guided temple excursions",
+      "Licensed Egyptologist guide",
+      "Onboard entertainment & afternoon tea",
+      "Luggage porterage"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Board in Luxor — Karnak Temple",
+        "description": "Board your luxury cruise in Luxor. After lunch onboard, visit the magnificent Karnak Temple complex. Return for dinner and evening entertainment.",
+        "activities": ["Cruise boarding & lunch", "Karnak Temple", "Welcome dinner"]
+      },
+      {
+        "day": 2,
+        "title": "Valley of the Kings & Sail to Edfu",
+        "description": "Morning excursion to the Valley of the Kings, Hatshepsut Temple, and Colossi of Memnon. Afternoon sailing through Esna Lock toward Edfu.",
+        "activities": ["Valley of the Kings", "Hatshepsut Temple", "Colossi of Memnon", "Sailing"]
+      },
+      {
+        "day": 3,
+        "title": "Edfu & Kom Ombo Temples",
+        "description": "Visit the perfectly preserved Temple of Horus at Edfu. Sail to Kom Ombo and explore the unique double temple dedicated to Sobek and Horus the Elder.",
+        "activities": ["Edfu Temple", "Sailing", "Kom Ombo Temple", "Crocodile Museum"]
+      },
+      {
+        "day": 4,
+        "title": "Aswan — High Dam & Philae Temple",
+        "description": "Visit the Aswan High Dam, the Unfinished Obelisk, and the beautiful island Philae Temple dedicated to goddess Isis. Optional felucca ride at sunset.",
+        "activities": ["Aswan High Dam", "Unfinished Obelisk", "Philae Temple", "Optional felucca"]
+      },
+      {
+        "day": 5,
+        "title": "Disembarkation & Departure",
+        "description": "Enjoy breakfast onboard. Disembark and transfer to Aswan Airport or train station for your onward journey.",
+        "activities": ["Breakfast onboard", "Disembarkation", "Airport transfer"]
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Red Sea Diving & Snorkeling Adventure",
+    "slug": "red-sea-diving-snorkeling-hurghada",
+    "description": "Experience world-class diving and snorkeling in the crystal-clear waters of Hurghada on the Red Sea coast. Explore vibrant coral reefs, swim with tropical fish at Giftun Islands, and enjoy beachfront resort luxury. Ideal for water sports enthusiasts and beach lovers.",
+    "shortDescription": "Coral reefs, tropical fish & beachfront luxury in Hurghada",
+    "duration": 4,
+    "price": 699,
+    "currency": "USD",
+    "image": "/assets/images/red-sea-coral-reef-diving.webp",
+    "heroImage": "/assets/images/hurghada-beach-resort-red-sea.webp",
+    "destinations": [4],
+    "experiences": [3, 4],
+    "travelStyle": "Adventure",
+    "rating": 4.8,
+    "reviews": 145,
+    "highlights": [
+      "Snorkel at Giftun Islands Marine National Park",
+      "Scuba diving at famous Red Sea dive sites",
+      "Glass-bottom boat tour over coral gardens",
+      "Quad biking in the Eastern Desert",
+      "All-inclusive beachfront resort stay"
+    ],
+    "included": [
+      "3 nights all-inclusive beachfront resort",
+      "Giftun Islands snorkeling boat trip",
+      "1 guided scuba diving session",
+      "Desert quad biking excursion",
+      "Airport transfers",
+      "Snorkeling equipment"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Arrival in Hurghada",
+        "description": "Arrive at Hurghada International Airport and transfer to your all-inclusive beachfront resort. Spend the afternoon relaxing by the pool or on the private beach.",
+        "activities": ["Airport transfer", "Resort check-in", "Beach & pool time"]
+      },
+      {
+        "day": 2,
+        "title": "Giftun Islands Snorkeling Trip",
+        "description": "Full-day boat trip to Giftun Islands National Park. Snorkel over pristine coral reefs, swim with colorful tropical fish, and enjoy a beach BBQ lunch on a secluded island.",
+        "activities": ["Boat trip to Giftun Islands", "Snorkeling at 2 reef sites", "Beach BBQ lunch"]
+      },
+      {
+        "day": 3,
+        "title": "Scuba Diving & Desert Safari",
+        "description": "Morning guided scuba dive at a top Red Sea site. Afternoon quad biking adventure through the Eastern Desert with a Bedouin tea stop.",
+        "activities": ["Guided scuba dive", "Quad biking", "Bedouin tea experience"]
+      },
+      {
+        "day": 4,
+        "title": "Beach Morning & Departure",
+        "description": "Enjoy a final morning swim and breakfast before transferring to Hurghada Airport for your departure.",
+        "activities": ["Beach time", "Breakfast", "Airport transfer"]
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "title": "Abu Simbel & Aswan Explorer",
+    "slug": "abu-simbel-aswan-explorer",
+    "description": "Marvel at the colossal Abu Simbel temples of Ramses II — one of Egypt's most breathtaking monuments. Combined with a full Aswan exploration including Philae Temple, the High Dam, a felucca sail on the Nile, and a Nubian village visit. A must-do Upper Egypt itinerary.",
+    "shortDescription": "Colossal Abu Simbel temples & Aswan's Nubian highlights",
+    "duration": 3,
+    "price": 599,
+    "currency": "USD",
+    "image": "/assets/images/abu-simbel-temple-ramesses.webp",
+    "heroImage": "/assets/images/philae-temple-island-aswan.webp",
+    "destinations": [3, 6],
+    "experiences": [1, 2, 5],
+    "travelStyle": "Culture",
+    "rating": 4.9,
+    "reviews": 167,
+    "highlights": [
+      "Abu Simbel — Ramses II's colossal rock-cut temples",
+      "Philae Temple on its picturesque island",
+      "Sunset felucca sail on the Nile",
+      "Visit a traditional Nubian village",
+      "Aswan High Dam & Unfinished Obelisk"
+    ],
+    "included": [
+      "2 nights hotel in Aswan",
+      "Daily breakfast",
+      "Abu Simbel round-trip transport & entry",
+      "Licensed Egyptologist guide",
+      "All entrance fees",
+      "Felucca sail & Nubian village tour"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Arrival in Aswan & Philae Temple",
+        "description": "Arrive in Aswan and transfer to your Nile-view hotel. Afternoon visit to the beautiful Philae Temple on Agilkia Island. Sunset felucca sail around Elephantine Island.",
+        "activities": ["Hotel check-in", "Philae Temple", "Felucca sunset sail"]
+      },
+      {
+        "day": 2,
+        "title": "Abu Simbel Excursion",
+        "description": "Early morning drive (or optional flight) to Abu Simbel to see the four colossal statues of Ramses II and the Temple of Nefertari. Return to Aswan for a Nubian village visit by boat.",
+        "activities": ["Abu Simbel temples", "Nubian village visit", "Traditional Nubian dinner"]
+      },
+      {
+        "day": 3,
+        "title": "Aswan Highlights & Departure",
+        "description": "Visit the Aswan High Dam and the Unfinished Obelisk. Free time to browse the Aswan Souq for spices and handicrafts. Transfer to the airport.",
+        "activities": ["Aswan High Dam", "Unfinished Obelisk", "Aswan Souq", "Departure transfer"]
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "title": "Complete Egypt Discovery — 14 Days",
+    "slug": "complete-egypt-discovery-14-days",
+    "description": "The ultimate Egypt tour covering Cairo, the Pyramids, Luxor, a Nile cruise, Aswan, Abu Simbel, and Red Sea beach relaxation. This all-inclusive 14-day itinerary is the most comprehensive way to experience ancient wonders, Nile scenery, and tropical coastline in a single trip.",
+    "shortDescription": "Cairo, Nile cruise, Abu Simbel & Red Sea — the ultimate Egypt trip",
+    "duration": 14,
+    "price": 3299,
+    "currency": "USD",
+    "image": "/assets/images/pyramids-night-sound-light.webp",
+    "heroImage": "/assets/images/egypt-luxury-resort-pool.webp",
+    "destinations": [1, 2, 3, 4, 6],
+    "experiences": [1, 2, 3, 4, 5],
+    "travelStyle": "Culture",
+    "rating": 4.97,
+    "reviews": 89,
+    "highlights": [
+      "Pyramids of Giza, Sphinx & Egyptian Museum",
+      "5-star Nile cruise Luxor to Aswan",
+      "Abu Simbel temples excursion",
+      "Valley of the Kings & Karnak Temple",
+      "Red Sea snorkeling & beach relaxation"
+    ],
+    "included": [
+      "13 nights 5-star accommodation",
+      "All meals throughout",
+      "Domestic flights Cairo–Luxor, Aswan–Hurghada",
+      "5-star Nile cruise",
+      "Licensed Egyptologist guide",
+      "All entrance fees & transfers"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Welcome to Cairo",
+        "description": "Arrive at Cairo International Airport. Private transfer to your 5-star hotel. Evening orientation walk.",
+        "activities": ["Airport pickup", "Hotel check-in", "Welcome dinner"]
+      },
+      {
+        "day": 2,
+        "title": "Pyramids & Sphinx",
+        "description": "Full day at the Giza Plateau — Great Pyramids, Sphinx, Valley Temple, and Solar Boat Museum.",
+        "activities": ["Pyramids of Giza", "Great Sphinx", "Solar Boat Museum"]
+      },
+      {
+        "day": 3,
+        "title": "Egyptian Museum & Old Cairo",
+        "description": "Visit the Egyptian Museum and explore Islamic Cairo — Citadel of Saladin and Khan el-Khalili.",
+        "activities": ["Egyptian Museum", "Saladin Citadel", "Khan el-Khalili"]
+      },
+      {
+        "day": 4,
+        "title": "Fly to Luxor — Board Cruise",
+        "description": "Fly to Luxor, board your Nile cruise, and visit Karnak Temple.",
+        "activities": ["Flight to Luxor", "Cruise boarding", "Karnak Temple"]
+      },
+      {
+        "day": 5,
+        "title": "Valley of the Kings",
+        "description": "Valley of the Kings, Hatshepsut Temple, Colossi of Memnon, and Luxor Temple at sunset.",
+        "activities": ["Valley of the Kings", "Hatshepsut Temple", "Luxor Temple"]
+      },
+      {
+        "day": 6,
+        "title": "Sailing to Edfu",
+        "description": "Relax on the sundeck as you sail through Esna Lock. Visit Edfu Temple in the afternoon.",
+        "activities": ["Sailing", "Esna Lock", "Edfu Temple"]
+      },
+      {
+        "day": 7,
+        "title": "Kom Ombo to Aswan",
+        "description": "Visit Kom Ombo Temple and sail to Aswan. Evening felucca ride.",
+        "activities": ["Kom Ombo Temple", "Sailing to Aswan", "Felucca ride"]
+      },
+      {
+        "day": 8,
+        "title": "Aswan Highlights",
+        "description": "Aswan High Dam, Unfinished Obelisk, and Philae Temple.",
+        "activities": ["High Dam", "Unfinished Obelisk", "Philae Temple"]
+      },
+      {
+        "day": 9,
+        "title": "Abu Simbel",
+        "description": "Early morning excursion to Abu Simbel temples. Farewell cruise dinner.",
+        "activities": ["Abu Simbel temples", "Return to Aswan", "Farewell dinner"]
+      },
+      {
+        "day": 10,
+        "title": "Fly to Hurghada",
+        "description": "Disembark cruise, fly to Hurghada, and check into your beachfront resort.",
+        "activities": ["Disembarkation", "Flight to Hurghada", "Resort check-in"]
+      },
+      {
+        "day": 11,
+        "title": "Red Sea Snorkeling",
+        "description": "Full-day snorkeling trip to Giftun Islands.",
+        "activities": ["Boat trip", "Snorkeling", "Beach BBQ"]
+      },
+      {
+        "day": 12,
+        "title": "Beach & Optional Diving",
+        "description": "Optional scuba diving or spa day at the resort.",
+        "activities": ["Optional diving", "Beach time", "Spa"]
+      },
+      {
+        "day": 13,
+        "title": "Desert Adventure",
+        "description": "Quad biking in the Eastern Desert with Bedouin dinner under the stars.",
+        "activities": ["Quad biking", "Bedouin camp", "Stargazing dinner"]
+      },
+      {
+        "day": 14,
+        "title": "Departure",
+        "description": "Transfer to Hurghada Airport for your departure.",
+        "activities": ["Breakfast", "Airport transfer", "Departure"]
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "title": "White Desert & Bahariya Oasis Safari",
+    "slug": "white-desert-bahariya-oasis-safari",
+    "description": "Journey into Egypt's Western Desert to explore the surreal White Desert chalk formations, the volcanic Black Desert, Crystal Mountain, and Bahariya Oasis. Camp under a blanket of stars and experience traditional Bedouin hospitality — an unforgettable off-the-beaten-path adventure.",
+    "shortDescription": "Surreal desert landscapes, stargazing & Bedouin camping",
+    "duration": 3,
+    "price": 499,
+    "currency": "USD",
+    "image": "/assets/images/white-desert-chalk-formations.webp",
+    "heroImage": "/assets/images/sahara-camel-caravan-sunset.webp",
+    "destinations": [7, 8],
+    "experiences": [3, 6],
+    "travelStyle": "Adventure",
+    "rating": 4.8,
+    "reviews": 93,
+    "highlights": [
+      "Camp among the White Desert's mushroom-shaped chalk pillars",
+      "Drive through the volcanic Black Desert",
+      "Visit the sparkling Crystal Mountain",
+      "Explore Bahariya Oasis hot springs",
+      "Traditional Bedouin campfire dinner"
+    ],
+    "included": [
+      "2 nights desert camping",
+      "All meals — campfire BBQ included",
+      "4x4 desert safari vehicle",
+      "Expert Bedouin desert guide",
+      "Camping equipment & sleeping bags",
+      "Round-trip Cairo transfers"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Cairo to Bahariya Oasis",
+        "description": "Depart Cairo early morning. Arrive in Bahariya Oasis to explore the town, visit the Golden Mummies Museum, and soak in natural hot springs.",
+        "activities": ["Drive to Bahariya", "Golden Mummies Museum", "Hot springs"]
+      },
+      {
+        "day": 2,
+        "title": "Black Desert, Crystal Mountain & White Desert",
+        "description": "4x4 safari through the Black Desert's volcanic hills, a stop at Crystal Mountain, then into the otherworldly White Desert. Camp under the stars with a Bedouin BBQ.",
+        "activities": ["Black Desert tour", "Crystal Mountain", "White Desert camping", "Stargazing"]
+      },
+      {
+        "day": 3,
+        "title": "Desert Sunrise & Return to Cairo",
+        "description": "Wake to a spectacular desert sunrise. Breakfast among the chalk formations before the scenic drive back to Cairo.",
+        "activities": ["Desert sunrise", "Breakfast", "Return to Cairo"]
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "title": "Alexandria Mediterranean Day Trip",
+    "slug": "alexandria-mediterranean-day-trip",
+    "description": "Discover the legendary city of Alexandria on a private day trip from Cairo. Founded by Alexander the Great, this Mediterranean gem features the Bibliotheca Alexandrina, Catacombs of Kom el-Shoqafa, Citadel of Qaitbay, and fresh-caught seafood — all in one action-packed day.",
+    "shortDescription": "Greco-Roman ruins, the great library & Mediterranean seafood",
+    "duration": 1,
+    "price": 149,
+    "currency": "USD",
+    "image": "/assets/images/alexandria-citadel-qaitbay.webp",
+    "heroImage": "/assets/images/bibliotheca-alexandrina-modern.webp",
+    "destinations": [9],
+    "experiences": [1, 2],
+    "travelStyle": "Culture",
+    "rating": 4.7,
+    "reviews": 112,
+    "highlights": [
+      "Bibliotheca Alexandrina — modern tribute to the ancient library",
+      "Catacombs of Kom el-Shoqafa — Roman-era underground necropolis",
+      "Citadel of Qaitbay on the Mediterranean shore",
+      "Pompey's Pillar & Roman Amphitheatre",
+      "Seafood lunch at a harbor-front restaurant"
+    ],
+    "included": [
+      "Private air-conditioned vehicle Cairo–Alexandria round trip",
+      "Licensed guide",
+      "All entrance fees",
+      "Seafood lunch",
+      "Bottled water"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Cairo to Alexandria & Full Day Tour",
+        "description": "Early morning departure from Cairo (approx. 2.5 hours). Visit the Catacombs of Kom el-Shoqafa, Pompey's Pillar, Roman Amphitheatre, Bibliotheca Alexandrina, and the Citadel of Qaitbay. Enjoy a seafood lunch on the Corniche before returning to Cairo.",
+        "activities": ["Catacombs of Kom el-Shoqafa", "Pompey's Pillar", "Bibliotheca Alexandrina", "Citadel of Qaitbay", "Seafood lunch", "Return to Cairo"]
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "title": "Islamic Cairo & Khan el-Khalili Walking Tour",
+    "slug": "islamic-cairo-khan-el-khalili-walking-tour",
+    "description": "Immerse yourself in 1,000 years of Islamic architecture and Cairo's vibrant street life. Walk through Al-Muizz Street — the world's largest open-air Islamic museum — visit the Citadel of Saladin, Al-Azhar Mosque, and bargain for spices and souvenirs at the legendary Khan el-Khalili bazaar.",
+    "shortDescription": "Medieval mosques, the Citadel & the legendary Khan bazaar",
+    "duration": 1,
+    "price": 89,
+    "currency": "USD",
+    "image": "/assets/images/khan-el-khalili-bazaar-cairo.webp",
+    "heroImage": "/assets/images/cairo-islamic-quarter-mosque.webp",
+    "destinations": [1],
+    "experiences": [1, 2],
+    "travelStyle": "Culture",
+    "rating": 4.85,
+    "reviews": 198,
+    "highlights": [
+      "Walk Al-Muizz Street — UNESCO World Heritage zone",
+      "Citadel of Saladin with panoramic Cairo views",
+      "Muhammad Ali Mosque (Alabaster Mosque)",
+      "Al-Azhar Mosque & University (founded AD 970)",
+      "Shop at Khan el-Khalili bazaar"
+    ],
+    "included": [
+      "Licensed local guide (English-speaking)",
+      "All entrance fees",
+      "Traditional Egyptian tea at a historic café",
+      "Hotel pickup & drop-off in Cairo"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Islamic Cairo Walking Tour",
+        "description": "Pickup from your hotel. Visit the Citadel of Saladin for panoramic views, then walk along Al-Muizz Street past medieval mosques, madrasas, and caravanserais. Explore Al-Azhar Mosque and end at Khan el-Khalili bazaar with time to shop and enjoy Egyptian tea at the famous El-Fishawy café.",
+        "activities": ["Citadel of Saladin", "Muhammad Ali Mosque", "Al-Muizz Street", "Al-Azhar Mosque", "Khan el-Khalili", "El-Fishawy café"]
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "title": "Sharm El Sheikh Snorkeling & Mount Sinai",
+    "slug": "sharm-el-sheikh-snorkeling-mount-sinai",
+    "description": "Combine Red Sea marine paradise with a spiritual sunrise trek on Mount Sinai. Snorkel at Ras Mohammed National Park — one of the world's top dive sites — then climb the sacred mountain where Moses received the Ten Commandments. An unforgettable Sinai Peninsula adventure.",
+    "shortDescription": "Ras Mohammed coral reefs & a sacred Mount Sinai sunrise trek",
+    "duration": 4,
+    "price": 749,
+    "currency": "USD",
+    "image": "/assets/images/sharm-el-sheikh-underwater.webp",
+    "heroImage": "/assets/images/red-sea-sunset-panorama.webp",
+    "destinations": [5],
+    "experiences": [3, 4, 6],
+    "travelStyle": "Adventure",
+    "rating": 4.85,
+    "reviews": 134,
+    "highlights": [
+      "Snorkel at Ras Mohammed National Park",
+      "Sunrise trek to the summit of Mount Sinai (2,285 m)",
+      "Visit St. Catherine's Monastery — UNESCO World Heritage Site",
+      "Blue Hole snorkeling at Dahab",
+      "Beachfront resort in Sharm El Sheikh"
+    ],
+    "included": [
+      "3 nights beachfront hotel in Sharm El Sheikh",
+      "Daily breakfast",
+      "Ras Mohammed snorkeling trip",
+      "Mount Sinai guided sunrise trek",
+      "St. Catherine's Monastery visit",
+      "Airport transfers & all transport"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Arrival in Sharm El Sheikh",
+        "description": "Arrive at Sharm El Sheikh Airport and transfer to your beachfront resort. Free afternoon to relax on the beach or explore Naama Bay.",
+        "activities": ["Airport transfer", "Resort check-in", "Naama Bay exploration"]
+      },
+      {
+        "day": 2,
+        "title": "Ras Mohammed National Park Snorkeling",
+        "description": "Full-day boat trip to Ras Mohammed National Park. Snorkel over coral walls teeming with marine life at Shark Reef and Yolanda Reef.",
+        "activities": ["Boat to Ras Mohammed", "Shark Reef snorkeling", "Yolanda Reef", "Beach lunch"]
+      },
+      {
+        "day": 3,
+        "title": "Mount Sinai Sunrise Trek",
+        "description": "Late evening departure to Mount Sinai. Begin the guided trek at 2 AM to reach the summit for a breathtaking sunrise. Descend to visit St. Catherine's Monastery. Return to Sharm El Sheikh for afternoon rest.",
+        "activities": ["Night drive to Sinai", "Summit trek", "Sunrise at the peak", "St. Catherine's Monastery"]
+      },
+      {
+        "day": 4,
+        "title": "Free Morning & Departure",
+        "description": "Enjoy a leisurely morning at the resort. Optional Dahab Blue Hole snorkeling trip. Transfer to the airport.",
+        "activities": ["Beach time", "Optional Blue Hole", "Airport transfer"]
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "title": "Luxor Hot Air Balloon Sunrise Experience",
+    "slug": "luxor-hot-air-balloon-sunrise",
+    "description": "Soar above the Valley of the Kings at sunrise in a hot air balloon. Witness the ancient temples, the Nile River, and Luxor's West Bank from a breathtaking aerial perspective. A once-in-a-lifetime Egypt adventure.",
+    "shortDescription": "Sunrise balloon flight over Luxor's ancient monuments",
+    "duration": 1,
+    "price": 149,
+    "currency": "USD",
+    "image": "/assets/images/hot-air-balloon-luxor-sunrise.webp",
+    "heroImage": "/assets/images/nile-felucca-golden-hour.webp",
+    "destinations": [2],
+    "experiences": [3, 6],
+    "travelStyle": "Adventure",
+    "rating": 4.95,
+    "reviews": 256,
+    "highlights": [
+      "Sunrise flight over the Valley of the Kings",
+      "Panoramic views of Karnak and Luxor temples",
+      "See the Nile River from above",
+      "Professional pilots with safety certification",
+      "Champagne toast after landing"
+    ],
+    "included": [
+      "Hotel pickup & drop-off in Luxor",
+      "1-hour hot air balloon flight",
+      "Experienced pilot",
+      "Flight certificate",
+      "Champagne celebration"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Sunrise Balloon Flight",
+        "description": "Early morning pickup (around 4:30 AM). Transfer to the launch site on Luxor's West Bank. Watch the balloon inflate, then ascend into the sky as the sun rises over the ancient monuments. Float for approximately 45-60 minutes before landing. Return to your hotel by 8 AM.",
+        "activities": ["Hotel pickup", "Balloon inflation", "Sunrise flight", "Landing celebration", "Hotel drop-off"]
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "title": "Siwa Oasis Desert Retreat",
+    "slug": "siwa-oasis-desert-retreat",
+    "description": "Escape to the remote Siwa Oasis — Egypt's most enchanting desert paradise. Explore ancient ruins, swim in natural springs, and experience Berber culture in this off-the-beaten-path adventure near the Libyan border.",
+    "shortDescription": "Remote oasis adventure with hot springs & ancient ruins",
+    "duration": 4,
+    "price": 649,
+    "currency": "USD",
+    "image": "/assets/images/siwa-oasis-palm-trees.webp",
+    "heroImage": "/assets/images/sahara-camel-caravan-sunset.webp",
+    "destinations": [10],
+    "experiences": [3, 6],
+    "travelStyle": "Adventure",
+    "rating": 4.85,
+    "reviews": 78,
+    "highlights": [
+      "Swim in Cleopatra's Spring",
+      "Explore the ancient Temple of the Oracle",
+      "4x4 desert safari to the Great Sand Sea",
+      "Traditional Siwan mud-brick architecture",
+      "Stargazing in one of Earth's darkest skies"
+    ],
+    "included": [
+      "3 nights eco-lodge accommodation",
+      "All meals",
+      "4x4 desert excursions",
+      "English-speaking guide",
+      "Round-trip transport from Cairo"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Cairo to Siwa",
+        "description": "Depart Cairo early morning for the 8-hour scenic drive through the Western Desert. Arrive in Siwa and check into your eco-lodge. Evening walk through the old town.",
+        "activities": ["Drive to Siwa", "Eco-lodge check-in", "Old town walk"]
+      },
+      {
+        "day": 2,
+        "title": "Siwa Exploration",
+        "description": "Visit the Temple of the Oracle (where Alexander the Great was declared a god), the Mountain of the Dead tombs, and swim in Cleopatra's Spring. Afternoon at Fatnas Island for sunset.",
+        "activities": ["Temple of the Oracle", "Mountain of the Dead", "Cleopatra's Spring", "Fatnas Island sunset"]
+      },
+      {
+        "day": 3,
+        "title": "Great Sand Sea Safari",
+        "description": "Full-day 4x4 adventure into the Great Sand Sea. Sandboarding on massive dunes, visit hot and cold springs, and watch the sunset over endless golden sands.",
+        "activities": ["4x4 desert safari", "Sandboarding", "Hot springs", "Desert sunset"]
+      },
+      {
+        "day": 4,
+        "title": "Return to Cairo",
+        "description": "Morning free to explore Siwa's markets. Depart for Cairo after lunch.",
+        "activities": ["Siwa market", "Return to Cairo"]
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "title": "Egyptian Museum & Tutankhamun Treasures",
+    "slug": "egyptian-museum-tutankhamun-treasures",
+    "description": "Discover 5,000 years of Egyptian history at the world-famous Egyptian Museum in Cairo. See King Tutankhamun's golden mask, royal mummies, and over 120,000 ancient artifacts with an expert Egyptologist guide.",
+    "shortDescription": "Guided tour of Cairo's Egyptian Museum & royal mummies",
+    "duration": 1,
+    "price": 79,
+    "currency": "USD",
+    "image": "/assets/images/egyptian-museum-cairo-artifacts.webp",
+    "heroImage": "/assets/images/cairo-skyline-nile-river.webp",
+    "destinations": [1],
+    "experiences": [1, 2],
+    "travelStyle": "Culture",
+    "rating": 4.8,
+    "reviews": 342,
+    "highlights": [
+      "Tutankhamun's golden death mask",
+      "Royal Mummies Hall",
+      "Ancient jewelry and artifacts",
+      "Expert Egyptologist guide",
+      "Skip-the-line entry"
+    ],
+    "included": [
+      "Hotel pickup & drop-off in Cairo",
+      "Licensed Egyptologist guide",
+      "All entrance fees including Mummies Hall",
+      "Bottled water"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Egyptian Museum Tour",
+        "description": "Morning pickup from your Cairo hotel. Spend 3-4 hours exploring the Egyptian Museum's highlights with your Egyptologist. See the Tutankhamun collection, royal mummies, and ancient treasures. Return to your hotel by early afternoon.",
+        "activities": ["Hotel pickup", "Egyptian Museum tour", "Tutankhamun gallery", "Royal Mummies Hall", "Hotel drop-off"]
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "title": "Felucca Sailing & Nubian Village Experience",
+    "slug": "felucca-sailing-nubian-village-aswan",
+    "description": "Sail the Nile on a traditional felucca boat and visit a colorful Nubian village near Aswan. Experience authentic Egyptian hospitality, taste traditional food, and learn about Nubian culture and history.",
+    "shortDescription": "Traditional Nile sailing & authentic Nubian village visit",
+    "duration": 1,
+    "price": 69,
+    "currency": "USD",
+    "image": "/assets/images/felucca-sailing-nile-aswan.webp",
+    "heroImage": "/assets/images/nubian-village-colorful-aswan.webp",
+    "destinations": [3],
+    "experiences": [2, 5],
+    "travelStyle": "Culture",
+    "rating": 4.9,
+    "reviews": 189,
+    "highlights": [
+      "Sail on a traditional wooden felucca",
+      "Visit a vibrant Nubian village",
+      "Traditional Nubian tea and snacks",
+      "Meet local families",
+      "Stunning Nile sunset views"
+    ],
+    "included": [
+      "Hotel pickup & drop-off in Aswan",
+      "Felucca boat ride",
+      "Nubian village visit",
+      "Traditional tea & snacks",
+      "English-speaking guide"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Felucca & Nubian Village",
+        "description": "Afternoon pickup from your Aswan hotel. Board a traditional felucca and sail to a Nubian village. Explore the colorful streets, visit a local home, enjoy traditional hospitality, and sail back as the sun sets over the Nile.",
+        "activities": ["Hotel pickup", "Felucca sailing", "Nubian village tour", "Traditional tea", "Sunset sail"]
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "title": "Cairo Food Tour & Local Markets",
+    "slug": "cairo-food-tour-local-markets",
+    "description": "Taste your way through Cairo's vibrant food scene. Sample authentic Egyptian dishes — koshari, ful medames, ta'ameya, and more — while exploring local markets and hidden culinary gems with a foodie guide.",
+    "shortDescription": "Authentic Egyptian cuisine & bustling Cairo markets",
+    "duration": 1,
+    "price": 59,
+    "currency": "USD",
+    "image": "/assets/images/egyptian-cuisine-traditional-food.webp",
+    "heroImage": "/assets/images/khan-el-khalili-bazaar-cairo.webp",
+    "destinations": [1],
+    "experiences": [2],
+    "travelStyle": "Culture",
+    "rating": 4.85,
+    "reviews": 156,
+    "highlights": [
+      "Taste 8+ traditional Egyptian dishes",
+      "Visit local markets and street vendors",
+      "Learn about Egyptian food culture",
+      "Small group experience (max 8)",
+      "Vegetarian options available"
+    ],
+    "included": [
+      "Hotel pickup & drop-off in Cairo",
+      "All food tastings",
+      "Local guide",
+      "Bottled water"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Cairo Food Adventure",
+        "description": "Morning pickup. Explore Cairo's food scene — from famous koshari shops to hidden falafel stands. Visit local markets, taste fresh juices, and end with traditional Egyptian desserts and tea.",
+        "activities": ["Hotel pickup", "Koshari tasting", "Local market visit", "Street food sampling", "Dessert & tea"]
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "title": "Dahab Blue Hole Snorkeling Day Trip",
+    "slug": "dahab-blue-hole-snorkeling-day-trip",
+    "description": "Snorkel at the legendary Blue Hole in Dahab — one of the world's most famous dive sites. Explore vibrant coral reefs, swim with tropical fish, and enjoy the laid-back Bedouin beach town atmosphere.",
+    "shortDescription": "Snorkel the famous Blue Hole & explore Dahab's reefs",
+    "duration": 1,
+    "price": 89,
+    "currency": "USD",
+    "image": "/assets/images/sharm-el-sheikh-underwater.webp",
+    "heroImage": "/assets/images/red-sea-coral-reef-diving.webp",
+    "destinations": [5],
+    "experiences": [3, 4],
+    "travelStyle": "Adventure",
+    "rating": 4.75,
+    "reviews": 98,
+    "highlights": [
+      "Snorkel at the Blue Hole",
+      "Explore Dahab's coral reefs",
+      "Beachside lunch in Dahab",
+      "Free time to explore the town",
+      "Professional snorkeling guide"
+    ],
+    "included": [
+      "Round-trip transfer from Sharm El Sheikh",
+      "Snorkeling equipment",
+      "Snorkeling guide",
+      "Lunch in Dahab",
+      "National park fees"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Blue Hole Adventure",
+        "description": "Morning pickup from Sharm El Sheikh. Drive to Dahab (approx. 1 hour). Snorkel at the Blue Hole and nearby reefs. Enjoy a beachside lunch and free time in Dahab before returning to Sharm.",
+        "activities": ["Transfer to Dahab", "Blue Hole snorkeling", "Reef exploration", "Beachside lunch", "Return to Sharm"]
+      }
+    ]
+  },
+  {
+    "id": 17,
+    "title": "Luxor Temple Sound & Light Show",
+    "slug": "luxor-temple-sound-light-show",
+    "description": "Experience Luxor Temple after dark with the spectacular Sound & Light Show. Watch as the ancient columns and statues are illuminated while narration brings 3,400 years of history to life.",
+    "shortDescription": "Evening spectacle at illuminated Luxor Temple",
+    "duration": 1,
+    "price": 49,
+    "currency": "USD",
+    "image": "/assets/images/luxor-temple-night-lights.webp",
+    "heroImage": "/assets/images/karnak-temple-columns-luxor.webp",
+    "destinations": [2],
+    "experiences": [1, 2],
+    "travelStyle": "Culture",
+    "rating": 4.6,
+    "reviews": 134,
+    "highlights": [
+      "Sound & Light Show at Luxor Temple",
+      "See the temple illuminated at night",
+      "Narrated history in multiple languages",
+      "Evening atmosphere on the Nile",
+      "Hotel pickup & drop-off"
+    ],
+    "included": [
+      "Hotel pickup & drop-off in Luxor",
+      "Sound & Light Show ticket",
+      "English narration headset"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Luxor Temple by Night",
+        "description": "Evening pickup from your Luxor hotel. Arrive at Luxor Temple for the Sound & Light Show (approx. 1 hour). Return to your hotel after the show.",
+        "activities": ["Hotel pickup", "Sound & Light Show", "Hotel drop-off"]
+      }
+    ]
+  },
+  {
+    "id": 18,
+    "title": "Giza Pyramids Camel Ride at Sunset",
+    "slug": "giza-pyramids-camel-ride-sunset",
+    "description": "Ride a camel around the Giza Pyramids as the sun sets over the Sahara. Capture iconic photos with the pyramids glowing in golden light — a quintessential Egypt experience.",
+    "shortDescription": "Sunset camel ride with pyramid views",
+    "duration": 1,
+    "price": 69,
+    "currency": "USD",
+    "image": "/assets/images/sahara-camel-caravan-sunset.webp",
+    "heroImage": "/assets/images/pyramids-giza-golden-hour.webp",
+    "destinations": [1],
+    "experiences": [3, 6],
+    "travelStyle": "Adventure",
+    "rating": 4.7,
+    "reviews": 267,
+    "highlights": [
+      "Camel ride around the Giza Plateau",
+      "Sunset views of the pyramids",
+      "Panoramic photo opportunities",
+      "Experienced camel handlers",
+      "Bedouin tea included"
+    ],
+    "included": [
+      "Hotel pickup & drop-off in Cairo/Giza",
+      "45-minute camel ride",
+      "Camel handler",
+      "Bedouin tea",
+      "Photo assistance"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Sunset Camel Ride",
+        "description": "Afternoon pickup from your hotel. Arrive at the Giza Plateau, meet your camel, and ride around the pyramids as the sun sets. Enjoy Bedouin tea before returning to your hotel.",
+        "activities": ["Hotel pickup", "Camel ride", "Sunset photos", "Bedouin tea", "Hotel drop-off"]
+      }
+    ]
+  },
+  {
+    "id": 19,
+    "title": "Hurghada Glass-Bottom Boat & Snorkeling",
+    "slug": "hurghada-glass-bottom-boat-snorkeling",
+    "description": "Explore the Red Sea's underwater world without getting wet — then dive in! This family-friendly trip combines a glass-bottom boat tour with snorkeling at pristine coral reefs near Hurghada.",
+    "shortDescription": "See coral reefs from above & below the surface",
+    "duration": 1,
+    "price": 45,
+    "currency": "USD",
+    "image": "/assets/images/hurghada-beach-resort-red-sea.webp",
+    "heroImage": "/assets/images/red-sea-sunset-panorama.webp",
+    "destinations": [4],
+    "experiences": [3, 4],
+    "travelStyle": "Adventure",
+    "rating": 4.65,
+    "reviews": 203,
+    "highlights": [
+      "Glass-bottom boat viewing",
+      "Snorkeling at 2 reef sites",
+      "See tropical fish and coral",
+      "Family-friendly activity",
+      "Onboard refreshments"
+    ],
+    "included": [
+      "Hotel pickup & drop-off in Hurghada",
+      "Glass-bottom boat trip",
+      "Snorkeling equipment",
+      "Soft drinks & snacks",
+      "Snorkeling guide"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Glass-Bottom Boat & Snorkeling",
+        "description": "Morning pickup from your Hurghada hotel. Board the glass-bottom boat and cruise over coral reefs. Stop at two snorkeling sites to swim with tropical fish. Return to your hotel by early afternoon.",
+        "activities": ["Hotel pickup", "Glass-bottom boat tour", "Snorkeling stop 1", "Snorkeling stop 2", "Hotel drop-off"]
+      }
+    ]
+  },
+  {
+    "id": 20,
+    "title": "Pyramids Sound & Light Show Evening",
+    "slug": "pyramids-sound-light-show-evening",
+    "description": "Watch the Great Pyramids and Sphinx come alive with the famous Sound & Light Show. Lasers, lights, and narration tell the story of ancient Egypt against the backdrop of the world's most iconic monuments.",
+    "shortDescription": "Spectacular laser show at the Giza Pyramids",
+    "duration": 1,
+    "price": 55,
+    "currency": "USD",
+    "image": "/assets/images/pyramids-night-sound-light.webp",
+    "heroImage": "/assets/images/sphinx-pyramids-panorama.webp",
+    "destinations": [1],
+    "experiences": [1, 2],
+    "travelStyle": "Culture",
+    "rating": 4.5,
+    "reviews": 312,
+    "highlights": [
+      "Sound & Light Show at the Pyramids",
+      "See the Sphinx narrate history",
+      "Laser projections on the pyramids",
+      "Multiple language options",
+      "Evening atmosphere at Giza"
+    ],
+    "included": [
+      "Hotel pickup & drop-off in Cairo/Giza",
+      "Sound & Light Show ticket",
+      "Headset for language selection"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Pyramids by Night",
+        "description": "Evening pickup from your hotel. Arrive at the Giza Plateau for the Sound & Light Show (approx. 1 hour). The Sphinx 'narrates' the history of ancient Egypt as the pyramids are illuminated. Return to your hotel after the show.",
+        "activities": ["Hotel pickup", "Sound & Light Show", "Hotel drop-off"]
+      }
+    ]
+  }
+]

@@ -1,0 +1,194 @@
+[
+  {
+    "id": 1,
+    "name": "Historical Tours",
+    "slug": "historical-tours",
+    "icon": "🏛️",
+    "description": "Explore ancient temples, tombs, and monuments with expert Egyptologist guides who bring history to life.",
+    "shortDescription": "Discover ancient wonders",
+    "image": "https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=800",
+    "color": "#8B4513",
+    "category": "Culture",
+    "highlights": [
+      "Expert Egyptologist guides",
+      "Skip-the-line access",
+      "In-depth historical insights",
+      "Authentic experiences"
+    ],
+    "popularActivities": [
+      "Pyramid tours",
+      "Temple visits",
+      "Museum exploration",
+      "Archaeological sites"
+    ],
+    "tripIds": [1, 3, 5, 6]
+  },
+  {
+    "id": 2,
+    "name": "Cultural Immersion",
+    "slug": "cultural-immersion",
+    "icon": "🎭",
+    "description": "Experience authentic Egyptian culture through local traditions, cuisine, arts, and community connections.",
+    "shortDescription": "Live like a local",
+    "image": "https://images.unsplash.com/photo-1565967511849-76a60a516170?w=800",
+    "color": "#DAA520",
+    "category": "Culture",
+    "highlights": [
+      "Traditional cooking classes",
+      "Bazaar shopping",
+      "Local community visits",
+      "Traditional performances"
+    ],
+    "popularActivities": [
+      "Food tours",
+      "Cooking classes",
+      "Craft workshops",
+      "Village visits"
+    ],
+    "tripIds": [1, 3, 5, 6]
+  },
+  {
+    "id": 3,
+    "name": "Water Sports",
+    "slug": "water-sports",
+    "icon": "🤿",
+    "description": "Dive into crystal-clear Red Sea waters for world-class diving, snorkeling, and aquatic adventures.",
+    "shortDescription": "Explore underwater worlds",
+    "image": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800",
+    "color": "#0077BE",
+    "category": "Adventure",
+    "highlights": [
+      "Vibrant coral reefs",
+      "Tropical marine life",
+      "Professional instructors",
+      "Equipment provided"
+    ],
+    "popularActivities": [
+      "Scuba diving",
+      "Snorkeling",
+      "Glass-bottom boats",
+      "Kitesurfing"
+    ],
+    "tripIds": [2, 6]
+  },
+  {
+    "id": 4,
+    "name": "Beach & Relaxation",
+    "slug": "beach-relaxation",
+    "icon": "🏖️",
+    "description": "Unwind on pristine beaches, enjoy luxurious spa treatments, and embrace the laid-back coastal lifestyle.",
+    "shortDescription": "Relax and rejuvenate",
+    "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800",
+    "color": "#87CEEB",
+    "category": "Relax",
+    "highlights": [
+      "Private beach access",
+      "Spa treatments",
+      "Sunset views",
+      "Waterfront dining"
+    ],
+    "popularActivities": [
+      "Beach lounging",
+      "Spa sessions",
+      "Sunset cruises",
+      "Beach yoga"
+    ],
+    "tripIds": [2, 6]
+  },
+  {
+    "id": 5,
+    "name": "River Cruises",
+    "slug": "river-cruises",
+    "icon": "🚢",
+    "description": "Sail the legendary Nile River aboard luxury cruise ships, experiencing Egypt's timeless landscapes.",
+    "shortDescription": "Sail the ancient Nile",
+    "image": "https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=800",
+    "color": "#2E8B57",
+    "category": "Relax",
+    "highlights": [
+      "Luxury accommodations",
+      "All-inclusive dining",
+      "Temple visits",
+      "Sunset views"
+    ],
+    "popularActivities": [
+      "Nile cruising",
+      "Felucca sailing",
+      "Onboard entertainment",
+      "Temple excursions"
+    ],
+    "tripIds": [1, 3, 6]
+  },
+  {
+    "id": 6,
+    "name": "Desert Adventures",
+    "slug": "desert-adventures",
+    "icon": "🏜️",
+    "description": "Explore Egypt's magnificent deserts through 4x4 expeditions, camel treks, and overnight camping under stars.",
+    "shortDescription": "Conquer the sands",
+    "image": "https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=800",
+    "color": "#DEB887",
+    "category": "Adventure",
+    "highlights": [
+      "4x4 desert tours",
+      "Bedouin camps",
+      "Star gazing",
+      "Unique landscapes"
+    ],
+    "popularActivities": [
+      "Quad biking",
+      "Camel rides",
+      "Desert camping",
+      "Sandboarding"
+    ],
+    "tripIds": [4]
+  },
+  {
+    "id": 7,
+    "name": "Photography Tours",
+    "slug": "photography-tours",
+    "icon": "📷",
+    "description": "Capture Egypt's stunning beauty with specialized tours designed for photographers of all skill levels.",
+    "shortDescription": "Capture magical moments",
+    "image": "https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=800",
+    "color": "#4B0082",
+    "category": "Culture",
+    "highlights": [
+      "Golden hour access",
+      "Iconic viewpoints",
+      "Professional tips",
+      "Small groups"
+    ],
+    "popularActivities": [
+      "Sunrise shoots",
+      "Night photography",
+      "Portrait sessions",
+      "Landscape tours"
+    ],
+    "tripIds": [1, 3, 4]
+  },
+  {
+    "id": 8,
+    "name": "Culinary Experiences",
+    "slug": "culinary-experiences",
+    "icon": "🍽️",
+    "description": "Savor authentic Egyptian cuisine through food tours, cooking classes, and dining experiences.",
+    "shortDescription": "Taste Egyptian flavors",
+    "image": "https://images.unsplash.com/photo-1565967511849-76a60a516170?w=800",
+    "color": "#FF6347",
+    "category": "Culture",
+    "highlights": [
+      "Traditional recipes",
+      "Local markets",
+      "Expert chefs",
+      "Wine tastings"
+    ],
+    "popularActivities": [
+      "Street food tours",
+      "Cooking classes",
+      "Fine dining",
+      "Market visits"
+    ],
+    "tripIds": [1, 5, 6]
+  }
+]

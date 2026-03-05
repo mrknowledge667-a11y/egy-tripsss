@@ -1,0 +1,263 @@
+[
+  {
+    "id": 1,
+    "name": "Cairo",
+    "slug": "cairo",
+    "country": "Egypt",
+    "description": "The vibrant capital of Egypt, home to the iconic Pyramids of Giza, the Sphinx, and the world-renowned Egyptian Museum. A bustling metropolis where ancient history meets modern life.",
+    "shortDescription": "Egypt's capital - pyramids, museums, and bazaars",
+    "image": "https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=800",
+    "heroImage": "https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=1920",
+    "region": "Lower Egypt",
+    "climate": "Desert",
+    "bestTimeToVisit": "October to April",
+    "averageTemperature": "25°C",
+    "highlights": [
+      "Pyramids of Giza",
+      "Egyptian Museum",
+      "Khan el-Khalili Bazaar",
+      "Saladin Citadel",
+      "Al-Azhar Mosque"
+    ],
+    "activities": [
+      "Historical tours",
+      "Museum visits",
+      "Shopping",
+      "Food tours",
+      "Nile dinner cruises"
+    ],
+    "tripIds": [1, 4, 6]
+  },
+  {
+    "id": 2,
+    "name": "Luxor",
+    "slug": "luxor",
+    "country": "Egypt",
+    "description": "Known as the world's greatest open-air museum, Luxor houses some of Egypt's most spectacular ancient monuments including the Valley of the Kings and Karnak Temple.",
+    "shortDescription": "World's greatest open-air museum",
+    "image": "https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=800",
+    "heroImage": "https://images.unsplash.com/photo-1565967511849-76a60a516170?w=1920",
+    "region": "Upper Egypt",
+    "climate": "Desert",
+    "bestTimeToVisit": "October to April",
+    "averageTemperature": "28°C",
+    "highlights": [
+      "Valley of the Kings",
+      "Karnak Temple",
+      "Luxor Temple",
+      "Temple of Hatshepsut",
+      "Colossi of Memnon"
+    ],
+    "activities": [
+      "Temple tours",
+      "Hot air balloon rides",
+      "Nile cruises",
+      "Sound and light shows",
+      "Felucca sailing"
+    ],
+    "tripIds": [1, 3, 6]
+  },
+  {
+    "id": 3,
+    "name": "Aswan",
+    "slug": "aswan",
+    "country": "Egypt",
+    "description": "A serene city on the Nile, known for its beautiful scenery, Nubian culture, and access to the magnificent Abu Simbel temples. The gateway to ancient Nubia.",
+    "shortDescription": "Gateway to Nubia and Abu Simbel",
+    "image": "https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=800",
+    "heroImage": "https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=1920",
+    "region": "Upper Egypt",
+    "climate": "Desert",
+    "bestTimeToVisit": "October to April",
+    "averageTemperature": "30°C",
+    "highlights": [
+      "Philae Temple",
+      "Aswan High Dam",
+      "Unfinished Obelisk",
+      "Nubian Villages",
+      "Elephantine Island"
+    ],
+    "activities": [
+      "Temple visits",
+      "Felucca sailing",
+      "Nubian village tours",
+      "Camel riding",
+      "Sunset watching"
+    ],
+    "tripIds": [1, 3, 6]
+  },
+  {
+    "id": 4,
+    "name": "Hurghada",
+    "slug": "hurghada",
+    "country": "Egypt",
+    "description": "A beach resort town stretching along Egypt's Red Sea coast. Famous for scuba diving, vibrant coral reefs, and year-round sunshine.",
+    "shortDescription": "Red Sea diving and beach paradise",
+    "image": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800",
+    "heroImage": "https://images.unsplash.com/photo-1682687982501-1e58ab814714?w=1920",
+    "region": "Red Sea Coast",
+    "climate": "Coastal Desert",
+    "bestTimeToVisit": "Year-round",
+    "averageTemperature": "27°C",
+    "highlights": [
+      "Giftun Islands",
+      "Coral reefs",
+      "Desert safari",
+      "Marina Boulevard",
+      "Makadi Water World"
+    ],
+    "activities": [
+      "Scuba diving",
+      "Snorkeling",
+      "Glass-bottom boat",
+      "Quad biking",
+      "Kitesurfing"
+    ],
+    "tripIds": [2, 6]
+  },
+  {
+    "id": 5,
+    "name": "Sharm El Sheikh",
+    "slug": "sharm-el-sheikh",
+    "country": "Egypt",
+    "description": "A resort city between the desert of the Sinai Peninsula and the Red Sea, known for its sheltered beaches, clear waters, and coral reefs.",
+    "shortDescription": "Premier Red Sea resort destination",
+    "image": "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=800",
+    "heroImage": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1920",
+    "region": "Sinai Peninsula",
+    "climate": "Coastal Desert",
+    "bestTimeToVisit": "Year-round",
+    "averageTemperature": "26°C",
+    "highlights": [
+      "Naama Bay",
+      "Ras Mohammed National Park",
+      "Tiran Island",
+      "Old Market",
+      "Nabq Bay"
+    ],
+    "activities": [
+      "Diving",
+      "Snorkeling",
+      "Boat trips",
+      "Bedouin dinners",
+      "Mount Sinai trips"
+    ],
+    "tripIds": [2]
+  },
+  {
+    "id": 6,
+    "name": "Abu Simbel",
+    "slug": "abu-simbel",
+    "country": "Egypt",
+    "description": "Home to two massive rock-cut temples built by Pharaoh Ramesses II. A UNESCO World Heritage Site and one of Egypt's most awe-inspiring monuments.",
+    "shortDescription": "Ramesses II's magnificent rock temples",
+    "image": "https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=800",
+    "heroImage": "https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=1920",
+    "region": "Nubia",
+    "climate": "Desert",
+    "bestTimeToVisit": "October to February",
+    "averageTemperature": "32°C",
+    "highlights": [
+      "Great Temple of Ramesses II",
+      "Temple of Hathor",
+      "Sound and Light Show",
+      "Sun Festival",
+      "Lake Nasser views"
+    ],
+    "activities": [
+      "Temple tours",
+      "Photography",
+      "Sound and light show",
+      "Lake Nasser cruise",
+      "Sunrise viewing"
+    ],
+    "tripIds": [3, 6]
+  },
+  {
+    "id": 7,
+    "name": "Bahariya Oasis",
+    "slug": "bahariya-oasis",
+    "country": "Egypt",
+    "description": "A depression in the Western Desert known for its palm groves, hot springs, and as the gateway to the Black and White Deserts.",
+    "shortDescription": "Gateway to Egypt's desert wonders",
+    "image": "https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=800",
+    "heroImage": "https://images.unsplash.com/photo-1542401886-65d6c61db217?w=1920",
+    "region": "Western Desert",
+    "climate": "Desert",
+    "bestTimeToVisit": "October to April",
+    "averageTemperature": "28°C",
+    "highlights": [
+      "Golden Mummies Museum",
+      "Hot springs",
+      "Palm groves",
+      "English Mountain",
+      "Desert landscapes"
+    ],
+    "activities": [
+      "Desert camping",
+      "Hot spring bathing",
+      "4x4 tours",
+      "Stargazing",
+      "Fossil hunting"
+    ],
+    "tripIds": [4]
+  },
+  {
+    "id": 8,
+    "name": "White Desert",
+    "slug": "white-desert",
+    "country": "Egypt",
+    "description": "A surreal landscape of chalk rock formations carved by wind erosion into mushroom shapes and other otherworldly forms. A must-see natural wonder.",
+    "shortDescription": "Surreal chalk formations landscape",
+    "image": "https://images.unsplash.com/photo-1542401886-65d6c61db217?w=800",
+    "heroImage": "https://images.unsplash.com/photo-1542401886-65d6c61db217?w=1920",
+    "region": "Western Desert",
+    "climate": "Desert",
+    "bestTimeToVisit": "October to April",
+    "averageTemperature": "25°C",
+    "highlights": [
+      "Chalk formations",
+      "Crystal Mountain",
+      "Black Desert",
+      "Desert foxes",
+      "Starlit skies"
+    ],
+    "activities": [
+      "Camping",
+      "Photography",
+      "Hiking",
+      "Stargazing",
+      "Wildlife watching"
+    ],
+    "tripIds": [4]
+  },
+  {
+    "id": 9,
+    "name": "Alexandria",
+    "slug": "alexandria",
+    "country": "Egypt",
+    "description": "Egypt's second-largest city, founded by Alexander the Great. A Mediterranean gem with rich Greco-Roman heritage, beaches, and the famous Bibliotheca Alexandrina.",
+    "shortDescription": "Mediterranean pearl with ancient heritage",
+    "image": "https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=800",
+    "heroImage": "https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=1920",
+    "region": "Mediterranean Coast",
+    "climate": "Mediterranean",
+    "bestTimeToVisit": "March to November",
+    "averageTemperature": "22°C",
+    "highlights": [
+      "Bibliotheca Alexandrina",
+      "Citadel of Qaitbay",
+      "Catacombs of Kom el-Shoqafa",
+      "Montazah Palace",
+      "Corniche waterfront"
+    ],
+    "activities": [
+      "Museum visits",
+      "Historical tours",
+      "Beach time",
+      "Seafood dining",
+      "Waterfront walks"
+    ],
+    "tripIds": [5]
+  }
+]
