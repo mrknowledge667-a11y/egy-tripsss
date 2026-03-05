@@ -236,8 +236,9 @@ const WorldWindGlobe = () => {
         }
 
         // Reset highlights
-        if (layer && layer.renderables) {
-          layer.renderables.forEach(pm => {
+        const placemarkLayer = placemarkLayerRef.current;
+        if (placemarkLayer && placemarkLayer.renderables) {
+          placemarkLayer.renderables.forEach(pm => {
             if (pm.userProperties !== foundSite) {
               pm.highlighted = false;
             }
