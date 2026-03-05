@@ -1,0 +1,500 @@
+2026-03-06 03:00:08,535:DEBUG:certbot._internal.main:certbot version: 5.3.1
+2026-03-06 03:00:08,536:DEBUG:certbot._internal.main:Location of certbot entry point: /opt/certbot/bin/certbot
+2026-03-06 03:00:08,536:DEBUG:certbot._internal.main:Arguments: ['--config', '/etc/letsencrypt.ini', '--work-dir', '/tmp/letsencrypt-lib', '--logs-dir', '/data/logs', '--cert-name', 'npm-1', '--agree-tos', '--authenticator', 'webroot', '-m', 'quita@gmail.com', '--preferred-challenges', 'http', '--domains', 'egypttravelpro.com,www.egypttravelpro.com']
+2026-03-06 03:00:08,536:DEBUG:certbot._internal.main:Discovered plugins: PluginsRegistry(PluginEntryPoint#manual,PluginEntryPoint#null,PluginEntryPoint#standalone,PluginEntryPoint#webroot)
+2026-03-06 03:00:08,555:DEBUG:certbot._internal.log:Root logging level set at 30
+2026-03-06 03:00:08,557:DEBUG:certbot._internal.plugins.selection:Requested authenticator webroot and installer None
+2026-03-06 03:00:08,557:DEBUG:certbot._internal.plugins.selection:Single candidate plugin: * webroot
+Description: Saves the necessary validation files to a .well-known/acme-challenge/ directory within the nominated webroot path. A separate HTTP server must be running and serving files from the webroot path. HTTP challenge only (wildcards not supported).
+Interfaces: Authenticator, Plugin
+Entry point: EntryPoint(name='webroot', value='certbot._internal.plugins.webroot:Authenticator', group='certbot.plugins')
+Initialized: <certbot._internal.plugins.webroot.Authenticator object at 0x7feab74ee550>
+Prep: True
+2026-03-06 03:00:08,558:DEBUG:certbot._internal.plugins.selection:Selected authenticator <certbot._internal.plugins.webroot.Authenticator object at 0x7feab74ee550> and installer None
+2026-03-06 03:00:08,558:INFO:certbot._internal.plugins.selection:Plugins selected: Authenticator webroot, Installer None
+2026-03-06 03:00:08,664:DEBUG:acme.client:Sending GET request to https://acme-v02.api.letsencrypt.org/directory.
+2026-03-06 03:00:08,674:DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): acme-v02.api.letsencrypt.org:443
+2026-03-06 03:00:09,086:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "GET /directory HTTP/1.1" 200 1033
+2026-03-06 03:00:09,087:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Thu, 05 Mar 2026 17:00:09 GMT
+Content-Type: application/json
+Content-Length: 1033
+Connection: keep-alive
+Cache-Control: public, max-age=0, no-cache
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "bNNB3nQQecM": "https://community.letsencrypt.org/t/adding-random-entries-to-the-directory/33417",
+  "keyChange": "https://acme-v02.api.letsencrypt.org/acme/key-change",
+  "meta": {
+    "caaIdentities": [
+      "letsencrypt.org"
+    ],
+    "profiles": {
+      "classic": "https://letsencrypt.org/docs/profiles#classic",
+      "shortlived": "https://letsencrypt.org/docs/profiles#shortlived",
+      "tlsclient": "https://letsencrypt.org/docs/profiles#tlsclient",
+      "tlsserver": "https://letsencrypt.org/docs/profiles#tlsserver"
+    },
+    "termsOfService": "https://letsencrypt.org/documents/LE-SA-v1.6-August-18-2025.pdf",
+    "website": "https://letsencrypt.org"
+  },
+  "newAccount": "https://acme-v02.api.letsencrypt.org/acme/new-acct",
+  "newNonce": "https://acme-v02.api.letsencrypt.org/acme/new-nonce",
+  "newOrder": "https://acme-v02.api.letsencrypt.org/acme/new-order",
+  "renewalInfo": "https://acme-v02.api.letsencrypt.org/acme/renewal-info",
+  "revokeCert": "https://acme-v02.api.letsencrypt.org/acme/revoke-cert"
+}
+2026-03-06 03:00:09,087:DEBUG:acme.client:Requesting fresh nonce
+2026-03-06 03:00:09,088:DEBUG:acme.client:Sending HEAD request to https://acme-v02.api.letsencrypt.org/acme/new-nonce.
+2026-03-06 03:00:09,221:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "HEAD /acme/new-nonce HTTP/1.1" 200 0
+2026-03-06 03:00:09,222:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Thu, 05 Mar 2026 17:00:09 GMT
+Connection: keep-alive
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index"
+Replay-Nonce: E1g8ClBFeRpCDCSv-AHzptcRoeMNmloPdE3OP0dyfRaYX8tLcOo
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+
+2026-03-06 03:00:09,222:DEBUG:acme.client:Storing nonce: E1g8ClBFeRpCDCSv-AHzptcRoeMNmloPdE3OP0dyfRaYX8tLcOo
+2026-03-06 03:00:09,223:DEBUG:acme.client:JWS payload:
+b'{\n  "contact": [\n    "mailto:quita@gmail.com"\n  ],\n  "termsOfServiceAgreed": true\n}'
+2026-03-06 03:00:09,230:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/new-acct:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAiandrIjogeyJuIjogIm9WR1JyZHdma1loa19NUVEyVGc1Y0ZlWUhjX2ZhX20tS0RvcUtUYkI4ZV9jZ1NibEpDcmFoNWJIcmZFTTVMblZKM09mVEI4NGFBLWFLOHViclRJQ1FDVVJNd0RHdUx1VVhkbEREcFVQc0ZhUmZ3MUVxR0s5ZGI3TW9VRktSUW53cnhVQWU5UWJINkFsVTFBbFhUelpBbXZReWNqUmVodmNmUzlaOFZVYTZrb3FUZ2Y4NXBsT2c0dmpQWDRQeGRCNEZRWkx6YlV5amhFZlU1RTNPb0hJOFBmYTRldFNDVUlDMm42RC0zMFU5MWI4VkNjRFJSQS1XZTB0bWxwMGhGTDZ1X1QxWk8tTE4zNjZlVWdMVHVZSG9qTWdxSkFDT2JMMzZWUzMxZ1hTc055WnVHRFp2a2duV1diVWptV2U1aG1xZ3VDNHJGWUkzZ0JWTXNXclU0bjlFUSIsICJlIjogIkFRQUIiLCAia3R5IjogIlJTQSJ9LCAibm9uY2UiOiAiRTFnOENsQkZlUnBDRENTdi1BSHpwdGNSb2VNTm1sb1BkRTNPUDBkeWZSYVlYOHRMY09vIiwgInVybCI6ICJodHRwczovL2FjbWUtdjAyLmFwaS5sZXRzZW5jcnlwdC5vcmcvYWNtZS9uZXctYWNjdCJ9",
+  "signature": "Eao3REOdgQoVto2aDh0fW5_F70zej54WoHS3SKkgN7ctC91jsbsOn-mNFQswi_OjvOTXS-zmDpI6_u-8S3wCC7gl4xfQTaeSnNfpKVWowA7NcyFH8SXgT_-EX1YhmhRssXDOioRcjjLnaU98yfjTTlN5NWQCcjK0Jiha4fVIPc9VDt1gYiNCQbginTxbxdaX_zJWTQ7Fu6Dwa4B6OFScTYtieDGRFnE65UVKj2aD0gfvsw83itf76hyjMMhHr6sGusz6kSJD9C7i-WWRO_Ik81nDfQokwvXi42MBJ1-NHWupvcetLoQW-i_ub7kMB2xDx8dyurUxw7z6Sc7JvySxYg",
+  "payload": "ewogICJjb250YWN0IjogWwogICAgIm1haWx0bzpxdWl0YUBnbWFpbC5jb20iCiAgXSwKICAidGVybXNPZlNlcnZpY2VBZ3JlZWQiOiB0cnVlCn0"
+}
+2026-03-06 03:00:09,421:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/new-acct HTTP/1.1" 201 477
+2026-03-06 03:00:09,421:DEBUG:acme.client:Received response:
+HTTP 201
+Server: nginx
+Date: Thu, 05 Mar 2026 17:00:09 GMT
+Content-Type: application/json
+Content-Length: 477
+Connection: keep-alive
+Boulder-Requester: 3119491182
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index", <https://letsencrypt.org/documents/LE-SA-v1.6-August-18-2025.pdf>;rel="terms-of-service"
+Location: https://acme-v02.api.letsencrypt.org/acme/acct/3119491182
+Replay-Nonce: NR77tNYCOLEM93YNQfPj7I71rrZN7U9NIqjsGGKtSHadDF_YEUw
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "key": {
+    "kty": "RSA",
+    "n": "oVGRrdwfkYhk_MQQ2Tg5cFeYHc_fa_m-KDoqKTbB8e_cgSblJCrah5bHrfEM5LnVJ3OfTB84aA-aK8ubrTICQCURMwDGuLuUXdlDDpUPsFaRfw1EqGK9db7MoUFKRQnwrxUAe9QbH6AlU1AlXTzZAmvQycjRehvcfS9Z8VUa6koqTgf85plOg4vjPX4PxdB4FQZLzbUyjhEfU5E3OoHI8Pfa4etSCUIC2n6D-30U91b8VCcDRRA-We0tmlp0hFL6u_T1ZO-LN366eUgLTuYHojMgqJACObL36VS31gXSsNyZuGDZvkgnWWbUjmWe5hmqguC4rFYI3gBVMsWrU4n9EQ",
+    "e": "AQAB"
+  },
+  "createdAt": "2026-03-05T17:00:09.330553426Z",
+  "status": "valid"
+}
+2026-03-06 03:00:09,422:DEBUG:acme.client:Storing nonce: NR77tNYCOLEM93YNQfPj7I71rrZN7U9NIqjsGGKtSHadDF_YEUw
+2026-03-06 03:00:09,424:DEBUG:certbot._internal.display.obj:Notifying user: Account registered.
+2026-03-06 03:00:09,425:DEBUG:certbot._internal.main:Picked account: <Account(RegistrationResource(body=Registration(key=JWKRSA(key=<ComparableRSAKey(<cryptography.hazmat.bindings._rust.openssl.rsa.RSAPublicKey object at 0x7feab6393050>)>), contact=(), agreement=None, status='valid', terms_of_service_agreed=None, only_return_existing=None, external_account_binding=None), uri='https://acme-v02.api.letsencrypt.org/acme/acct/3119491182', new_authzr_uri=None, terms_of_service='https://letsencrypt.org/documents/LE-SA-v1.6-August-18-2025.pdf'), d99f10b579c39338ec8ff4ff7c5f2d1d, Meta(creation_dt=datetime.datetime(2026, 3, 5, 17, 0, 9, tzinfo=datetime.timezone.utc), creation_host='507d17f610b2', register_to_eff=None))>
+2026-03-06 03:00:09,426:DEBUG:certbot._internal.display.obj:Notifying user: Requesting a certificate for egypttravelpro.com and www.egypttravelpro.com
+2026-03-06 03:00:09,435:DEBUG:acme.client:JWS payload:
+b'{\n  "identifiers": [\n    {\n      "type": "dns",\n      "value": "egypttravelpro.com"\n    },\n    {\n      "type": "dns",\n      "value": "www.egypttravelpro.com"\n    }\n  ]\n}'
+2026-03-06 03:00:09,436:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/new-order:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAia2lkIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2FjY3QvMzExOTQ5MTE4MiIsICJub25jZSI6ICJOUjc3dE5ZQ09MRU05M1lOUWZQajdJNzFyclpON1U5TklxanNHR0t0U0hhZERGX1lFVXciLCAidXJsIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL25ldy1vcmRlciJ9",
+  "signature": "AzSVQqnRyiqDG_Z_aAcuG-UNjlD3Np-tOT0c8StmU_onFaihzvaW1wBD4cXQd9WkILbQOw49ebyqVswwI4Cnc005KDpRSf5bXVGseqf0iNFluoOkq6iX6Bp3wkP7rRstbH3_qjB9xVYiUdp8AJU0JbbBNo74WYhwjD_2E-ejo27_twKrf5Bk1ClCyOssFIJ1-r8VQYw2cDFFvQkkRJmCBhSJF7wTOa1J-n55ELfJElsph-MIoxvgfprHzwStSUfuGc_j1rMcDBwsqgRfcykMnNuBj6A3g-P93IWc8KXA1-GPgXrtzyvENMyIiIL-YWP0-rmCr6-0iEtUc1wxq2N-5w",
+  "payload": "ewogICJpZGVudGlmaWVycyI6IFsKICAgIHsKICAgICAgInR5cGUiOiAiZG5zIiwKICAgICAgInZhbHVlIjogImVneXB0dHJhdmVscHJvLmNvbSIKICAgIH0sCiAgICB7CiAgICAgICJ0eXBlIjogImRucyIsCiAgICAgICJ2YWx1ZSI6ICJ3d3cuZWd5cHR0cmF2ZWxwcm8uY29tIgogICAgfQogIF0KfQ"
+}
+2026-03-06 03:00:09,698:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/new-order HTTP/1.1" 201 505
+2026-03-06 03:00:09,700:DEBUG:acme.client:Received response:
+HTTP 201
+Server: nginx
+Date: Thu, 05 Mar 2026 17:00:09 GMT
+Content-Type: application/json
+Content-Length: 505
+Connection: keep-alive
+Boulder-Requester: 3119491182
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index"
+Location: https://acme-v02.api.letsencrypt.org/acme/order/3119491182/487350209802
+Replay-Nonce: NR77tNYCs9k-IKlSpWu-Ye4-3ghrOKtQAY9KpqZGmsZ1oiXAcg8
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "status": "pending",
+  "expires": "2026-03-12T17:00:09Z",
+  "identifiers": [
+    {
+      "type": "dns",
+      "value": "egypttravelpro.com"
+    },
+    {
+      "type": "dns",
+      "value": "www.egypttravelpro.com"
+    }
+  ],
+  "authorizations": [
+    "https://acme-v02.api.letsencrypt.org/acme/authz/3119491182/668575426472",
+    "https://acme-v02.api.letsencrypt.org/acme/authz/3119491182/668575426582"
+  ],
+  "finalize": "https://acme-v02.api.letsencrypt.org/acme/finalize/3119491182/487350209802"
+}
+2026-03-06 03:00:09,700:DEBUG:acme.client:Storing nonce: NR77tNYCs9k-IKlSpWu-Ye4-3ghrOKtQAY9KpqZGmsZ1oiXAcg8
+2026-03-06 03:00:09,700:DEBUG:acme.client:JWS payload:
+b''
+2026-03-06 03:00:09,701:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/authz/3119491182/668575426472:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAia2lkIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2FjY3QvMzExOTQ5MTE4MiIsICJub25jZSI6ICJOUjc3dE5ZQ3M5ay1JS2xTcFd1LVllNC0zZ2hyT0t0UUFZOUtwcVpHbXNaMW9pWEFjZzgiLCAidXJsIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2F1dGh6LzMxMTk0OTExODIvNjY4NTc1NDI2NDcyIn0",
+  "signature": "jU81zX5WjZUry5ntWVvzzHbb84oyrIX0Dpe6rXzZqe64K3-y3Le9nEWQfJJSFCmURtrZ56zw0IqljBqp2kE9H4esyBuc4e4111nfJmMAYA9uhKpqeBge2upDcA3vk_ekfSdgDH4PIN-j6DWg29jJ1vmxEDI6kjJyvk6ewbsq2HAQQJoq38KxUKh9fzTRLmrP0Nty6aNAXCkFWM5smBanxeA_bhn0Dk7ecVWyofXAMPbMW0ncjZGkzsFL_qjZNYG-tVj7k-c2dZw03_rnCwwALkNFiw6sw_Ossx4Dv2EZUDYPkq6GAm4-ubH-nxV6mGQO6fI8jf8muxV76sMTN5ntoQ",
+  "payload": ""
+}
+2026-03-06 03:00:09,841:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/authz/3119491182/668575426472 HTTP/1.1" 200 826
+2026-03-06 03:00:09,842:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Thu, 05 Mar 2026 17:00:09 GMT
+Content-Type: application/json
+Content-Length: 826
+Connection: keep-alive
+Boulder-Requester: 3119491182
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index"
+Replay-Nonce: NR77tNYCqX90ivzbkhqKIQYcJBC7dRgPBYszp3oE_EC1HAX4pQU
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "identifier": {
+    "type": "dns",
+    "value": "egypttravelpro.com"
+  },
+  "status": "pending",
+  "expires": "2026-03-12T17:00:09Z",
+  "challenges": [
+    {
+      "type": "http-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3119491182/668575426472/EZ65Vg",
+      "status": "pending",
+      "token": "YGzJ0A_o2HCGHY4cX2yvP-7mVD-CBpsdUO6Az3yOSBo"
+    },
+    {
+      "type": "dns-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3119491182/668575426472/9quRfQ",
+      "status": "pending",
+      "token": "YGzJ0A_o2HCGHY4cX2yvP-7mVD-CBpsdUO6Az3yOSBo"
+    },
+    {
+      "type": "tls-alpn-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3119491182/668575426472/DjWkQg",
+      "status": "pending",
+      "token": "YGzJ0A_o2HCGHY4cX2yvP-7mVD-CBpsdUO6Az3yOSBo"
+    }
+  ]
+}
+2026-03-06 03:00:09,842:DEBUG:acme.client:Storing nonce: NR77tNYCqX90ivzbkhqKIQYcJBC7dRgPBYszp3oE_EC1HAX4pQU
+2026-03-06 03:00:09,842:DEBUG:acme.challenges:tls-alpn-01 was not recognized, full message: {'type': 'tls-alpn-01', 'url': 'https://acme-v02.api.letsencrypt.org/acme/chall/3119491182/668575426472/DjWkQg', 'status': 'pending', 'token': 'YGzJ0A_o2HCGHY4cX2yvP-7mVD-CBpsdUO6Az3yOSBo'}
+2026-03-06 03:00:09,843:DEBUG:acme.client:JWS payload:
+b''
+2026-03-06 03:00:09,844:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/authz/3119491182/668575426582:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAia2lkIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2FjY3QvMzExOTQ5MTE4MiIsICJub25jZSI6ICJOUjc3dE5ZQ3FYOTBpdnpia2hxS0lRWWNKQkM3ZFJnUEJZc3pwM29FX0VDMUhBWDRwUVUiLCAidXJsIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2F1dGh6LzMxMTk0OTExODIvNjY4NTc1NDI2NTgyIn0",
+  "signature": "Rit0SRJw7UYwcRqEGRqU2xYjIQ6Yi7hXxmHJf5Len8ITyOLFt6L_FeeLKU5umaxWGH1oIbSESeT5QZTRog5HTpkpUbum0z6AqSP2M_4nqLjZZmtPFx4gu576ag0sYGEXlz8v1r6hu2cKUQkNoAu3EyNHdXtEaccS3Z7pizVLsWQpnD2J_e5zfq_FYonIgcrvdO8ZfD3ZSG-BnOCfVEsTcdC_Btrj3sKXffizDu1QR5T5qZa5eNsWFYabDA9rdvUJIm-Gj5fc33iru42orpMb_qR7RO86vthgNjZmAcY2R7m1CeaQ69ZDtrBvcJtQ4A_Q_9Sy1Hls_Do4T0u2r4WBXw",
+  "payload": ""
+}
+2026-03-06 03:00:09,980:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/authz/3119491182/668575426582 HTTP/1.1" 200 830
+2026-03-06 03:00:09,981:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Thu, 05 Mar 2026 17:00:09 GMT
+Content-Type: application/json
+Content-Length: 830
+Connection: keep-alive
+Boulder-Requester: 3119491182
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index"
+Replay-Nonce: E1g8ClBFWEpH8LtczrNUdUV0xAN4tKXvOp3dim4lT0ke0ZHLH2k
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "identifier": {
+    "type": "dns",
+    "value": "www.egypttravelpro.com"
+  },
+  "status": "pending",
+  "expires": "2026-03-12T17:00:09Z",
+  "challenges": [
+    {
+      "type": "http-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3119491182/668575426582/WFDzvA",
+      "status": "pending",
+      "token": "-447iXiX7NlKsTqjbF8_jlq0ncTnyPz7gQCXAyEDsfM"
+    },
+    {
+      "type": "tls-alpn-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3119491182/668575426582/2jh7KA",
+      "status": "pending",
+      "token": "-447iXiX7NlKsTqjbF8_jlq0ncTnyPz7gQCXAyEDsfM"
+    },
+    {
+      "type": "dns-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3119491182/668575426582/jRvbpA",
+      "status": "pending",
+      "token": "-447iXiX7NlKsTqjbF8_jlq0ncTnyPz7gQCXAyEDsfM"
+    }
+  ]
+}
+2026-03-06 03:00:09,981:DEBUG:acme.client:Storing nonce: E1g8ClBFWEpH8LtczrNUdUV0xAN4tKXvOp3dim4lT0ke0ZHLH2k
+2026-03-06 03:00:09,982:DEBUG:acme.challenges:tls-alpn-01 was not recognized, full message: {'type': 'tls-alpn-01', 'url': 'https://acme-v02.api.letsencrypt.org/acme/chall/3119491182/668575426582/2jh7KA', 'status': 'pending', 'token': '-447iXiX7NlKsTqjbF8_jlq0ncTnyPz7gQCXAyEDsfM'}
+2026-03-06 03:00:09,982:INFO:certbot._internal.auth_handler:Performing the following challenges:
+2026-03-06 03:00:09,982:INFO:certbot._internal.auth_handler:http-01 challenge for Identifier(typ=IdentifierType(dns), value='egypttravelpro.com')
+2026-03-06 03:00:09,982:INFO:certbot._internal.auth_handler:http-01 challenge for Identifier(typ=IdentifierType(dns), value='www.egypttravelpro.com')
+2026-03-06 03:00:09,982:INFO:certbot._internal.plugins.webroot:Using the webroot path /data/letsencrypt-acme-challenge for all unmatched domains.
+2026-03-06 03:00:09,983:DEBUG:certbot._internal.plugins.webroot:Creating root challenges validation dir at /data/letsencrypt-acme-challenge/.well-known/acme-challenge
+2026-03-06 03:00:09,984:DEBUG:certbot._internal.plugins.webroot:Creating root challenges validation dir at /data/letsencrypt-acme-challenge/.well-known/acme-challenge
+2026-03-06 03:00:09,985:DEBUG:certbot._internal.plugins.webroot:Attempting to save validation to /data/letsencrypt-acme-challenge/.well-known/acme-challenge/YGzJ0A_o2HCGHY4cX2yvP-7mVD-CBpsdUO6Az3yOSBo
+2026-03-06 03:00:09,986:DEBUG:certbot._internal.plugins.webroot:Attempting to save validation to /data/letsencrypt-acme-challenge/.well-known/acme-challenge/-447iXiX7NlKsTqjbF8_jlq0ncTnyPz7gQCXAyEDsfM
+2026-03-06 03:00:09,987:DEBUG:acme.client:JWS payload:
+b'{}'
+2026-03-06 03:00:09,987:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/chall/3119491182/668575426472/EZ65Vg:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAia2lkIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2FjY3QvMzExOTQ5MTE4MiIsICJub25jZSI6ICJFMWc4Q2xCRldFcEg4THRjenJOVWRVVjB4QU40dEtYdk9wM2RpbTRsVDBrZTBaSExIMmsiLCAidXJsIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2NoYWxsLzMxMTk0OTExODIvNjY4NTc1NDI2NDcyL0VaNjVWZyJ9",
+  "signature": "IQfBEVgm_rgmYDurem2kbFbIgARj6Bsn_iWPouHQ9ZQXl4jEO85lPL1_7Cq3uyR5KedF7YOu9g1EO1GJSdpmL0zQeCplf1ByNbV56G9_k7mmwcmrzaH-gmbz4YckdAUvcOhWEPQ26GkfGJOzOxQ6gOQk8j1xywn2FCRnoz2u4dlf1X3umiR_O7vIAu1A3ZG-_Iy7yAy8j1ORpTmTpqNloEp1G6iLRcs2IpWjC_WYb9wOS_zkotUFuRyURK49kzrgIAnh21N8-Vjdtf9dkubE5bwsBH1UQhxgKk-eCrFFrgSopnancvErbswEd5sMGedAfgJUykqJ6HiaLTxVBAzVRQ",
+  "payload": "e30"
+}
+2026-03-06 03:00:10,145:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/chall/3119491182/668575426472/EZ65Vg HTTP/1.1" 200 195
+2026-03-06 03:00:10,147:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Thu, 05 Mar 2026 17:00:10 GMT
+Content-Type: application/json
+Content-Length: 195
+Connection: keep-alive
+Boulder-Requester: 3119491182
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index", <https://acme-v02.api.letsencrypt.org/acme/authz/3119491182/668575426472>;rel="up"
+Location: https://acme-v02.api.letsencrypt.org/acme/chall/3119491182/668575426472/EZ65Vg
+Replay-Nonce: E1g8ClBFyRo-kbIEBNMizbpFTrkmMVGRKOj53V3C4bRtrcOjTto
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "type": "http-01",
+  "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3119491182/668575426472/EZ65Vg",
+  "status": "pending",
+  "token": "YGzJ0A_o2HCGHY4cX2yvP-7mVD-CBpsdUO6Az3yOSBo"
+}
+2026-03-06 03:00:10,147:DEBUG:acme.client:Storing nonce: E1g8ClBFyRo-kbIEBNMizbpFTrkmMVGRKOj53V3C4bRtrcOjTto
+2026-03-06 03:00:10,148:DEBUG:acme.client:JWS payload:
+b'{}'
+2026-03-06 03:00:10,149:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/chall/3119491182/668575426582/WFDzvA:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAia2lkIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2FjY3QvMzExOTQ5MTE4MiIsICJub25jZSI6ICJFMWc4Q2xCRnlSby1rYklFQk5NaXpicEZUcmttTVZHUktPajUzVjNDNGJSdHJjT2pUdG8iLCAidXJsIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2NoYWxsLzMxMTk0OTExODIvNjY4NTc1NDI2NTgyL1dGRHp2QSJ9",
+  "signature": "ImJ-Mn57LmA-m-fEYdiEM5ai12HWQ152hUwkledEFNqKZPuVd6RD5UNqa7338vRIUrC5rHlC8cnsbjCUMCWUsC375mRDqhcl37w3bQr48mRMe5XN064Nv6LidkVxjLkIOd4Vugytau0-MHmqAvU07Eo6_kriNx0VHxKBHaRlOUhMiCX9FPhglTRDC01nxNCm2HrJh9SuHh2PnwRza5rnNMQOXekC3ky9CdMY0_PoqxRPo8wD7qgQCqBDM9dWfQpcU7uuliu4Cu4xc3U1Wpei4tglAjrRO32V8Uz8Jx1OE-uvukuKtysRNL1373n-ENsA1VSJ90hur0cJJHOu8XY8tA",
+  "payload": "e30"
+}
+2026-03-06 03:00:10,291:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/chall/3119491182/668575426582/WFDzvA HTTP/1.1" 200 195
+2026-03-06 03:00:10,292:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Thu, 05 Mar 2026 17:00:10 GMT
+Content-Type: application/json
+Content-Length: 195
+Connection: keep-alive
+Boulder-Requester: 3119491182
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index", <https://acme-v02.api.letsencrypt.org/acme/authz/3119491182/668575426582>;rel="up"
+Location: https://acme-v02.api.letsencrypt.org/acme/chall/3119491182/668575426582/WFDzvA
+Replay-Nonce: NR77tNYC2CW9hQOAVEsDOXJxm5e7PKZaq0ZnBQ9t2x7SajuSAPk
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "type": "http-01",
+  "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3119491182/668575426582/WFDzvA",
+  "status": "pending",
+  "token": "-447iXiX7NlKsTqjbF8_jlq0ncTnyPz7gQCXAyEDsfM"
+}
+2026-03-06 03:00:10,293:DEBUG:acme.client:Storing nonce: NR77tNYC2CW9hQOAVEsDOXJxm5e7PKZaq0ZnBQ9t2x7SajuSAPk
+2026-03-06 03:00:10,293:INFO:certbot._internal.auth_handler:Waiting for verification...
+2026-03-06 03:00:11,294:DEBUG:acme.client:JWS payload:
+b''
+2026-03-06 03:00:11,295:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/authz/3119491182/668575426472:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAia2lkIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2FjY3QvMzExOTQ5MTE4MiIsICJub25jZSI6ICJOUjc3dE5ZQzJDVzloUU9BVkVzRE9YSnhtNWU3UEtaYXEwWm5CUTl0Mng3U2FqdVNBUGsiLCAidXJsIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2F1dGh6LzMxMTk0OTExODIvNjY4NTc1NDI2NDcyIn0",
+  "signature": "N_5YHffSxzc1iQ-G6DX5AOtrAim0JS_AB540OdYvqCYXBAdiJNhj92uveO2VIjUGQBEC4Y8kHeC7rMSyQ7g2MgxdqBH9qdWnUUtr1TJQcgGgAOB3tdvb-xNtmgBfnQ6p6Vg1rTFOdDoUjm9ZGDNEYrGRvASfEe28yrg_brgkovpbqz11_um6Fjyi4PQsZ5qFGPPNohuZiZPSfOATmvycd-ACh0-Vsb3l-1fCQHcnMZTfdi25SLDlXzualUGTFHZTOxpU3ScYzr9ff3YIK-1gaSOdrCwm_YIGLjyhy-4RA287UL0csx4OebvWxAupkUzr9gGNxiJe33ohvZRfi4Un3Q",
+  "payload": ""
+}
+2026-03-06 03:00:12,052:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/authz/3119491182/668575426472 HTTP/1.1" 200 1132
+2026-03-06 03:00:12,053:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Thu, 05 Mar 2026 17:00:11 GMT
+Content-Type: application/json
+Content-Length: 1132
+Connection: keep-alive
+Boulder-Requester: 3119491182
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index"
+Replay-Nonce: E1g8ClBFWqZykPAqTxfw7oH2aUZmuyMHPKSShuMJ4UJVDhOz-Wk
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "identifier": {
+    "type": "dns",
+    "value": "egypttravelpro.com"
+  },
+  "status": "invalid",
+  "expires": "2026-03-12T17:00:09Z",
+  "challenges": [
+    {
+      "type": "http-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3119491182/668575426472/EZ65Vg",
+      "status": "invalid",
+      "validated": "2026-03-05T17:00:10Z",
+      "error": {
+        "type": "urn:ietf:params:acme:error:unauthorized",
+        "detail": "2a02:4780:3f:1787:0:120a:85e4:4: Invalid response from http://egypttravelpro.com/.well-known/acme-challenge/YGzJ0A_o2HCGHY4cX2yvP-7mVD-CBpsdUO6Az3yOSBo: 404",
+        "status": 403
+      },
+      "token": "YGzJ0A_o2HCGHY4cX2yvP-7mVD-CBpsdUO6Az3yOSBo",
+      "validationRecord": [
+        {
+          "url": "http://egypttravelpro.com/.well-known/acme-challenge/YGzJ0A_o2HCGHY4cX2yvP-7mVD-CBpsdUO6Az3yOSBo",
+          "hostname": "egypttravelpro.com",
+          "port": "80",
+          "addressesResolved": [
+            "2a02:4780:3f:1787:0:120a:85e4:4",
+            "187.124.32.142"
+          ],
+          "addressUsed": "2a02:4780:3f:1787:0:120a:85e4:4"
+        }
+      ]
+    }
+  ]
+}
+2026-03-06 03:00:12,053:DEBUG:acme.client:Storing nonce: E1g8ClBFWqZykPAqTxfw7oH2aUZmuyMHPKSShuMJ4UJVDhOz-Wk
+2026-03-06 03:00:12,054:DEBUG:acme.client:JWS payload:
+b''
+2026-03-06 03:00:12,055:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/authz/3119491182/668575426582:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAia2lkIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2FjY3QvMzExOTQ5MTE4MiIsICJub25jZSI6ICJFMWc4Q2xCRldxWnlrUEFxVHhmdzdvSDJhVVptdXlNSFBLU1NodU1KNFVKVkRoT3otV2siLCAidXJsIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2F1dGh6LzMxMTk0OTExODIvNjY4NTc1NDI2NTgyIn0",
+  "signature": "MhrdABomc1TBwkddi87nomR9TQPjsjVeGFzoN526aLmdw77MP3i_Lu6PhnabYAZF3r9Cmccweatf7vq68bypZAUhNWlLhjnN6uc0VaEOkQ-wJRgZEYK5EyQnqVG_Hx4B_q1Zh4z2UX-g74nWppygav4jXr1FSve9pNJumk9yXAmxK0BOzzAA7EScR5SwCLvSWG8nugUE4KaJuT2WN0wLf38UrAmeegVoviyzrm-oyuf49cfcWhtyBX1poLfpuN6qrkCfEblb50WZu2MtfNzZgdep6__EZK_WGKUxGkl2IbTRyb-rsOcg-Uz3EJ3jhGa_zxycw4RQ_pPgblVecVjMtA",
+  "payload": ""
+}
+2026-03-06 03:00:12,192:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/authz/3119491182/668575426582 HTTP/1.1" 200 1067
+2026-03-06 03:00:12,194:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Thu, 05 Mar 2026 17:00:12 GMT
+Content-Type: application/json
+Content-Length: 1067
+Connection: keep-alive
+Boulder-Requester: 3119491182
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index"
+Replay-Nonce: E1g8ClBF3Dew-6elOBcN4rSC0NFrk351GafBZhIpeTBHaWTiD9g
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "identifier": {
+    "type": "dns",
+    "value": "www.egypttravelpro.com"
+  },
+  "status": "invalid",
+  "expires": "2026-03-12T17:00:09Z",
+  "challenges": [
+    {
+      "type": "http-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3119491182/668575426582/WFDzvA",
+      "status": "invalid",
+      "validated": "2026-03-05T17:00:10Z",
+      "error": {
+        "type": "urn:ietf:params:acme:error:unauthorized",
+        "detail": "187.124.32.142: Invalid response from http://www.egypttravelpro.com/.well-known/acme-challenge/-447iXiX7NlKsTqjbF8_jlq0ncTnyPz7gQCXAyEDsfM: 404",
+        "status": 403
+      },
+      "token": "-447iXiX7NlKsTqjbF8_jlq0ncTnyPz7gQCXAyEDsfM",
+      "validationRecord": [
+        {
+          "url": "http://www.egypttravelpro.com/.well-known/acme-challenge/-447iXiX7NlKsTqjbF8_jlq0ncTnyPz7gQCXAyEDsfM",
+          "hostname": "www.egypttravelpro.com",
+          "port": "80",
+          "addressesResolved": [
+            "187.124.32.142"
+          ],
+          "addressUsed": "187.124.32.142"
+        }
+      ]
+    }
+  ]
+}
+2026-03-06 03:00:12,194:DEBUG:acme.client:Storing nonce: E1g8ClBF3Dew-6elOBcN4rSC0NFrk351GafBZhIpeTBHaWTiD9g
+2026-03-06 03:00:12,194:INFO:certbot._internal.auth_handler:Challenge failed for domain egypttravelpro.com
+2026-03-06 03:00:12,195:INFO:certbot._internal.auth_handler:Challenge failed for domain www.egypttravelpro.com
+2026-03-06 03:00:12,195:INFO:certbot._internal.auth_handler:http-01 challenge for Identifier(typ=IdentifierType(dns), value='egypttravelpro.com')
+2026-03-06 03:00:12,195:INFO:certbot._internal.auth_handler:http-01 challenge for Identifier(typ=IdentifierType(dns), value='www.egypttravelpro.com')
+2026-03-06 03:00:12,195:DEBUG:certbot._internal.display.obj:Notifying user: 
+Certbot failed to authenticate some domains (authenticator: webroot). The Certificate Authority reported these problems:
+  Identifier: egypttravelpro.com
+  Type:   unauthorized
+  Detail: 2a02:4780:3f:1787:0:120a:85e4:4: Invalid response from http://egypttravelpro.com/.well-known/acme-challenge/YGzJ0A_o2HCGHY4cX2yvP-7mVD-CBpsdUO6Az3yOSBo: 404
+
+  Identifier: www.egypttravelpro.com
+  Type:   unauthorized
+  Detail: 187.124.32.142: Invalid response from http://www.egypttravelpro.com/.well-known/acme-challenge/-447iXiX7NlKsTqjbF8_jlq0ncTnyPz7gQCXAyEDsfM: 404
+
+Hint: The Certificate Authority failed to download the temporary challenge files created by Certbot. Ensure that the listed domains serve their content from the provided --webroot-path/-w and that files created there can be downloaded from the internet.
+
+2026-03-06 03:00:12,197:DEBUG:certbot._internal.error_handler:Encountered exception:
+Traceback (most recent call last):
+  File "/opt/certbot/lib/python3.11/site-packages/certbot/_internal/auth_handler.py", line 104, in handle_authorizations
+    self._poll_authorizations(authzrs, max_retries, max_time_mins, best_effort)
+  File "/opt/certbot/lib/python3.11/site-packages/certbot/_internal/auth_handler.py", line 208, in _poll_authorizations
+    raise errors.AuthorizationError('Some challenges have failed.')
+certbot.errors.AuthorizationError: Some challenges have failed.
+
+2026-03-06 03:00:12,197:DEBUG:certbot._internal.error_handler:Calling registered functions
+2026-03-06 03:00:12,197:INFO:certbot._internal.auth_handler:Cleaning up challenges
+2026-03-06 03:00:12,198:DEBUG:certbot._internal.plugins.webroot:Removing /data/letsencrypt-acme-challenge/.well-known/acme-challenge/YGzJ0A_o2HCGHY4cX2yvP-7mVD-CBpsdUO6Az3yOSBo
+2026-03-06 03:00:12,198:DEBUG:certbot._internal.plugins.webroot:Removing /data/letsencrypt-acme-challenge/.well-known/acme-challenge/-447iXiX7NlKsTqjbF8_jlq0ncTnyPz7gQCXAyEDsfM
+2026-03-06 03:00:12,198:DEBUG:certbot._internal.plugins.webroot:All challenges cleaned up
+2026-03-06 03:00:12,199:DEBUG:certbot._internal.log:Exiting abnormally:
+Traceback (most recent call last):
+  File "/opt/certbot/bin/certbot", line 6, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/opt/certbot/lib/python3.11/site-packages/certbot/main.py", line 18, in main
+    return internal_main.main(cli_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/certbot/lib/python3.11/site-packages/certbot/_internal/main.py", line 1886, in main
+    return config.func(config, plugins)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/certbot/lib/python3.11/site-packages/certbot/_internal/main.py", line 1598, in certonly
+    lineage = _get_and_save_cert(le_client, config, sans, certname, lineage)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/certbot/lib/python3.11/site-packages/certbot/_internal/main.py", line 143, in _get_and_save_cert
+    lineage = le_client.obtain_and_enroll_certificate(sans, certname)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/certbot/lib/python3.11/site-packages/certbot/_internal/client.py", line 533, in obtain_and_enroll_certificate
+    cert, chain, key, _ = self.obtain_certificate(sans)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/certbot/lib/python3.11/site-packages/certbot/_internal/client.py", line 434, in obtain_certificate
+    orderr = self._get_order_and_authorizations(csr.data, self.config.allow_subset_of_names)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/certbot/lib/python3.11/site-packages/certbot/_internal/client.py", line 512, in _get_order_and_authorizations
+    authzr = self.auth_handler.handle_authorizations(orderr, self.config, best_effort)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/certbot/lib/python3.11/site-packages/certbot/_internal/auth_handler.py", line 104, in handle_authorizations
+    self._poll_authorizations(authzrs, max_retries, max_time_mins, best_effort)
+  File "/opt/certbot/lib/python3.11/site-packages/certbot/_internal/auth_handler.py", line 208, in _poll_authorizations
+    raise errors.AuthorizationError('Some challenges have failed.')
+certbot.errors.AuthorizationError: Some challenges have failed.
+2026-03-06 03:00:12,205:ERROR:certbot._internal.log:Some challenges have failed.

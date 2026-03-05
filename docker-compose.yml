@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  # Client Application
+  client:
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+    container_name: egy-trips-client
+    restart: unless-stopped
+    ports:
+      - "5421:80"  # Expose client on port 5421
+    networks:
+      - egy-trips-network
+    depends_on:
+      - api
+    environment:
+      - VITE_API_URL=http://api:3001
+
+  # API Server
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: egy-trips-api
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    networks:
+      - egy-trips-network
+    env_file:
+      - .env.production
+    environment:
+      - NODE_ENV=production
+      - SERVER_PORT=3001
+      - CLIENT_URL=http://localhost
+    volumes:
+      - ./server:/app/server:ro
+
+  # Nginx Proxy Manager - provided configuration
+  app:
+    image: 'jc21/nginx-proxy-manager:latest'
+    restart: unless-stopped
+    container_name: egy-trips-nginx-proxy
+    ports:
+      # These ports are in format <host-port>:<container-port>
+      # Note: If port 80 is already in use, change to 8080:80
+      - '8080:80' # Public HTTP Port (change from 8080 if needed)
+      - '8443:443' # Public HTTPS Port (change from 8443 if needed)
+      - '81:81' # Admin Web Port
+      # Add any other Stream port you want to expose
+      # - '21:21' # FTP
+    environment:
+      TZ: "Australia/Brisbane"
+      # Uncomment this if you want to change the location of
+      # the SQLite DB file within the container
+      # DB_SQLITE_FILE: "/data/database.sqlite"
+      # Uncomment this if IPv6 is not enabled on your host
+      # DISABLE_IPV6: 'true'
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
+    networks:
+      - egy-trips-network
+
+networks:
+  egy-trips-network:
+    driver: bridge
+
+volumes:
+  nginx-data:
+    driver: local
+  nginx-letsencrypt:
+    driver: local
