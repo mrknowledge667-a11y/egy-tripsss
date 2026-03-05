@@ -44,9 +44,9 @@ services:
     container_name: egy-trips-nginx-proxy
     ports:
       # These ports are in format <host-port>:<container-port>
-      # Note: If port 80 is already in use, change to 8080:80
-      - '8080:80' # Public HTTP Port (change from 8080 if needed)
-      - '8443:443' # Public HTTPS Port (change from 8443 if needed)
+      # Note: Using standard ports 80 and 443 for web traffic
+      - '80:80' # Public HTTP Port
+      - '443:443' # Public HTTPS Port
       - '81:81' # Admin Web Port
       # Add any other Stream port you want to expose
       # - '21:21' # FTP
