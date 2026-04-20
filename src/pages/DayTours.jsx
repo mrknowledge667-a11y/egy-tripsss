@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { supabase } from '../lib/supabase'
 import { submitDualBooking, getWhatsAppMessage } from '../lib/bookingUtils'
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001'
+const API_URL = import.meta.env.VITE_API_URL || (typeof window !== 'undefined' && window.location.hostname === 'localhost' ? 'http://localhost:3001' : '')
 
 const tours = [
   {
