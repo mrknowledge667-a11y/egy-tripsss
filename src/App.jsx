@@ -1,4 +1,4 @@
-import { Routes, Route, useLocation } from 'react-router-dom'
+import { Routes, Route, useLocation, Navigate } from 'react-router-dom'
 import { useEffect } from 'react'
 import { AnimatePresence } from 'framer-motion'
 import { Navbar, Footer, FloatingButtons, EgyptChatbot } from './components'
@@ -32,6 +32,7 @@ function App() {
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<AdminDashboard />} />
+          <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="packages" element={<AdminPackages />} />
           <Route path="trips" element={<AdminTrips />} />
           <Route path="destinations" element={<AdminDestinations />} />
@@ -40,6 +41,7 @@ function App() {
           <Route path="contacts" element={<AdminContacts />} />
           <Route path="bookings" element={<AdminBookings />} />
           <Route path="cleanup" element={<AdminDataCleanup />} />
+          <Route path="*" element={<Navigate to="/admin" replace />} />
         </Route>
       </Routes>
     )
