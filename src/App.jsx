@@ -18,7 +18,8 @@ import { AdminLogin, AdminLayout, AdminDashboard, AdminTrips, AdminPackages, Adm
  */
 function App() {
   const location = useLocation()
-  const isAdminRoute = location.pathname.startsWith('/admin')
+  const normalizedPath = (location.pathname || '').toLowerCase()
+  const isAdminRoute = normalizedPath === '/admin' || normalizedPath.startsWith('/admin/')
 
   // Scroll to top on route change
   useEffect(() => {
@@ -85,6 +86,9 @@ function App() {
           {/* Authentication Pages */}
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signin" element={<SignIn />} />
+
+          {/* Safety net: if admin routing branch does not catch for any reason, never show public 404 for admin URLs */}
+          <Route path="/admin/*" element={<Navigate to="/admin/login" replace />} />
           
           {/* New Section Pages */}
           <Route path="/egypt-packages" element={<EgyptPackages />} />
