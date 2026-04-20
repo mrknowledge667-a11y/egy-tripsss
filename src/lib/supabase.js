@@ -42,6 +42,13 @@ if (envSupabaseUrl && envSupabaseAnonKey) {
   const keyRef = payload?.ref || ''
   const urlRef = getProjectRefFromUrl(envSupabaseUrl)
 
+  // If key cannot be parsed as a Supabase JWT, treat env value as malformed.
+  if (!keyRef) {
+    console.warn('Supabase anon key in env appears malformed. Falling back to default project config.')
+    supabaseUrl = DEFAULT_SUPABASE_URL
+    supabaseAnonKey = DEFAULT_SUPABASE_ANON_KEY
+  }
+
   // If URL/key point to different projects, use known-good defaults.
   if (keyRef && urlRef && keyRef !== urlRef) {
     console.warn('Supabase env mismatch detected (URL project != anon key project). Falling back to default project config.')
