@@ -239,7 +239,7 @@ const Home = () => {
 
       const data = await parseResponseJsonSafe(res)
       if (!res.ok) {
-        throw new Error(data.error || `Failed to create PayPal session (HTTP ${res.status})`)
+        throw new Error(data.message || data.error || `Failed to create PayPal session (HTTP ${res.status})`)
       }
       if (data.approveUrl) {
         window.location.href = data.approveUrl
@@ -278,7 +278,7 @@ const Home = () => {
 
       const data = await parseResponseJsonSafe(res)
       if (!res.ok) {
-        throw new Error(data.error || `Failed to create PayPal session (HTTP ${res.status})`)
+        throw new Error(data.message || data.error || `Failed to create PayPal session (HTTP ${res.status})`)
       }
       if (data.approveUrl) {
         window.location.href = data.approveUrl

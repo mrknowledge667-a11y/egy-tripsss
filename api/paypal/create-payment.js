@@ -112,25 +112,29 @@ export default async function handler(req, res) {
       throw new Error('PayPal approve URL was not returned by PayPal')
     }
 
-    try {
-      await supabase.from('payments').insert({
-        paypal_order_id: order.id,
-        amount_usd: Number(amount),
-        currency: 'usd',
-        status: 'pending',
-        customer_email: customerEmail || null,
-        car_name: carName,
-        car_id: carId || null,
-        route_from: routeFrom,
-        route_to: routeTo,
-        distance_km: Number(distance) || 0,
-        transfer_date: transferDate || null,
-        transfer_time: transferTime || null,
-        passengers: passengers || 1,
-        payment_provider: 'paypal',
-      })
-    } catch (dbErr) {
-      console.error('⚠️ PayPal DB insert failed:', dbErr.message)
+    if (supabase) {
+      try {
+        await supabase.from('payments').insert({
+          paypal_order_id: order.id,
+          amount_usd: Number(amount),
+          currency: 'usd',
+          status: 'pending',
+          customer_email: customerEmail || null,
+          car_name: carName,
+          car_id: carId || null,
+          route_from: routeFrom,
+          route_to: routeTo,
+          distance_km: Number(distance) || 0,
+          transfer_date: transferDate || null,
+          transfer_time: transferTime || null,
+          passengers: passengers || 1,
+          payment_provider: 'paypal',
+        })
+      } catch (dbErr) {
+        console.error('⚠️ PayPal DB insert failed:', dbErr.message)
+      }
+    } else {
+      console.warn('⚠️ Supabase env vars missing on Vercel function; skipping payment record insert')
     }
 
     return res.json({
@@ -141,6 +145,10 @@ export default async function handler(req, res) {
     })
   } catch (err) {
     console.error('❌ PayPal create-payment error:', err)
-    return res.status(500).json({ error: 'Failed to create PayPal payment', message: err.message })
+    return res.status(500).json({
+      error: err?.message || 'Failed to create PayPal payment',
+      message: err?.message || 'Unknown PayPal error',
+      paypalMode: PAYPAL_MODE,
+    })
   }
 }
