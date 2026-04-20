@@ -16,6 +16,10 @@ export default function AdminLogin() {
   const getFriendlyError = (err) => {
     const message = err?.message || ''
 
+    if (/invalid api key|invalid apikey|apikey/i.test(message)) {
+      return 'Supabase API key is invalid. In Vercel, verify VITE_SUPABASE_ANON_KEY is the full anon public key (no quotes/spaces), then redeploy.'
+    }
+
     if (/failed to fetch|networkerror/i.test(message)) {
       return 'Cannot reach Supabase Auth. Check VITE_SUPABASE_URL in .env and make sure the Supabase project URL is valid and reachable.'
     }
