@@ -63,8 +63,11 @@ const Navbar = () => {
     }
   }, [])
 
+  // Toggle this to show/hide Transfers in navbar without removing code
+  const SHOW_TRANSFERS_NAV_LINK = false
+
   // Toggle this to show/hide Blog in navbar without removing code
-  const SHOW_BLOG_NAV_LINK = false
+  const SHOW_BLOG_NAV_LINK = true
 
   // Navigation links configuration - will use translations
   const navLinks = [
@@ -73,7 +76,7 @@ const Navbar = () => {
     { to: '/day-tours', label: 'Day Tours' },
     { to: '/nile-cruises', label: 'Nile Cruises' },
     { to: '/shore-excursions', label: 'Shore Excursions' },
-    { to: '/transfers', label: 'Transfers' },
+    ...(SHOW_TRANSFERS_NAV_LINK ? [{ to: '/transfers', label: 'Transfers' }] : []),
     ...(SHOW_BLOG_NAV_LINK ? [{ to: '/blog', label: 'Blog' }] : []),
   ]
 
