@@ -51,11 +51,31 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 // ─── Express App ─────────────────────────────────────────────
 const app = express()
 
-// CORS — allow frontend origin
+// CORS — allow configured frontend origins, Vercel previews, and localhost during development.
+const allowedOrigins = [
+  CLIENT_URL,
+  ...(process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(',').map(o => o.trim()).filter(Boolean) : []),
+]
+
 app.use(cors({
-  origin: CLIENT_URL,
-  methods: ['GET', 'POST'],
+  origin: (origin, callback) => {
+    // Allow non-browser requests (no Origin header) and local tooling.
+    if (!origin) return callback(null, true)
+
+    const isExplicitlyAllowed = allowedOrigins.includes(origin)
+    const isVercelPreview = /^https:\/\/[a-z0-9-]+\.vercel\.app$/i.test(origin)
+    const isLocalhost = /^http:\/\/localhost(:\d+)?$/i.test(origin)
+
+    if (isExplicitlyAllowed || isVercelPreview || isLocalhost) {
+      return callback(null, true)
+    }
+
+    return callback(new Error(`CORS blocked origin: ${origin}`))
+  },
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
+  optionsSuccessStatus: 204,
 }))
 
 // ─── Paymob Helper Functions ─────────────────────────────────
