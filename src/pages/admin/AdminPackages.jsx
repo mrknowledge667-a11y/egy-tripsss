@@ -433,8 +433,10 @@ export default function AdminPackages() {
     return matchesSearch && matchesStyle
   })
 
+  // Hide retired section choices from admin controls while keeping existing records untouched.
+  const hiddenSectionOptions = new Set(['Small Group', 'luxury'])
   // Use centralized section configuration - only valid frontend sections
-  const styleOptions = STYLE_OPTIONS
+  const styleOptions = STYLE_OPTIONS.filter(s => !hiddenSectionOptions.has(s))
   
   // Find packages with deprecated/invalid styles
   const packagesWithInvalidStyles = packages.filter(p => !isValidStyle(p.style))

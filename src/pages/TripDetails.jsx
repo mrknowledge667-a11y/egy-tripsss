@@ -53,6 +53,8 @@ const TripDetails = () => {
           throw tripError
         }
 
+        console.log('Supabase tripData:', tripData); // Log the raw data from Supabase
+        console.log('Supabase trip ID:', tripData.id); // Log the trip ID from Supabase
         console.log('✅ Loaded trip from Supabase:', tripData.title)
         // Transform snake_case to camelCase and add defaults for frontend components
         const transformedTrip = {
@@ -70,7 +72,18 @@ const TripDetails = () => {
         }
         setTrip(transformedTrip)
       } catch (error) {
-        console.error('Error fetching trip:', error)
+        console.error('Error fetching trip:', error);
+        // Log the error details if available
+        console.error('Full error object:', error); // Log the full error object
+        console.error('Full error object:', error); // Log the full error object
+        console.error('Full error object:', error); // Log the full error object
+        console.error('Full error object:', error); // Log the full error object
+        console.error('Full error object:', error); // Log the full error object
+        console.error('Full error object:', error); // Log the full error object
+        console.error('Full error object:', error); // Log the full error object
+        if (error.details) {
+          console.error('Fetch trip details:', error.details);
+        }
         // Try fallback data
         const fallbackTrip = tripsDataFallback.find(t => t.slug === slug)
         if (fallbackTrip) {
@@ -416,9 +429,14 @@ const TripDetails = () => {
                     )}
                   </ul>
                 </div>
-
+ 
                 {/* CTA Buttons */}
                 <div className="space-y-3">
+                  {!String(trip.id).includes('-') && (
+                    <p className="text-amber-600 text-sm text-center mb-3">
+                      This trip is from cached content, but you can still submit a booking request.
+                    </p>
+                  )}
                   <button 
                     onClick={() => setShowBookingModal(true)}
                     className="w-full btn btn-primary py-3"

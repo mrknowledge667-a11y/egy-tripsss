@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { supabase } from '../lib/supabase'
+import { submitDualBooking, getWhatsAppMessage } from '../lib/bookingUtils'
 
 /**
  * BookingModal Component
@@ -20,6 +20,7 @@ const BookingModal = ({ isOpen, onClose, trip }) => {
   const [submitting, setSubmitting] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState('')
+  const [warning, setWarning] = useState('')
 
   const handleChange = (field, value) => {
     setForm(prev => ({ ...prev, [field]: value }))
@@ -29,6 +30,7 @@ const BookingModal = ({ isOpen, onClose, trip }) => {
     e.preventDefault()
     setSubmitting(true)
     setError('')
+    setWarning('')
 
     // Validate
     if (!form.full_name || !form.email || !form.phone || !form.travel_date) {
@@ -42,7 +44,6 @@ const BookingModal = ({ isOpen, onClose, trip }) => {
 
     const bookingData = {
       // Trip info
-      trip_id: trip.id,
       trip_title: trip.title,
       trip_slug: trip.slug,
       trip_duration: trip.duration,
@@ -60,22 +61,30 @@ const BookingModal = ({ isOpen, onClose, trip }) => {
       total_price: totalPrice,
       // Status
       status: 'pending',
+      booking_source: 'trip_details_modal',
     }
 
-    console.log('Submitting booking:', bookingData)
+    // Include trip_id only when it is a valid UUID.
+    const isUUID = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(String(trip.id || ''))
+    if (isUUID) {
+      bookingData.trip_id = trip.id
+    }
 
-    const { error: dbError } = await supabase
-      .from('bookings')
-      .insert(bookingData)
+    const whatsappMessage = getWhatsAppMessage(bookingData)
+    const result = await submitDualBooking(bookingData, whatsappMessage)
 
-    if (dbError) {
-      console.error('Booking error:', dbError)
+    if (!result?.success) {
+      console.error('Booking error:', result?.error)
       setError('Failed to submit booking. Please try again or contact us directly.')
     } else {
+      if (result.warning) {
+        setWarning(result.warning)
+      }
       setSuccess(true)
       // Reset form after 3 seconds
       setTimeout(() => {
         setSuccess(false)
+        setWarning('')
         setForm({
           full_name: '',
           email: '',
@@ -138,6 +147,11 @@ const BookingModal = ({ isOpen, onClose, trip }) => {
               <p className="text-gray-600">
                 Thank you for your booking request. We'll contact you within 24 hours to confirm your trip.
               </p>
+              {warning && (
+                <p className="mt-4 text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+                  {warning}
+                </p>
+              )}
             </div>
           ) : (
             /* Form */
@@ -175,6 +189,7 @@ const BookingModal = ({ isOpen, onClose, trip }) => {
                   required
                 />
               </div>
+              {/* End Full Name */}
 
               {/* Email & Phone */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -205,6 +220,7 @@ const BookingModal = ({ isOpen, onClose, trip }) => {
                   />
                 </div>
               </div>
+              {/* End Email & Phone */}
 
               {/* Nationality */}
               <div>
@@ -219,6 +235,7 @@ const BookingModal = ({ isOpen, onClose, trip }) => {
                   placeholder="American"
                 />
               </div>
+              {/* End Nationality */}
 
               {/* Adults & Children */}
               <div className="grid grid-cols-2 gap-4">
@@ -251,6 +268,7 @@ const BookingModal = ({ isOpen, onClose, trip }) => {
                   </select>
                 </div>
               </div>
+              {/* End Adults & Children */}
 
               {/* Travel Date */}
               <div>
@@ -266,6 +284,7 @@ const BookingModal = ({ isOpen, onClose, trip }) => {
                   required
                 />
               </div>
+              {/* End Travel Date */}
 
               {/* Special Requests */}
               <div>
@@ -280,6 +299,7 @@ const BookingModal = ({ isOpen, onClose, trip }) => {
                   placeholder="Any dietary requirements, accessibility needs, or special requests..."
                 />
               </div>
+              {/* End Special Requests */}
 
               {/* Price Summary */}
               <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">

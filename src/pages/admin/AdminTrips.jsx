@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { supabase, uploadFile } from '../../lib/supabase'
-import { STYLE_OPTIONS, isValidStyle } from '../../lib/sectionConfig'
+import { isValidStyle } from '../../lib/sectionConfig'
 
 /**
  * AdminTrips Component
@@ -13,6 +13,7 @@ export default function AdminTrips() {
   const [saving, setSaving] = useState(false)
   const [deleteId, setDeleteId] = useState(null)
   const [filterStyle, setFilterStyle] = useState('')
+  const [filterType, setFilterType] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
   const [uploading, setUploading] = useState({}) // Track upload status per field
   const [toast, setToast] = useState(null) // Toast notifications { type: 'success' | 'error', message: string }
@@ -22,20 +23,46 @@ export default function AdminTrips() {
   const heroImageInputRef = useRef(null)
   const galleryInputRefs = useRef({})
 
-  // Use centralized section configuration - only valid frontend sections
-  const travelStyleOptions = STYLE_OPTIONS
+  // Keep trip management focused on key website sections and sync with trip type.
+  const managedSections = [
+    { value: 'Private Tour', label: 'Egypt Packages', mappedType: 'package' },
+    { value: 'Day Tour', label: 'Day Tours', mappedType: 'day_tour' },
+    { value: 'Nile Cruise', label: 'Nile Cruises', mappedType: 'nile_cruise' },
+    { value: 'Shore Excursion', label: 'Short Excursions', mappedType: 'short_excursion' },
+    { value: 'Transfer', label: 'Transfers', mappedType: null },
+  ]
+  const travelStyleOptions = managedSections.map(s => s.value)
+
+  const getMappedTypeForSection = (sectionValue, currentType = 'package') => {
+    const section = managedSections.find(s => s.value === sectionValue)
+    return section?.mappedType || currentType || 'package'
+  }
+
+  const getMappedSectionForType = (typeValue, currentSection = 'Private Tour') => {
+    const section = managedSections.find(s => s.mappedType === typeValue)
+    return section?.value || currentSection || 'Private Tour'
+  }
   
   // Find trips with deprecated/invalid styles
   const tripsWithInvalidStyles = trips.filter(t => !isValidStyle(t.travel_style))
   const hasInvalidStyles = tripsWithInvalidStyles.length > 0
 
+  // Keep only supported trip types visible in admin trip management.
+  const tripTypes = [
+    { value: 'package', label: 'Package', icon: '📦' },
+    { value: 'day_tour', label: 'Day Tour', icon: '🌅' },
+    { value: 'nile_cruise', label: 'Nile Cruise', icon: '🚢' },
+    { value: 'short_excursion', label: 'Shore Excursion', icon: '⚓' }
+  ]
+
   const emptyTrip = {
+    type: 'package',
     title: '', slug: '', description: '', short_description: '',
     duration: 1, price: 0, currency: 'USD', image: '', hero_image: '',
     gallery: [''],
-    travel_style: 'Culture', rating: 4.5, reviews: 0,
-    highlights: [''], included: [''],
-    is_featured: false, is_published: true,
+    travel_style: '', rating: 4.5, reviews: 0,
+    highlights: [''], included: [''], excluded: [''],
+    best_seller: false, is_featured: false, is_published: true,
   }
 
   const [form, setForm] = useState(emptyTrip)
@@ -70,6 +97,7 @@ export default function AdminTrips() {
       gallery: trip.gallery?.length ? trip.gallery : [''],
       highlights: trip.highlights?.length ? trip.highlights : [''],
       included: trip.included?.length ? trip.included : [''],
+      excluded: trip.excluded?.length ? trip.excluded : [''],
     })
     setEditing(trip)
   }
@@ -143,11 +171,48 @@ export default function AdminTrips() {
   }
 
   const handleChange = (field, value) => {
-    setForm(prev => ({
-      ...prev,
-      [field]: value,
-      ...(field === 'title' && !editing?.id ? { slug: generateSlug(value) } : {}),
-    }))
+    setForm(prev => {
+      const next = {
+        ...prev,
+        [field]: value,
+        ...(field === 'title' && !editing?.id ? { slug: generateSlug(value) } : {}),
+      }
+
+      if (field === 'travel_style') {
+        next.type = getMappedTypeForSection(value, prev.type)
+      }
+
+      if (field === 'type') {
+        next.travel_style = getMappedSectionForType(value, prev.travel_style)
+      }
+
+      return next
+    })
+  }
+
+  const getPrimaryDestinationId = async (tripId) => {
+    const { data, error } = await supabase
+      .from('trip_destinations')
+      .select('destination_id')
+      .eq('trip_id', tripId)
+      .order('sort_order', { ascending: true })
+      .order('id', { ascending: true })
+      .limit(1)
+
+    if (error) throw error
+    return data?.[0]?.destination_id || null
+  }
+
+  const moveTripToSection = async ({ tripId, sectionKey, subcategoryId = null, destinationId = null }) => {
+    const { data, error } = await supabase.rpc('move_trip_section', {
+      p_trip_id: tripId,
+      p_section_key: sectionKey,
+      p_subcategory_id: subcategoryId,
+      p_destination_id: destinationId,
+    })
+
+    if (error) throw error
+    return Array.isArray(data) ? data[0] : data
   }
 
   const handleArrayChange = (field, index, value) => {
@@ -170,8 +235,14 @@ export default function AdminTrips() {
   }
 
   const handleSave = async () => {
+    if (!form.travel_style || !isValidStyle(form.travel_style)) {
+      showToast('error', 'Please choose a valid section before saving the trip.')
+      return
+    }
+
     setSaving(true)
     const payload = {
+      type: getMappedTypeForSection(form.travel_style, form.type || 'package'),
       title: form.title,
       slug: form.slug,
       description: form.description,
@@ -182,30 +253,56 @@ export default function AdminTrips() {
       image: form.image || null,
       hero_image: form.hero_image || null,
       gallery: (form.gallery || []).filter(g => g && g.trim()),
-      travel_style: form.travel_style || 'Culture',
+      travel_style: form.travel_style,
       rating: parseFloat(form.rating) || 4.5,
       reviews: parseInt(form.reviews) || 0,
       highlights: (form.highlights || []).filter(h => h && h.trim()),
       included: (form.included || []).filter(i => i && i.trim()),
+      excluded: (form.excluded || []).filter(e => e && e.trim()),
+      best_seller: form.best_seller || false,
       is_featured: form.is_featured || false,
       is_published: form.is_published !== false,
     }
 
     console.log('Saving trip payload:', payload)
 
-    let error, data
+    let error
+    let savedTripId = editing?.id || null
     if (editing === 'new') {
-      ({ data, error } = await supabase.from('trips').insert(payload).select())
-      console.log('Insert result:', { data, error })
+      const { data: inserted, error: insertError } = await supabase
+        .from('trips')
+        .insert(payload)
+        .select('id')
+        .single()
+      error = insertError
+      savedTripId = inserted?.id || null
+      console.log('Insert result:', { error })
     } else {
-      ({ data, error } = await supabase.from('trips').update(payload).eq('id', editing.id).select())
-      console.log('Update result:', { data, error })
+      ({ error } = await supabase.from('trips').update(payload).eq('id', editing.id))
+      console.log('Update result:', { error })
     }
 
     if (error) {
       console.error('Save error details:', error)
       alert('Error saving: ' + error.message)
     } else {
+      try {
+        if (savedTripId && form.travel_style) {
+          const styleChanged = editing === 'new' || editing?.travel_style !== form.travel_style
+          if (styleChanged) {
+            const destinationId = await getPrimaryDestinationId(savedTripId)
+            await moveTripToSection({
+              tripId: savedTripId,
+              sectionKey: form.travel_style,
+              destinationId,
+            })
+          }
+        }
+      } catch (moveError) {
+        console.error('Post-save move sync error:', moveError)
+        alert('Trip saved, but section sync failed: ' + moveError.message)
+      }
+
       await fetchTrips()
       handleCancel()
     }
@@ -224,6 +321,11 @@ export default function AdminTrips() {
 
   // Move trip to different travel style/section
   const handleMoveToStyle = async (tripId, newStyle) => {
+        if (!travelStyleOptions.includes(newStyle)) {
+          showToast('error', 'Please choose a valid section from the list.')
+          return
+        }
+
     console.log('=== MOVE TRIP START ===')
     console.log('Trip ID:', tripId)
     console.log('New Style:', newStyle)
@@ -251,29 +353,23 @@ export default function AdminTrips() {
     }
     
     try {
-      const { data, error } = await supabase
-        .from('trips')
-        .update({ travel_style: newStyle })
-        .eq('id', tripId)
-        .select()
-      
-      console.log('Supabase response - data:', data)
-      console.log('Supabase response - error:', error)
-      
-      if (error) {
-        console.error('Move error:', error)
-        showToast('error', 'Error moving trip: ' + error.message)
-      } else if (!data || data.length === 0) {
-        console.error('No data returned - update may have failed due to RLS')
-        showToast('error', 'Update failed - check database permissions')
-      } else {
-        console.log('✅ Move successful!')
-        // Update local state immediately for faster UI feedback
-        setTrips(prev => prev.map(t => 
-          t.id === tripId ? { ...t, travel_style: newStyle } : t
-        ))
-        showToast('success', `"${tripName}" moved to ${newStyle} section`)
-      }
+      const destinationId = await getPrimaryDestinationId(tripId)
+      const moveResult = await moveTripToSection({
+        tripId,
+        sectionKey: newStyle,
+        destinationId,
+      })
+
+      const nextType = getMappedTypeForSection(newStyle, trip?.type || 'package')
+
+      console.log('Move RPC result:', moveResult)
+      console.log('✅ Move successful!')
+      // Update local state immediately for faster UI feedback
+      setTrips(prev => prev.map(t =>
+        t.id === tripId ? { ...t, travel_style: newStyle, type: nextType, category_id: moveResult?.category_id ?? t.category_id, subcategory_id: moveResult?.subcategory_id ?? t.subcategory_id } : t
+      ))
+      fetchTrips()
+      showToast('success', `"${tripName}" moved to ${newStyle} section`)
     } catch (err) {
       console.error('Exception during move:', err)
       showToast('error', 'Unexpected error: ' + err.message)
@@ -284,11 +380,12 @@ export default function AdminTrips() {
 
   // Filter trips
   const filteredTrips = trips.filter(trip => {
-    const matchesSearch = !searchTerm || 
+    const matchesSearch = !searchTerm ||
       trip.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       trip.slug?.toLowerCase().includes(searchTerm.toLowerCase())
     const matchesStyle = !filterStyle || trip.travel_style === filterStyle
-    return matchesSearch && matchesStyle
+    const matchesType = !filterType || trip.type === filterType
+    return matchesSearch && matchesStyle && matchesType
   })
 
   // ─── FORM VIEW ───
@@ -307,6 +404,33 @@ export default function AdminTrips() {
         </div>
 
         <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-5">
+          {/* Trip Type */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Trip Type *</label>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {tripTypes.map(type => (
+                <label key={type.value} className="relative cursor-pointer">
+                  <input
+                    type="radio"
+                    name="type"
+                    value={type.value}
+                    checked={form.type === type.value}
+                    onChange={e => handleChange('type', e.target.value)}
+                    className="sr-only"
+                  />
+                  <div className={`p-3 rounded-lg border-2 text-center transition-all ${
+                    form.type === type.value
+                      ? 'border-primary-500 bg-primary-50 text-primary-700'
+                      : 'border-gray-200 hover:border-gray-300'
+                  }`}>
+                    <div className="text-xl mb-1">{type.icon}</div>
+                    <div className="text-sm font-medium">{type.label}</div>
+                  </div>
+                </label>
+              ))}
+            </div>
+          </div>
+
           {/* Title & Slug */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
@@ -370,14 +494,15 @@ export default function AdminTrips() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Style / Section</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Style / Section *</label>
               <select
                 value={form.travel_style}
                 onChange={e => handleChange('travel_style', e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
               >
-                {travelStyleOptions.map(style => (
-                  <option key={style} value={style}>{style}</option>
+                <option value="">Select section...</option>
+                {managedSections.map(section => (
+                  <option key={section.value} value={section.value}>{section.label}</option>
                 ))}
               </select>
             </div>
@@ -548,29 +673,59 @@ export default function AdminTrips() {
             </button>
           </div>
 
-          {/* Included */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">What's Included</label>
-            {form.included.map((item, i) => (
-              <div key={i} className="flex gap-2 mb-2">
-                <input
-                  type="text" value={item}
-                  onChange={e => handleArrayChange('included', i, e.target.value)}
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-sm"
-                  placeholder={`Included item ${i + 1}`}
-                />
-                {form.included.length > 1 && (
-                  <button onClick={() => removeArrayItem('included', i)} className="px-2 text-red-500 hover:bg-red-50 rounded-lg">✕</button>
-                )}
-              </div>
-            ))}
-            <button onClick={() => addArrayItem('included')} className="text-sm text-primary-600 hover:text-primary-700 font-medium">
-              + Add Item
-            </button>
+          {/* Included & Excluded */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">What's Included</label>
+              {form.included.map((item, i) => (
+                <div key={i} className="flex gap-2 mb-2">
+                  <input
+                    type="text" value={item}
+                    onChange={e => handleArrayChange('included', i, e.target.value)}
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-sm"
+                    placeholder={`Included item ${i + 1}`}
+                  />
+                  {form.included.length > 1 && (
+                    <button onClick={() => removeArrayItem('included', i)} className="px-2 text-red-500 hover:bg-red-50 rounded-lg">✕</button>
+                  )}
+                </div>
+              ))}
+              <button onClick={() => addArrayItem('included')} className="text-sm text-primary-600 hover:text-primary-700 font-medium">
+                + Add Item
+              </button>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">What's Excluded</label>
+              {form.excluded.map((item, i) => (
+                <div key={i} className="flex gap-2 mb-2">
+                  <input
+                    type="text" value={item}
+                    onChange={e => handleArrayChange('excluded', i, e.target.value)}
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-sm"
+                    placeholder={`Excluded item ${i + 1}`}
+                  />
+                  {form.excluded.length > 1 && (
+                    <button onClick={() => removeArrayItem('excluded', i)} className="px-2 text-red-500 hover:bg-red-50 rounded-lg">✕</button>
+                  )}
+                </div>
+              ))}
+              <button onClick={() => addArrayItem('excluded')} className="text-sm text-primary-600 hover:text-primary-700 font-medium">
+                + Add Item
+              </button>
+            </div>
           </div>
 
           {/* Toggles */}
           <div className="flex items-center gap-6 pt-2">
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox" checked={form.best_seller}
+                onChange={e => handleChange('best_seller', e.target.checked)}
+                className="w-4 h-4 text-primary-500 rounded focus:ring-primary-500"
+              />
+              <span className="text-sm text-gray-700">Best Seller</span>
+            </label>
             <label className="flex items-center gap-2 cursor-pointer">
               <input
                 type="checkbox" checked={form.is_featured}
@@ -632,6 +787,18 @@ export default function AdminTrips() {
           className="flex-1 min-w-[200px] px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
         />
         <select
+          value={filterType}
+          onChange={e => setFilterType(e.target.value)}
+          className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+        >
+          <option value="">All Types</option>
+          {tripTypes.map(type => (
+            <option key={type.value} value={type.value}>
+              {type.icon} {type.label}
+            </option>
+          ))}
+        </select>
+        <select
           value={filterStyle}
           onChange={e => setFilterStyle(e.target.value)}
           className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
@@ -673,8 +840,15 @@ export default function AdminTrips() {
 
               {/* Info */}
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 flex-wrap">
                   <h3 className="font-semibold text-gray-900 truncate">{trip.title}</h3>
+                  {/* Type Badge */}
+                  <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-medium">
+                    {tripTypes.find(t => t.value === (trip.type || 'package'))?.icon || '📦'} {tripTypes.find(t => t.value === (trip.type || 'package'))?.label || 'Package'}
+                  </span>
+                  {trip.best_seller && (
+                    <span className="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-medium">Best Seller</span>
+                  )}
                   {trip.is_featured && (
                     <span className="text-xs bg-primary-100 text-primary-700 px-2 py-0.5 rounded-full font-medium">Featured</span>
                   )}
@@ -694,9 +868,9 @@ export default function AdminTrips() {
                   onChange={e => handleMoveToStyle(trip.id, e.target.value)}
                   className="px-2 py-1.5 text-xs border border-gray-200 rounded-lg bg-gray-50 focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                 >
-                  {travelStyleOptions.map(s => (
-                    <option key={s} value={s}>
-                      {s === trip.travel_style ? `📍 ${s}` : `➡️ ${s}`}
+                  {managedSections.map(section => (
+                    <option key={section.value} value={section.value}>
+                      {section.value === trip.travel_style ? `📍 ${section.label}` : `➡️ ${section.label}`}
                     </option>
                   ))}
                 </select>

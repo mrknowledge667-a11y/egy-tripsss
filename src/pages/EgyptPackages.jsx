@@ -7,7 +7,7 @@ import EgyptPackagesGrid from '../components/EgyptPackages'
 import ToursGrid from '../components/ToursGrid'
 import SharmElSheikhDayTours from '../components/SharmElSheikhDayTours';
 
-const API_URL = import.meta.env.VITE_API_URL || ''
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001'
 
 // ─── Component ───────────────────────────────────────────────
 const EgyptPackages = () => {
@@ -25,10 +25,17 @@ const EgyptPackages = () => {
           .select('*')
           .eq('is_published', true)
           .order('created_at', { ascending: false })
+
+        const { data: packageTrips, error: tripsError } = await supabase
+          .from('trips')
+          .select('*')
+          .eq('is_published', true)
+          .eq('type', 'package')
+          .order('created_at', { ascending: false })
         
-        if (!error && data && data.length > 0) {
+        if ((!error && data) || (!tripsError && packageTrips)) {
           // Transform Supabase format to match static data format
-          const transformed = data.map(pkg => ({
+          const transformedPackages = (data || []).map(pkg => ({
             id: pkg.id,
             slug: pkg.slug,
             title: pkg.title,
@@ -57,11 +64,57 @@ const EgyptPackages = () => {
             startPoint: pkg.start_point,
             endPoint: pkg.end_point,
           }))
-          setPackages(transformed)
-          setDataSource('supabase')
-          console.log('✅ Loaded', data.length, 'packages from Supabase')
+
+          const transformedTrips = (packageTrips || []).map(trip => ({
+            id: trip.id,
+            slug: trip.slug,
+            title: trip.title,
+            description: trip.short_description || trip.description,
+            longDescription: trip.description,
+            duration: trip.duration ? `${trip.duration} Days` : 'Custom Duration',
+            durationDays: trip.duration || 1,
+            durationFilter: '',
+            style: trip.travel_style || 'Private Tour',
+            tourType: trip.type || 'package',
+            price: trip.price || 0,
+            originalPrice: trip.original_price || trip.price || 0,
+            currency: trip.currency || 'USD',
+            image: trip.image,
+            gallery: trip.gallery || (trip.image ? [trip.image] : []),
+            highlights: trip.highlights || [],
+            included: trip.included || [],
+            excluded: trip.excluded || [],
+            itinerary: trip.itinerary || [],
+            rating: trip.rating || 4.5,
+            reviews: trip.reviews || 0,
+            bestSeller: trip.best_seller || false,
+            locations: trip.locations || [],
+            groupSize: trip.group_size || '',
+            languages: trip.languages || [],
+            startPoint: trip.start_point || '',
+            endPoint: trip.end_point || '',
+          }))
+
+          const seenKeys = new Set(transformedPackages.map(pkg => pkg.slug || pkg.id))
+          const uniqueTripPackages = transformedTrips.filter(trip => {
+            const key = trip.slug || trip.id
+            if (seenKeys.has(key)) return false
+            seenKeys.add(key)
+            return true
+          })
+
+          const transformed = [...transformedPackages, ...uniqueTripPackages]
+
+          if (transformed.length > 0) {
+            setPackages(transformed)
+            setDataSource('supabase')
+            console.log('✅ Loaded', transformed.length, 'combined Egypt packages from Supabase')
+          } else {
+            console.log('⚠️ Using static data - Supabase returned no package records')
+            setDataSource('static')
+          }
         } else {
-          console.log('⚠️ Using static data - Supabase returned:', error?.message || 'no data')
+          console.log('⚠️ Using static data - Supabase returned:', error?.message || tripsError?.message || 'no data')
           setDataSource('static')
         }
       } catch (err) {
@@ -204,7 +257,7 @@ const EgyptPackages = () => {
   const handleStripeCheckout = async (pkg) => {
     setCheckoutLoading(true)
     try {
-      const res = await fetch(`${API_URL}/api/create-checkout-session`, {
+      const res = await fetch(`${API_URL}/api/paypal/create-payment`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -220,9 +273,9 @@ const EgyptPackages = () => {
           customerEmail: formData.email || undefined,
         }),
       })
-      if (!res.ok) throw new Error('Failed to create checkout session')
+      if (!res.ok) throw new Error('Failed to create PayPal session')
       const data = await res.json()
-      if (data.url) window.location.href = data.url
+      if (data.approveUrl) window.location.href = data.approveUrl
     } catch (err) {
       console.error('Checkout error:', err)
       alert('Payment setup failed. Please try via WhatsApp.')
@@ -614,7 +667,7 @@ const EgyptPackages = () => {
       </section>
 
       {/* ── Booking Form ───────────────────────────────────────── */}
-      <section className="py-16 bg-gray-50" id="booking-form">
+      <section className="py-16 bg-white" id="booking-form">
         <div className="container-custom max-w-4xl">
           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
             <div className="text-center mb-10">

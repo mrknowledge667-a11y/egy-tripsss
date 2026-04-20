@@ -14,8 +14,11 @@ export default function AdminDashboard() {
     contacts: 0,
     gallery: 0,
     experiences: 0,
+    bookings: 0,
+    pendingBookings: 0,
   })
   const [recentContacts, setRecentContacts] = useState([])
+  const [recentBookings, setRecentBookings] = useState([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -31,6 +34,8 @@ export default function AdminDashboard() {
         { count: contacts },
         { count: gallery },
         { count: experiences },
+        { count: bookings },
+        { count: pendingBookings },
       ] = await Promise.all([
         supabase.from('trips').select('*', { count: 'exact', head: true }),
         supabase.from('destinations').select('*', { count: 'exact', head: true }),
@@ -38,6 +43,8 @@ export default function AdminDashboard() {
         supabase.from('contacts').select('*', { count: 'exact', head: true }),
         supabase.from('gallery_images').select('*', { count: 'exact', head: true }),
         supabase.from('experiences').select('*', { count: 'exact', head: true }),
+        supabase.from('bookings').select('*', { count: 'exact', head: true }),
+        supabase.from('bookings').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
       ])
 
       setStats({
@@ -47,6 +54,8 @@ export default function AdminDashboard() {
         contacts: contacts || 0,
         gallery: gallery || 0,
         experiences: experiences || 0,
+        bookings: bookings || 0,
+        pendingBookings: pendingBookings || 0,
       })
 
       // Fetch recent contacts
@@ -57,6 +66,15 @@ export default function AdminDashboard() {
         .limit(5)
 
       setRecentContacts(contactsData || [])
+
+      // Fetch recent bookings
+      const { data: bookingsData } = await supabase
+        .from('bookings')
+        .select('id, full_name, trip_title, status, created_at, total_price')
+        .order('created_at', { ascending: false })
+        .limit(5)
+
+      setRecentBookings(bookingsData || [])
     } catch (err) {
       console.error('Error fetching stats:', err)
     } finally {
@@ -71,13 +89,15 @@ export default function AdminDashboard() {
     { label: 'Contacts', value: stats.contacts, icon: '📬', color: 'bg-amber-500', link: '/admin/contacts' },
     { label: 'Gallery Images', value: stats.gallery, icon: '🖼️', color: 'bg-pink-500', link: '/admin/gallery' },
     { label: 'Experiences', value: stats.experiences, icon: '🎯', color: 'bg-cyan-500', link: '/admin/trips' },
+    { label: 'Bookings', value: stats.bookings, icon: '📋', color: 'bg-indigo-500', link: '/admin/bookings' },
+    { label: 'Pending Bookings', value: stats.pendingBookings, icon: '🔔', color: 'bg-orange-500', link: '/admin/bookings' },
   ]
 
   if (loading) {
     return (
       <div className="space-y-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {[...Array(6)].map((_, i) => (
+          {[...Array(8)].map((_, i) => (
             <div key={i} className="bg-white rounded-xl p-6 animate-pulse">
               <div className="h-4 bg-gray-200 rounded w-24 mb-3" />
               <div className="h-8 bg-gray-200 rounded w-16" />
@@ -186,6 +206,47 @@ export default function AdminDashboard() {
                     })}
                   </p>
                 </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Recent Bookings */}
+      <div className="bg-white rounded-xl border border-gray-100 p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-semibold text-gray-900">Recent Bookings</h3>
+          <Link to="/admin/bookings" className="text-sm text-primary-600 hover:text-primary-700 font-medium">
+            View All →
+          </Link>
+        </div>
+
+        {recentBookings.length === 0 ? (
+          <p className="text-gray-500 text-sm py-4 text-center">No bookings yet.</p>
+        ) : (
+          <div className="divide-y divide-gray-100">
+            {recentBookings.map((booking) => (
+              <div key={booking.id} className="py-3 flex items-start justify-between gap-3">
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm font-medium text-gray-900 truncate">{booking.full_name || 'Guest'}</p>
+                    {booking.status === 'pending' && (
+                      <span className="inline-flex w-2 h-2 bg-orange-500 rounded-full flex-shrink-0" />
+                    )}
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 capitalize">
+                      {booking.status || 'pending'}
+                    </span>
+                  </div>
+                  <p className="text-sm text-gray-500 truncate">{booking.trip_title || 'Unknown Trip'}</p>
+                  <p className="text-xs text-gray-400 mt-0.5">
+                    {new Date(booking.created_at).toLocaleDateString('en-US', {
+                      month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+                    })}
+                  </p>
+                </div>
+                <p className="text-sm font-semibold text-gray-900 whitespace-nowrap">
+                  ${Number(booking.total_price || 0).toLocaleString()}
+                </p>
               </div>
             ))}
           </div>

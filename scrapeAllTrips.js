@@ -2,7 +2,7 @@ import puppeteer from 'puppeteer';
 import fs from 'fs/promises';
 
 /**
- * Comprehensive Puppeteer scraper for https://egypttimetravel.com/
+ * Comprehensive Puppeteer scraper for https://EgyptTravelPro.com/
  * 
  * Phase 1: Visit category listing pages → collect all trip URLs
  * Phase 2: Visit each trip detail page → extract full data:
@@ -12,7 +12,7 @@ import fs from 'fs/promises';
  * Phase 4: Generate JS data modules for DayTours, NileCruises, ShoreExcursions
  */
 
-const BASE_URL = 'https://egypttimetravel.com';
+const BASE_URL = 'https://EgyptTravelPro.com';
 const OUTPUT_JSON = './data/trips.json';
 const OUTPUT_JS_DIR = './data';
 
@@ -388,7 +388,7 @@ function generateJSData(allTrips) {
   // Generate a JS export for each category
   for (const cat of CATEGORIES) {
     const trips = grouped[cat.name];
-    const jsContent = `// Auto-generated from egypttimetravel.com scraper — ${new Date().toISOString()}
+    const jsContent = `// Auto-generated from EgyptTravelPro.com scraper — ${new Date().toISOString()}
 // Category: ${cat.name}
 // Total trips: ${trips.length}
 
@@ -405,7 +405,7 @@ export default ${cat.jsVar};
 
 // ─── Main ───
 async function main() {
-  console.log('🚀 Starting comprehensive Egypt Time Travel scraper...\n');
+  console.log('🚀 Starting comprehensive EgyptTravelPro scraper...\n');
   console.log(`📍 Target: ${BASE_URL}`);
   console.log(`📂 Output: ${OUTPUT_JSON}\n`);
 
@@ -504,7 +504,7 @@ async function main() {
   // Save per-category JS modules
   for (const cat of CATEGORIES) {
     const trips = grouped[cat.name];
-    const jsContent = `// Auto-generated from egypttimetravel.com scraper — ${new Date().toISOString()}
+    const jsContent = `// Auto-generated from EgyptTravelPro.com scraper — ${new Date().toISOString()}
 // Category: ${cat.name}
 // Total trips: ${trips.length}
 
@@ -610,3 +610,4 @@ main().catch((err) => {
   console.error('\n💀 Fatal error:', err);
   process.exit(1);
 });
+

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 
-const API_URL = import.meta.env.VITE_API_URL || ''
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001'
 
 const clampText = (text, maxLength) => {
   if (!text) return ''
@@ -1675,7 +1675,7 @@ const tours = [
     image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80',
     gallery: ['https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80'],
     highlights: ['Cairo pyramids', 'Luxury sleeper train', 'Nile cruise', 'Ancient temples', 'Abu Simbel visit'],
-    description: 'Egypt Time Travel offers 9 days combining Cairo with a Nile cruise between Luxor and Aswan. Visit the best tourist attractions that must be seen at least once in a lifetime!',
+    description: 'EgyptTravelPro offers 9 days combining Cairo with a Nile cruise between Luxor and Aswan. Visit the best tourist attractions that must be seen at least once in a lifetime!',
     itinerary: [ { time: 'Day 1-2', activity: 'Cairo: Pyramids, Museum, Islamic Cairo' }, { time: 'Day 2-3', activity: 'Sleeper train to Luxor' }, { time: 'Day 4-6', activity: 'Nile cruise with daily tours' }, { time: 'Day 6-7', activity: 'Aswan: High Dam, Philae, Abu Simbel' }, { time: 'Day 8-9', activity: 'Return sleeper train to Cairo' } ],
     included: ['Hotels + sleeper + cruise', 'Transfers', 'Guide', 'Entrance fees', 'All meals'],
     excluded: ['Personal expenses'],
@@ -2607,7 +2607,7 @@ const TourDetail = () => {
   const handleStripeCheckout = async () => {
     setCheckoutLoading(true)
     try {
-      const res = await fetch(`${API_URL}/api/create-checkout-session`, {
+      const res = await fetch(`${API_URL}/api/paypal/create-payment`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -2624,7 +2624,7 @@ const TourDetail = () => {
         }),
       })
       const data = await res.json()
-      if (data.url) window.location.href = data.url
+      if (data.approveUrl) window.location.href = data.approveUrl
     } catch (err) {
       console.error('Checkout error:', err)
     } finally {
@@ -2805,3 +2805,4 @@ const TourDetail = () => {
 }
 
 export default TourDetail
+

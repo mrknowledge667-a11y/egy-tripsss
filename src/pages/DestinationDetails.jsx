@@ -315,8 +315,10 @@ const DestinationDetails = () => {
         // Fetch related trips via junction table
         const { data: tripDestinations } = await supabase
           .from('trip_destinations')
-          .select('trip_id')
+          .select('trip_id, sort_order, id')
           .eq('destination_id', destData.id)
+          .order('sort_order', { ascending: true })
+          .order('id', { ascending: true })
 
         if (tripDestinations && tripDestinations.length > 0) {
           const tripIds = tripDestinations.map((td) => td.trip_id)
@@ -325,7 +327,14 @@ const DestinationDetails = () => {
             .select('*')
             .in('id', tripIds)
 
-          setRelatedTrips(trips || [])
+          const destinationOrder = new Map(tripDestinations.map((td, idx) => [td.trip_id, idx]))
+          const orderedTrips = (trips || []).sort((a, b) => {
+            const aIndex = destinationOrder.get(a.id) ?? Number.MAX_SAFE_INTEGER
+            const bIndex = destinationOrder.get(b.id) ?? Number.MAX_SAFE_INTEGER
+            return aIndex - bIndex
+          })
+
+          setRelatedTrips(orderedTrips)
         }
       } catch (error) {
         console.error('Error fetching destination:', error)

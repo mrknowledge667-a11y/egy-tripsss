@@ -1,5 +1,8 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001'
 
 /**
  * TripCard Component
@@ -7,6 +10,8 @@ import { motion } from 'framer-motion'
  * Used in trip listings and featured sections
  */
 const TripCard = ({ trip, index = 0 }) => {
+  const [checkoutLoading, setCheckoutLoading] = useState(false)
+
   const {
     id,
     slug,
@@ -70,6 +75,48 @@ const TripCard = ({ trip, index = 0 }) => {
     return colors[style] || 'bg-gray-100 text-gray-700'
   }
 
+  const handlePayPalCheckout = async (event) => {
+    event.preventDefault()
+    event.stopPropagation()
+
+    setCheckoutLoading(true)
+
+    try {
+      const safePrice = Number(price) || 0
+      const res = await fetch(`${API_URL}/api/paypal/create-payment`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          carName: title,
+          carId: id,
+          routeFrom: 'All Trips',
+          routeTo: displayStyle,
+          distance: 0,
+          transferDate: '',
+          transferTime: '',
+          passengers: 1,
+          amount: safePrice,
+        }),
+      })
+
+      if (!res.ok) {
+        throw new Error(`Failed to create PayPal session (HTTP ${res.status})`)
+      }
+
+      const data = await res.json()
+      if (!data.approveUrl) {
+        throw new Error('PayPal approve URL was not returned by the server')
+      }
+
+      window.location.href = data.approveUrl
+    } catch (error) {
+      console.error('All Trips PayPal checkout error:', error)
+      alert('PayPal setup failed. Please try again or contact us on WhatsApp.')
+    } finally {
+      setCheckoutLoading(false)
+    }
+  }
+
   return (
     <motion.article
       initial={{ opacity: 0, y: 20 }}
@@ -131,33 +178,33 @@ const TripCard = ({ trip, index = 0 }) => {
             </div>
           )}
 
-          {/* Footer with price */}
-          <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-            <div>
-              <span className="text-sm text-gray-500">From</span>
-              <p className="text-xl font-bold text-primary-600">
-                {formatPrice(price, currency)}
-              </p>
-            </div>
-            <span className="text-primary-600 font-medium text-sm flex items-center gap-1 group-hover:gap-2 transition-all">
-              View Details
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
-            </span>
+          {/* Price */}
+          <div className="pt-4 border-t border-gray-100">
+            <span className="text-sm text-gray-500">From</span>
+            <p className="text-xl font-bold text-primary-600">
+              {formatPrice(price, currency)}
+            </p>
           </div>
         </div>
       </Link>
+
+      <div className="px-6 pb-6 flex flex-col gap-2">
+        <Link
+          to={`/trips/${slug}`}
+          className="btn btn-primary w-full text-sm text-center"
+        >
+          View Details
+        </Link>
+
+        <button
+          onClick={handlePayPalCheckout}
+          disabled={checkoutLoading}
+          className="btn bg-sky-500 hover:bg-sky-600 text-white w-full text-sm flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {checkoutLoading ? <span className="animate-spin">⟳</span> : <span className="font-black tracking-wide">P</span>}
+          Pay with PayPal
+        </button>
+      </div>
     </motion.article>
   )
 }

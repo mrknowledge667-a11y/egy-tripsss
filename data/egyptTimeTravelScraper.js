@@ -3,12 +3,12 @@ import * as cheerio from 'cheerio';
 import fs from 'fs/promises';
 
 /**
- * Scraper for https://egypttimetravel.com/
+ * Scraper for https://EgyptTravelPro.com/
  * Extracts all trip listing pages (Day Tours, Nile Cruises, Shore Excursions)
  * Collects: title, price, image, description, category
  */
 
-const BASE_URL = https://egypttimetravel.com/egypt-day-tours/luxor-tours/
+const BASE_URL = https://EgyptTravelPro.com/egypt-day-tours/luxor-tours/
 
 const categories = [
   { name: 'Day Tours', slug: 'day-tours' },
@@ -53,12 +53,12 @@ async function main() {
     results.push(...trips);
   }
 
-  // Remove trips that don't belong to egypttimetravel.com or are irrelevant
+  // Remove trips that don't belong to EgyptTravelPro.com or are irrelevant
   const relevantKeywords = ['tour', 'trip', 'cruise', 'excursion', 'package'];
 
   const filtered = results.filter(
     (r) =>
-      r.link.includes('egypttimetravel.com') &&
+      r.link.includes('EgyptTravelPro.com') &&
       relevantKeywords.some((kw) =>
         r.title.toLowerCase().includes(kw) ||
         r.shortDesc.toLowerCase().includes(kw)

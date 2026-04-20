@@ -1,4 +1,4 @@
-// All 21 Real Egypt Time Travel Shore Excursions Data
+// All 21 Real EgyptTravelPro Shore Excursions Data
 export const excursionsData = {
   // Alexandria Port (6 trips)
   'alexandria-day-tour': {
@@ -498,3 +498,4 @@ export const excursionsData = {
     rating: 4.9, reviews: 856, bestSeller: true
   }
 }
+

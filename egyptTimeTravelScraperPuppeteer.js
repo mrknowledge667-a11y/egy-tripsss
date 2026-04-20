@@ -2,13 +2,13 @@ import puppeteer from 'puppeteer';
 import fs from 'fs/promises';
 
 /**
- * Puppeteer-based scraper for https://egypttimetravel.com/
+ * Puppeteer-based scraper for https://EgyptTravelPro.com/
  * Works even with Cloudflare or timeout blocks by simulating real browser activity.
  * Extracts title, price, image, description, and link for each trip.
  * Groups data by category and saves to scraper/trips.json
  */
 
-const BASE_URL = 'https://egypttimetravel.com';
+const BASE_URL = 'https://EgyptTravelPro.com';
 const OUTPUT_PATH = './trips.json';
 const categories = [
   { name: 'Day Tours', slug: 'day-tours' },
@@ -38,7 +38,7 @@ async function scrapeCategory(page, category) {
     return items;
   });
 
-  const filtered = trips.filter((t) => t.link.includes('egypttimetravel.com'));
+  const filtered = trips.filter((t) => t.link.includes('EgyptTravelPro.com'));
   return filtered.map((t) => ({
     ...t,
     category: category.name,

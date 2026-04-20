@@ -3,7 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { supabase } from '../lib/supabase'
 
-const API_URL = import.meta.env.VITE_API_URL || ''
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001'
 
 const groupTourPackages = [
   {
@@ -427,7 +427,7 @@ const faqs = [
 const reviews = [
   { name: 'Michael & Susan', country: 'USA 🇺🇸', rating: 5, tour: '8 Days Cairo & Nile Cruise', text: 'Everything was perfectly organized. Our guide Ahmed was incredibly knowledgeable. The Nile cruise exceeded expectations - great food, beautiful views, and fascinating temples.', date: 'January 2026' },
   { name: 'Hans Mueller', country: 'Germany 🇩🇪', rating: 5, tour: '10 Days Complete Egypt', text: 'Best value for money! Visited Cairo, Alexandria, and did the Nile cruise. Small group meant we could ask lots of questions. Hotels were excellent quality.', date: 'December 2025' },
-  { name: 'Emma Thompson', country: 'UK 🇬🇧', rating: 5, tour: '6 Days Seniors Tour', text: 'As a 68-year-old solo traveler, I was nervous but the tour was perfect. Good pace, accessible, and I made wonderful friends in the group. Egypt Time Travel took great care of us.', date: 'November 2025' },
+  { name: 'Emma Thompson', country: 'UK 🇬🇧', rating: 5, tour: '6 Days Seniors Tour', text: 'As a 68-year-old solo traveler, I was nervous but the tour was perfect. Good pace, accessible, and I made wonderful friends in the group. EgyptTravelPro took great care of us.', date: 'November 2025' },
   { name: 'Jean-Pierre & Marie', country: 'France 🇫🇷', rating: 5, tour: '12 Days with Desert Oasis', text: 'The White Desert camping was magical! Combined with pyramids and Nile cruise, this was the trip of a lifetime. Professional organization throughout.', date: 'February 2026' },
 ]
 
@@ -509,13 +509,13 @@ const GroupTours = () => {
   const handleStripeCheckout = async (tour) => {
     setCheckoutLoading(true)
     try {
-      const res = await fetch(`${API_URL}/api/create-checkout-session`, {
+      const res = await fetch(`${API_URL}/api/paypal/create-payment`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ carName: tour.title, carId: tour.id, routeFrom: 'Group Tour', routeTo: tour.type, distance: 0, transferDate: formData.travelDate || '', transferTime: '', passengers: formData.travelers || 2, amount: tour.price * (formData.travelers || 2), customerEmail: formData.email || undefined }),
       })
       if (!res.ok) throw new Error('Failed')
       const data = await res.json()
-      if (data.url) window.location.href = data.url
+      if (data.approveUrl) window.location.href = data.approveUrl
     } catch { alert('Payment setup failed. Please try via WhatsApp.') }
     finally { setCheckoutLoading(false) }
   }
@@ -623,6 +623,13 @@ const GroupTours = () => {
                       className="btn btn-outline-primary w-full text-sm"
                     >
                       Book Now
+                    </button>
+                    <button
+                      onClick={() => handleStripeCheckout(tour)}
+                      className="btn bg-secondary-500 hover:bg-secondary-600 text-white text-sm flex items-center justify-center gap-2"
+                    >
+                      <span className="font-black tracking-wide">P</span>
+                      Pay with PayPal
                     </button>
                   </div>
                 </div>
@@ -740,3 +747,4 @@ const GroupTours = () => {
 }
 
 export default GroupTours
+

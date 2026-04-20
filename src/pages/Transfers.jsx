@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 
-const API_URL = import.meta.env.VITE_API_URL || ''
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001'
 
 /* ─── Route Data ────────────────────────────────────────────── */
 const routes = [
@@ -160,6 +160,7 @@ const Transfers = () => {
   const [loading, setLoading] = useState(false)
   const [checkoutLoading, setCheckoutLoading] = useState(false)
   const [paymobLoading, setPaymobLoading] = useState(false)
+  const [paypalLoading, setPaypalLoading] = useState(false)
 
   // Computed price
   const computePrice = (vehicle, route) => {
@@ -307,6 +308,45 @@ const Transfers = () => {
       alert('Paymob payment setup failed. Please try Stripe or WhatsApp booking.')
     } finally {
       setPaymobLoading(false)
+    }
+  }, [selectedVehicle, selectedRoute, estimatedPrice, pickupDate, pickupTime, contact])
+
+  // ── PayPal checkout ──────────────────────────────────────
+  const handlePayPalCheckout = useCallback(async () => {
+    if (!selectedVehicle || !selectedRoute || estimatedPrice <= 0) return
+    setPaypalLoading(true)
+    try {
+      const res = await fetch(`${API_URL}/api/paypal/create-payment`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          carName: selectedVehicle.name,
+          carId: selectedVehicle.id,
+          routeFrom: selectedRoute.from,
+          routeTo: selectedRoute.to,
+          distance: selectedRoute.distance,
+          transferDate: pickupDate,
+          transferTime: pickupTime,
+          passengers: contact.passengers || 2,
+          amount: estimatedPrice,
+          customerEmail: contact.email || undefined,
+        }),
+      })
+
+      if (!res.ok) {
+        const errData = await res.json()
+        throw new Error(errData.error || 'Failed')
+      }
+
+      const data = await res.json()
+      if (data.approveUrl) {
+        window.location.href = data.approveUrl
+      }
+    } catch (err) {
+      console.error('PayPal checkout error:', err)
+      alert('PayPal setup failed. Please try Stripe, Paymob, or WhatsApp booking.')
+    } finally {
+      setPaypalLoading(false)
     }
   }, [selectedVehicle, selectedRoute, estimatedPrice, pickupDate, pickupTime, contact])
 
@@ -736,6 +776,15 @@ const Transfers = () => {
                         </button>
 
                         <button
+                          onClick={handlePayPalCheckout}
+                          disabled={!canSubmitStep3 || paypalLoading}
+                          className="w-full py-3.5 rounded-xl font-semibold text-sm bg-sky-500 hover:bg-sky-600 text-white transition-all flex items-center justify-center gap-2 shadow-lg shadow-sky-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          {paypalLoading ? <span className="animate-spin">⟳</span> : <span className="font-black tracking-wide">P</span>}
+                          Pay with PayPal
+                        </button>
+
+                        <button
                           onClick={handleWhatsApp}
                           className="w-full py-3.5 rounded-xl font-semibold text-sm border-2 border-green-500 text-green-700 hover:bg-green-50 transition-all flex items-center justify-center gap-2"
                         >
@@ -744,7 +793,7 @@ const Transfers = () => {
                       </div>
 
                       <div className="mt-4 flex items-center justify-center gap-3 text-[10px] text-gray-400">
-                        <span>🔒 SSL</span><span>💳 Stripe</span><span>🏧 Paymob</span><span>🏧 Visa/MC</span><span>✅ Verified</span>
+                        <span>🔒 SSL</span><span>💳 Stripe</span><span>🏧 Paymob</span><span>🅿️ PayPal</span><span>✅ Verified</span>
                       </div>
                     </div>
                   </div>

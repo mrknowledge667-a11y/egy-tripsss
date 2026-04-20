@@ -63,6 +63,9 @@ const Navbar = () => {
     }
   }, [])
 
+  // Toggle this to show/hide Blog in navbar without removing code
+  const SHOW_BLOG_NAV_LINK = false
+
   // Navigation links configuration - will use translations
   const navLinks = [
     { to: '/', label: t('navbar.home') },
@@ -71,13 +74,13 @@ const Navbar = () => {
     { to: '/nile-cruises', label: 'Nile Cruises' },
     { to: '/shore-excursions', label: 'Shore Excursions' },
     { to: '/transfers', label: 'Transfers' },
-    { to: '/blog', label: 'Blog' },
+    ...(SHOW_BLOG_NAV_LINK ? [{ to: '/blog', label: 'Blog' }] : []),
   ]
 
   // Contact info for top bar
   const contactInfo = {
     phone: '+20 12 12011887',
-    email: 'info@egypttimetravel.com',
+    email: 'info@EgyptTravelPro.com',
     whatsapp: '+20 12 12011887'
   }
 

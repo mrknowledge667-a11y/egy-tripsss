@@ -96,9 +96,9 @@ const Contact = () => {
         </svg>
       ),
       title: 'Email Us',
-      details: ['info@egypttimetravel.com', 'bookings@egypttimetravel.com'],
+      details: ['info@EgyptTravelPro.com', 'bookings@EgyptTravelPro.com'],
       description: 'We respond within 24 hours',
-      action: 'mailto:info@egypttimetravel.com',
+      action: 'mailto:info@EgyptTravelPro.com',
       actionLabel: 'Send Email',
     },
     {

@@ -17,6 +17,15 @@ const BlogPost = () => {
   const [relatedPosts, setRelatedPosts] = useState([])
   const [loading, setLoading] = useState(true)
 
+  const normalizeReadTime = (value) => {
+    if (typeof value === 'number' && Number.isFinite(value)) return value
+    if (typeof value === 'string') {
+      const match = value.match(/\d+/)
+      return match ? Number(match[0]) : 5
+    }
+    return 5
+  }
+
   useEffect(() => {
     const fetchPost = async () => {
       try {
@@ -49,39 +58,67 @@ const BlogPost = () => {
           throw postError
         }
 
+        if ((postData.is_published ?? postData.published ?? false) !== true) {
+          navigate('/blog')
+          return
+        }
+
         // Transform post data
         const transformedPost = {
           ...postData,
+          thumbnail: postData.thumbnail || postData.image || '',
+          image: postData.image || postData.thumbnail || '',
+          featured: postData.is_featured ?? postData.featured ?? false,
           publishedAt: postData.published_at,
-          readTime: postData.read_time,
+          readTime: normalizeReadTime(postData.read_time),
+          views: Number(postData.views ?? 0),
+          likes: Number(postData.likes ?? 0),
+          content: postData.content || '',
           author: {
-            name: postData.author_name || 'Egypt Travel Pro',
+            name: postData.author_name || postData.author || 'Egypt Travel Pro',
             avatar: postData.author_avatar || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100',
             role: postData.author_role || 'Travel Expert'
           }
         }
         setPost(transformedPost)
 
-        // Fetch related posts
+        // Fetch recent posts and rank related items client-side to avoid fragile OR filters.
         const { data: relatedData } = await supabase
           .from('blog_posts')
           .select('*')
           .neq('id', postData.id)
-          .eq('published', true)
-          .or(`city.eq.${postData.city},tags.cs.{${postData.tags?.join(',') || ''}}`)
-          .limit(3)
+          .order('published_at', { ascending: false })
+          .limit(20)
 
         if (relatedData) {
-          const transformedRelated = relatedData.map(p => ({
+          const postTags = Array.isArray(postData.tags) ? postData.tags : []
+
+          const transformedRelated = relatedData
+            .filter(p => (p.is_published ?? p.published ?? false) === true)
+            .sort((a, b) => {
+              const aTags = Array.isArray(a.tags) ? a.tags : []
+              const bTags = Array.isArray(b.tags) ? b.tags : []
+              const aTagMatch = aTags.some(tag => postTags.includes(tag)) ? 1 : 0
+              const bTagMatch = bTags.some(tag => postTags.includes(tag)) ? 1 : 0
+              const aCityMatch = (a.city && postData.city && a.city === postData.city) ? 1 : 0
+              const bCityMatch = (b.city && postData.city && b.city === postData.city) ? 1 : 0
+              return (bCityMatch + bTagMatch) - (aCityMatch + aTagMatch)
+            })
+            .map(p => ({
             ...p,
+            thumbnail: p.thumbnail || p.image || '',
+            image: p.image || p.thumbnail || '',
+            featured: p.is_featured ?? p.featured ?? false,
             publishedAt: p.published_at,
-            readTime: p.read_time,
+            readTime: normalizeReadTime(p.read_time),
             author: {
-              name: p.author_name || 'Egypt Travel Pro',
+              name: p.author_name || p.author || 'Egypt Travel Pro',
               avatar: p.author_avatar || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100',
               role: p.author_role || 'Travel Expert'
             }
           }))
+            .slice(0, 3)
+
           setRelatedPosts(transformedRelated)
         }
       } catch (error) {
@@ -221,6 +258,9 @@ const BlogPost = () => {
     day: 'numeric'
   })
 
+  const safeViews = Number(post.views ?? 0)
+  const safeLikes = Number(post.likes ?? 0)
+
   return (
     <main className="pt-20 min-h-screen bg-white">
       {/* Hero Image */}
@@ -306,13 +346,13 @@ const BlogPost = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                   </svg>
-                  {post.views.toLocaleString()} views
+                  {safeViews.toLocaleString()} views
                 </span>
                 <span className="flex items-center gap-2">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                   </svg>
-                  {post.likes.toLocaleString()}
+                  {safeLikes.toLocaleString()}
                 </span>
               </div>
             </motion.div>
@@ -334,7 +374,7 @@ const BlogPost = () => {
               transition={{ delay: 0.4 }}
               className="prose prose-lg max-w-none"
             >
-              {renderContent(post.content)}
+              {renderContent(post.content || '')}
             </motion.div>
 
             {/* Tags */}

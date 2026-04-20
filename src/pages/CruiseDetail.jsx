@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link, useParams, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 
-const API_URL = import.meta.env.VITE_API_URL || ''
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001'
 
 // Import the cruises data from NileCruises component
 const cruises = [
@@ -135,9 +135,9 @@ const cruises = [
     image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600',
     gallery: ['https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800','https://images.unsplash.com/photo-1600093463592-8e36ae95ef56?w=800'],
     seoTitle: 'Sonesta Moon Goddess Nile Cruise - Enchanting Luxury Nile Voyage',
-    seoDescription: 'Immerse yourself in charm and luxury aboard the Sonesta Moon Goddess Nile Cruise, one of Egypt\'s most enchanting luxury vessels. Revel in fantastic comfort and exceptional service as you cruise the Nile, creating unforgettable memories with Egypt Time Travel.',
+    seoDescription: 'Immerse yourself in charm and luxury aboard the Sonesta Moon Goddess Nile Cruise, one of Egypt\'s most enchanting luxury vessels. Revel in fantastic comfort and exceptional service as you cruise the Nile, creating unforgettable memories with EgyptTravelPro.',
     highlights: ['Luxor to Aswan','4–5 Days / Nights','Enchanting Luxury','Exceptional Service','Nile Views','Cultural Shows'],
-    description: 'Immerse yourself in charm and luxury aboard the Sonesta Moon Goddess Nile Cruise, one of Egypt\'s most enchanting luxury vessels. Revel in fantastic comfort and exceptional service as you cruise the Nile, creating unforgettable memories with Egypt Time Travel.',
+    description: 'Immerse yourself in charm and luxury aboard the Sonesta Moon Goddess Nile Cruise, one of Egypt\'s most enchanting luxury vessels. Revel in fantastic comfort and exceptional service as you cruise the Nile, creating unforgettable memories with EgyptTravelPro.',
     cabins: [
       { type: 'Deluxe Cabin', size: '25 sqm', price: 810, features: ['Nile view','King bed','Marble bathroom','French balcony'] },
       { type: 'Suite', size: '40 sqm', price: 1100, features: ['Panoramic view','Separate lounge','Jacuzzi','VIP amenities'] },
@@ -164,9 +164,9 @@ const cruises = [
     image: 'https://images.unsplash.com/photo-1600093463592-8e36ae95ef56?w=600',
     gallery: ['https://images.unsplash.com/photo-1600093463592-8e36ae95ef56?w=800','https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=800'],
     seoTitle: 'Movenpick Royal Lotus Nile Cruise - Popular Luxury Nile Experience',
-    seoDescription: 'Join the ranks of satisfied travelers on the highly popular Movenpick Royal Lotus Nile Cruise, renowned for its exceptional luxury and hassle-free vacations. Book your Nile cruise adventure with Egypt Time Travel for an unforgettable experience.',
+    seoDescription: 'Join the ranks of satisfied travelers on the highly popular Movenpick Royal Lotus Nile Cruise, renowned for its exceptional luxury and hassle-free vacations. Book your Nile cruise adventure with EgyptTravelPro for an unforgettable experience.',
     highlights: ['Luxor to Aswan','4–5 Days / Nights','Exceptional Luxury','Hassle-Free','Popular Choice','Full Service'],
-    description: 'Join the ranks of satisfied travelers on the highly popular Movenpick Royal Lotus Nile Cruise, renowned for its exceptional luxury and hassle-free vacations. Book your Nile cruise adventure with Egypt Time Travel for an unforgettable experience.',
+    description: 'Join the ranks of satisfied travelers on the highly popular Movenpick Royal Lotus Nile Cruise, renowned for its exceptional luxury and hassle-free vacations. Book your Nile cruise adventure with EgyptTravelPro for an unforgettable experience.',
     cabins: [
       { type: 'Standard Cabin', size: '22 sqm', price: 750, features: ['Nile view','Twin beds','Private bath','AC'] },
       { type: 'Superior Cabin', size: '28 sqm', price: 850, features: ['Panoramic view','King bed','Balcony','Mini bar'] },
@@ -309,7 +309,7 @@ const CruiseDetail = () => {
   const handleStripeCheckout = async () => {
     setCheckoutLoading(true)
     try {
-      const res = await fetch(`${API_URL}/api/create-checkout-session`, {
+      const res = await fetch(`${API_URL}/api/paypal/create-payment`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -327,7 +327,7 @@ const CruiseDetail = () => {
       })
       if (!res.ok) throw new Error('Failed')
       const data = await res.json()
-      if (data.url) window.location.href = data.url
+      if (data.approveUrl) window.location.href = data.approveUrl
     } catch {
       alert('Payment setup failed. Please try via WhatsApp.')
     } finally {
@@ -575,7 +575,7 @@ const CruiseDetail = () => {
       </section>
 
       {/* Booking Form */}
-      <section id="booking-section" className="py-12 bg-gradient-to-br from-primary-50 to-blue-50">
+      <section id="booking-section" className="py-16 bg-white">
         <div className="container-custom">
           <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl p-8">
             <h2 className="text-3xl font-bold text-gray-900 mb-2 text-center" style={{ fontFamily: "'Playfair Display', serif" }}>Book Your Cruise</h2>
@@ -755,3 +755,4 @@ const CruiseDetail = () => {
 }
 
 export default CruiseDetail
+

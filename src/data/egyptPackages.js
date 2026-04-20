@@ -1849,7 +1849,7 @@ export const packages = [
       "Karnak & Luxor Temples",
       "Abu Simbel"
     ],
-    "description": "Egypt Time Travel offers you 9 days to Cairo with a Nile cruise between Luxor and Aswan to visit the best tourist attractions in Egypt.",
+    "description": "EgyptTravelPro offers you 9 days to Cairo with a Nile cruise between Luxor and Aswan to visit the best tourist attractions in Egypt.",
     "longDescription": "The ultimate romantic Egyptian experience. Two nights aboard an authentic sleeper train combined with a luxury Nile cruise, exploring every major monument and temple of ancient Egypt.",
     "itinerary": [
       {
@@ -2214,7 +2214,7 @@ export const packages = [
       "Red Sea Beach",
       "Sleeper Train Experience"
     ],
-    "description": "Book a great vacation for Egypt with Egypt Time Travel and spend 11 days in Egypt on a tour that includes the best tourist destinations in Egypt; Cairo, Luxor, Aswan, and Hurghada.",
+    "description": "Book a great vacation for Egypt with EgyptTravelPro and spend 11 days in Egypt on a tour that includes the best tourist destinations in Egypt; Cairo, Luxor, Aswan, and Hurghada.",
     "longDescription": "The ultimate Egyptian escape combining historic sites, luxurious cruise travel, authentic sleeper train experience, and Red Sea beach relaxation all in one unforgettable 11-day journey.",
     "itinerary": [
       {
@@ -2355,7 +2355,7 @@ export const packages = [
       "Karnak Temple",
       "Abu Simbel"
     ],
-    "description": "Have you ever dreamed of coming to Egypt for a vacation like no other? Egypt Time Travel offers you 9 days of fun and luxury to visit the best tourist attractions in Egypt.",
+    "description": "Have you ever dreamed of coming to Egypt for a vacation like no other? EgyptTravelPro offers you 9 days of fun and luxury to visit the best tourist attractions in Egypt.",
     "longDescription": "A comprehensive 9-day experience encompassing Egypt's three greatest destinations: Cairo's ancient monuments, Alexandria's Mediterranean character, and an intimate journey down the Nile discovering temples at every turn.",
     "itinerary": [
       {
@@ -9589,7 +9589,7 @@ export const packages = [
       "Unique experience"
     ],
     "description": "Nine-day Christmas tour with sleeper train journey and Nile River cruise for unique holiday experience.",
-    "longDescription": "Egypt Time Travel offers you 9 Christmas days to Cairo with a Nile cruise between Luxor and Aswan! Visit the best tourist attractions in Egypt that must be visited at least once in life. Travel on the romantic Sleeper Train to Aswan, creating memories of a lifetime during the festive holiday season.",
+    "longDescription": "EgyptTravelPro offers you 9 Christmas days to Cairo with a Nile cruise between Luxor and Aswan! Visit the best tourist attractions in Egypt that must be visited at least once in life. Travel on the romantic Sleeper Train to Aswan, creating memories of a lifetime during the festive holiday season.",
     "itinerary": [
       {
         "day": 1,
@@ -9692,7 +9692,7 @@ export const packages = [
       "Complete Egypt"
     ],
     "description": "Nine-day Christmas vacation with Cairo, Alexandria, and luxurious Nile River cruise experience.",
-    "longDescription": "Have you ever dreamed of coming to Egypt for a Christmas vacation like no other? Egypt Time Travel offers you 9 festive days and luxury to visit the best attractions including Pyramids of Giza, Cairo Museum, a cruise between Aswan and Luxor discovering charming Nile banks, and the beautiful city of Alexandria. A complete Egyptian Christmas adventure.",
+    "longDescription": "Have you ever dreamed of coming to Egypt for a Christmas vacation like no other? EgyptTravelPro offers you 9 festive days and luxury to visit the best attractions including Pyramids of Giza, Cairo Museum, a cruise between Aswan and Luxor discovering charming Nile banks, and the beautiful city of Alexandria. A complete Egyptian Christmas adventure.",
     "itinerary": [
       {
         "day": 1,
@@ -10015,7 +10015,7 @@ export const packages = [
       "Christmas discovery"
     ],
     "description": "Ten-day archaeological Christmas tour for history lovers visiting Cairo, Luxor, Aswan, and Abu Simbel.",
-    "longDescription": "For lovers of archaeology, discoveries, and mystery, Egypt Time Travel offers you a 10-day Christmas archaeological tour! Visit the best monuments in Cairo, Luxor, Aswan, and Abu Simbel. This festive holiday combines adventure with ancient wisdom, perfect for those seeking to understand Egypt's profound historical significance.",
+    "longDescription": "For lovers of archaeology, discoveries, and mystery, EgyptTravelPro offers you a 10-day Christmas archaeological tour! Visit the best monuments in Cairo, Luxor, Aswan, and Abu Simbel. This festive holiday combines adventure with ancient wisdom, perfect for those seeking to understand Egypt's profound historical significance.",
     "itinerary": [
       {
         "day": 1,
@@ -10123,7 +10123,7 @@ export const packages = [
       "Hurghada beach"
     ],
     "description": "Eleven-day Christmas tour combining Cairo, Nile cruise by sleeper train, and Hurghada beach resort.",
-    "longDescription": "Book a great Christmas vacation with Egypt Time Travel! Spend 11 festive days on a tour including Cairo, Luxor, Aswan, and Hurghada—the best tourist destinations in Egypt. Travel on the romantic sleeper train, add a Nile cruise, and enjoy relaxing Red Sea beaches. The ultimate comprehensive holiday adventure.",
+    "longDescription": "Book a great Christmas vacation with EgyptTravelPro! Spend 11 festive days on a tour including Cairo, Luxor, Aswan, and Hurghada—the best tourist destinations in Egypt. Travel on the romantic sleeper train, add a Nile cruise, and enjoy relaxing Red Sea beaches. The ultimate comprehensive holiday adventure.",
     "itinerary": [
       {
         "day": 1,
@@ -12293,7 +12293,7 @@ export const packages = [
       "Unique experience"
     ],
     "description": "Easter tour to Cairo with Nile cruise between Luxor and Aswan via sleeper train.",
-    "longDescription": "Egypt Time Travel offers you 9 Easter days to Cairo with a Nile cruise between Luxor and Aswan to visit the best tourist attractions in Egypt that must be visited at least once in life. A unique and memorable Easter holiday experience.",
+    "longDescription": "EgyptTravelPro offers you 9 Easter days to Cairo with a Nile cruise between Luxor and Aswan to visit the best tourist attractions in Egypt that must be visited at least once in life. A unique and memorable Easter holiday experience.",
     "itinerary": [
       {
         "day": 1,
@@ -13517,7 +13517,7 @@ export const packages = [
       "Ancient sites"
     ],
     "description": "7-day safari adventure visiting Cairo, Bahariya, Farafra, and the beautiful White Desert.",
-    "longDescription": "Leave your holiday to Egypt Time Travel for a perfect trip visiting the main attractions of Cairo with the history of the pyramids and sphinx, plus the wonderful oases of Bahariya and Farafra on the border of the picturesque White Desert. Discover why Egypt is the holy mother of the world on this comprehensive desert safari.",
+    "longDescription": "Leave your holiday to EgyptTravelPro for a perfect trip visiting the main attractions of Cairo with the history of the pyramids and sphinx, plus the wonderful oases of Bahariya and Farafra on the border of the picturesque White Desert. Discover why Egypt is the holy mother of the world on this comprehensive desert safari.",
     "itinerary": [
       {
         "day": 1,
@@ -14327,7 +14327,7 @@ export const packages = [
       "Red Sea resort"
     ],
     "description": "11-day vacation combining Cairo, Nile cruise, and Sharm El-Sheikh resort.",
-    "longDescription": "Take a perfect 11-day vacation in Egypt visiting Cairo, Nile Cruise, and Sharm El-Sheikh. Explore the best destinations and book the best 11 days of your life with Egypt Time Travel.",
+    "longDescription": "Take a perfect 11-day vacation in Egypt visiting Cairo, Nile Cruise, and Sharm El-Sheikh. Explore the best destinations and book the best 11 days of your life with EgyptTravelPro.",
     "itinerary": [
       {
         "day": 1,
@@ -14441,7 +14441,7 @@ export const packages = [
       "Aswan exploration"
     ],
     "description": "9-day tour to Cairo with Nile cruise featuring comfortable sleeper train travel.",
-    "longDescription": "Egypt Time Travel offers 9 days to Cairo with a Nile cruise between Luxor and Aswan to visit the best tourist attractions in Egypt that must be visited at least once in life.",
+    "longDescription": "EgyptTravelPro offers 9 days to Cairo with a Nile cruise between Luxor and Aswan to visit the best tourist attractions in Egypt that must be visited at least once in life.",
     "itinerary": [
       {
         "day": 1,
@@ -14762,7 +14762,7 @@ export const packages = [
       "Hurghada beach"
     ],
     "description": "11-day adventure combining Cairo, sleeper train, Nile cruise, and Hurghada resort.",
-    "longDescription": "Book a great Egypt vacation with Egypt Time Travel. Spend 11 days visiting Cairo, Luxor, Aswan, and Hurghada. Discover the hidden secrets of ancient Egypt and enjoy Red Sea beaches.",
+    "longDescription": "Book a great Egypt vacation with EgyptTravelPro. Spend 11 days visiting Cairo, Luxor, Aswan, and Hurghada. Discover the hidden secrets of ancient Egypt and enjoy Red Sea beaches.",
     "itinerary": [
       {
         "day": 1,
@@ -15601,7 +15601,7 @@ export const faqs = [
       "Budget pricing"
     ],
     "description": "Budget 9-day package with Cairo, Nile cruise between Luxor and Aswan.",
-    "longDescription": "Egypt Time Travel offers you 9 Days Egypt budget tour package to Cairo with a Nile cruise between Luxor and Aswan to visit the best tourist attractions in Egypt that must be visited at least once in life—all on budget pricing.",
+    "longDescription": "EgyptTravelPro offers you 9 Days Egypt budget tour package to Cairo with a Nile cruise between Luxor and Aswan to visit the best tourist attractions in Egypt that must be visited at least once in life—all on budget pricing.",
     "itinerary": [
       {
         "day": 1,
@@ -16293,7 +16293,7 @@ export const faqs = [
       "Desert views"
     ],
     "description": "10-day comprehensive deal combining Cairo, 5-night Nile cruise, and Hurghada relaxation.",
-    "longDescription": "Take a perfect vacation and spend 10 days in Egypt on a tour to Cairo and Nile Cruise Hurghada among some of the most beautiful destinations with Egypt Time Travel. Do not miss the opportunity and book the best 10 days in your life with the best prices and the best services.",
+    "longDescription": "Take a perfect vacation and spend 10 days in Egypt on a tour to Cairo and Nile Cruise Hurghada among some of the most beautiful destinations with EgyptTravelPro. Do not miss the opportunity and book the best 10 days in your life with the best prices and the best services.",
     "itinerary": [
       {
         "day": 1,
@@ -17043,7 +17043,7 @@ export const faqs = [
       "Cultural exchange"
     ],
     "description": "9-day group travel package combining Cairo, Alexandria, and Nile cruise experience.",
-    "longDescription": "Have you ever dreamed of coming to Egypt for a vacation like no other? Egypt Time Travel offers you 9 days of fun and luxury to visit the best tourist attractions in Egypt that must be visited, which includes the Pyramids of Giza and the Cairo Museum and a cruise between Aswan to Luxor to discover the charming sights on its banks in addition to visiting the city of Alexandria.",
+    "longDescription": "Have you ever dreamed of coming to Egypt for a vacation like no other? EgyptTravelPro offers you 9 days of fun and luxury to visit the best tourist attractions in Egypt that must be visited, which includes the Pyramids of Giza and the Cairo Museum and a cruise between Aswan to Luxor to discover the charming sights on its banks in addition to visiting the city of Alexandria.",
     "itinerary": [
       {
         "day": 1,
@@ -17147,7 +17147,7 @@ export const faqs = [
       "Group leisure"
     ],
     "description": "11-day group package combining Cairo, sleeper train journey, Nile cruise, and Hurghada beach resort.",
-    "longDescription": "Book a great vacation for Egypt with Egypt Time Travel and spend 11 days in Egypt on a tour that includes the best tourist destinations in Egypt; Cairo, Luxor, Aswan, and Hurghada. Do not miss the opportunity and book the best 11 days in your life to discover the hidden secrets of ancient Egypt.",
+    "longDescription": "Book a great vacation for Egypt with EgyptTravelPro and spend 11 days in Egypt on a tour that includes the best tourist destinations in Egypt; Cairo, Luxor, Aswan, and Hurghada. Do not miss the opportunity and book the best 11 days in your life to discover the hidden secrets of ancient Egypt.",
     "itinerary": [
       {
         "day": 1,
@@ -17823,7 +17823,7 @@ export const faqs = [
       "Giza special event"
     ],
     "description": "3-day Cairo New Year package featuring Pyramids, festive dinners, and New Year midnight celebration.",
-    "longDescription": "Celebrate the New Year in Cairo with a magical 3-day package combining iconic Pyramids, Egyptian museums, and special festive dinners. Ring in 2026 with fellow travelers under the stars of Giza, enjoying the celebration atmosphere and special New Year events organized by Egypt Time Travel.",
+    "longDescription": "Celebrate the New Year in Cairo with a magical 3-day package combining iconic Pyramids, Egyptian museums, and special festive dinners. Ring in 2026 with fellow travelers under the stars of Giza, enjoying the celebration atmosphere and special New Year events organized by EgyptTravelPro.",
     "itinerary": [
       {
         "day": 1,
@@ -20864,3 +20864,4 @@ export const packageReviews = [
     "date": "February 2026"
   }
 ];
+

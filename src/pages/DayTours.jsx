@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react'
 import { Link, useSearchParams, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { supabase } from '../lib/supabase'
+import { submitDualBooking, getWhatsAppMessage } from '../lib/bookingUtils'
 
-const API_URL = import.meta.env.VITE_API_URL || ''
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001'
 
 const tours = [
   {
@@ -1283,7 +1284,7 @@ const tours = [
     link: '#',
     meals: 'None'
   },
-  // CLASSIC EGYPT TOURS - REAL PARTNER TOURS FROM egypttimetravel.com
+  // CLASSIC EGYPT TOURS - REAL PARTNER TOURS FROM EgyptTravelPro.com
   {
     id: '3-days-cairo-tour-package',
     title: '3 Days Cairo Tour Package – Cairo Private Tours',
@@ -1905,10 +1906,10 @@ const tours = [
     meals: 'Breakfast + Lunch + Dinner'
   },
 
-  // HONEYMOON PACKAGES - REAL PARTNER TOURS FROM egypttimetravel.com
+  // HONEYMOON PACKAGES - REAL PARTNER TOURS FROM EgyptTravelPro.com
   // All honeymoon tours removed - only real partner tours to be added here
 
-  // SMALL GROUP TOURS - REAL PARTNER TOURS FROM egypttimetravel.com
+  // SMALL GROUP TOURS - REAL PARTNER TOURS FROM EgyptTravelPro.com
   // All small group tours removed - only real partner tours to be added here
 ]
 
@@ -1941,63 +1942,70 @@ const DayTours = () => {
   const [formSuccess, setFormSuccess] = useState(false)
   const [checkoutLoading, setCheckoutLoading] = useState(false)
   
-  // Database packages state
+  // Database trips state (unified Trip model with type = 'day_tour')
   const [dbTours, setDbTours] = useState([])
   const [dbLoading, setDbLoading] = useState(true)
 
-  // Fetch Day Tour packages from Supabase
+  // Fetch Day Tours from unified trips table in Supabase
   useEffect(() => {
     const fetchDayTours = async () => {
       try {
         const { data, error } = await supabase
-          .from('packages')
+          .from('trips')
           .select('*')
           .eq('is_published', true)
-          .eq('style', 'Day Tour')
+          .eq('type', 'day_tour')
           .order('created_at', { ascending: false })
         
         if (!error && data && data.length > 0) {
-          // Transform Supabase format to match tour format
-          const transformed = data.map(pkg => ({
-            id: pkg.slug || pkg.id,
-            title: pkg.title,
-            city: 'cairo', // default
-            duration: pkg.duration || `${pkg.duration_days} Days`,
-            price: pkg.price,
-            originalPrice: pkg.original_price || pkg.price,
-            image: pkg.image || 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600',
-            gallery: pkg.gallery || [],
-            highlights: pkg.highlights || [],
-            description: pkg.description,
-            itinerary: (pkg.itinerary || []).map((item, idx) => ({
-              time: item.title || `Day ${idx + 1}`,
-              activity: item.details || '',
-            })),
-            included: pkg.included || [],
-            excluded: pkg.excluded || [],
-            rating: pkg.rating || 4.5,
-            reviews: pkg.reviews || 0,
-            bestSeller: pkg.best_seller || false,
-            link: '#',
+          // Transform Supabase trips format to match Day Tours card format
+          const transformed = data.map(trip => ({
+            id: trip.slug || trip.id,
+            title: trip.title,
+            // Optional: later you can store a city field in trips.extra_fields; for now default
+            city: 'cairo',
+            duration: trip.duration_text || (trip.duration ? `${trip.duration} Days` : 'Day Tour'),
+            price: Number(trip.price) || 0,
+            originalPrice: trip.original_price != null ? Number(trip.original_price) : (Number(trip.price) || 0),
+            image: trip.image || 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600',
+            gallery: trip.gallery || [],
+            highlights: trip.highlights || [],
+            description: trip.short_description || trip.description || '',
+            itinerary: Array.isArray(trip.itinerary)
+              ? trip.itinerary.map((item, idx) => ({
+                  time: item.title || item.day || `Day ${idx + 1}`,
+                  activity: item.details || item.description || '',
+                }))
+              : [],
+            included: trip.included || [],
+            excluded: trip.excluded || [],
+            rating: trip.rating || 4.5,
+            reviews: trip.reviews || 0,
+            bestSeller: trip.best_seller || false,
+            link: `/trips/${trip.slug || trip.id}`,
             meals: 'As per itinerary',
             fromDb: true, // mark as database item
           }))
           setDbTours(transformed)
-          console.log('✅ Loaded', data.length, 'Day Tour packages from Supabase')
+          console.log('✅ Loaded', data.length, 'Day Tours from trips table')
+        } else {
+          console.log('ℹ️ No day_tour records in trips table, falling back to static tours')
         }
       } catch (err) {
-        console.log('⚠️ Using static Day Tours data:', err.message)
+        console.log('⚠️ Using static Day Tours data due to error:', err.message)
       }
       setDbLoading(false)
     }
     fetchDayTours()
   }, [])
 
-  // Combine database tours with static tours (database first)
+  // Combine database tours with static tours (database first, static as fallback)
   const allTours = [...dbTours, ...tours.filter(t => !dbTours.find(dt => dt.id === t.id))]
 
   // Special categories that have their own dedicated sections below
-  const specialCategories = ['classic', 'honeymoon', 'smallgroup', 'luxury', 'christmas', 'easter']
+  const specialCategories = ['classic', 'honeymoon']
+  // Hide segmented sections requested by product while keeping underlying trips in data.
+  const showSegmentedCategorySections = false
   // When no filter is set, show only regular city tours (special sections render separately below)
   // When a filter IS set, show that category's tours
   const filteredTours = allTours.filter(t => {
@@ -2005,24 +2013,61 @@ const DayTours = () => {
     return !specialCategories.includes(t.city)
   })
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault()
-    const message = `Hello! I'd like to book a Day Tour:\n\n🏛️ Tour: ${formData.selectedTour}\n👤 Name: ${formData.name}\n📧 Email: ${formData.email}\n📱 Phone: ${formData.phone}\n📅 Date: ${formData.tourDate}\n👥 Travelers: ${formData.travelers}\n📍 Pickup: ${formData.pickupLocation}\n📝 Notes: ${formData.specialRequests || 'None'}`
-    window.open(`https://wa.me/201212011881?text=${encodeURIComponent(message)}`, '_blank')
-    setFormSuccess(true)
-    setTimeout(() => setFormSuccess(false), 5000)
+
+    // Build standardized booking payload for Day Tours
+    const bookingData = {
+      trip_type: 'Day Tour',
+      booking_source: 'day_tours',
+      trip_title: formData.selectedTour,
+      full_name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      travel_date: formData.tourDate,
+      travelers: formData.travelers,
+      pickup_location: formData.pickupLocation,
+      special_requests: formData.specialRequests || '',
+    }
+
+    const whatsappMessage = getWhatsAppMessage(bookingData)
+
+    try {
+      const result = await submitDualBooking(bookingData, whatsappMessage)
+
+      if (result?.success) {
+        setFormSuccess(true)
+        // Optional: reset form after successful submission
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          selectedTour: '',
+          tourDate: '',
+          travelers: 2,
+          pickupLocation: '',
+          specialRequests: '',
+        })
+        setTimeout(() => setFormSuccess(false), 5000)
+      } else {
+        alert(result?.error || 'There was a problem sending your booking. Please try again or contact us on WhatsApp.')
+      }
+    } catch (err) {
+      console.error('Day Tours booking error:', err)
+      alert('Unexpected error while sending your booking. Please try again or contact us on WhatsApp.')
+    }
   }
 
   const handleStripeCheckout = async (tour) => {
     setCheckoutLoading(true)
     try {
-      const res = await fetch(`${API_URL}/api/create-checkout-session`, {
+      const res = await fetch(`${API_URL}/api/paypal/create-payment`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ carName: tour.title, carId: tour.id, routeFrom: 'Day Tour', routeTo: tour.city, distance: 0, transferDate: formData.tourDate || '', transferTime: '', passengers: formData.travelers || 2, amount: tour.price * (formData.travelers || 2), customerEmail: formData.email || undefined }),
       })
       if (!res.ok) throw new Error('Failed')
       const data = await res.json()
-      if (data.url) window.location.href = data.url
+      if (data.approveUrl) window.location.href = data.approveUrl
     } catch { alert('Payment setup failed. Please try via WhatsApp.') }
     finally { setCheckoutLoading(false) }
   }
@@ -2035,7 +2080,7 @@ const DayTours = () => {
     <main className="overflow-hidden">
       {/* Hero */}
       <section className="relative pt-32 pb-20 bg-secondary-500 overflow-hidden">
-        <div className="absolute inset-0 opacity-75"><img src="https://i0.wp.com/egypttimetravel.com/wp-content/uploads/2020/05/Egypt-Time-Travel_0049_Layer-102.jpg?resize=700%2C500&ssl=1" alt="Pyramids of Giza with camel" className="w-full h-full object-cover object-center" /></div>
+        <div className="absolute inset-0 opacity-75"><img src="https://i0.wp.com/EgyptTravelPro.com/wp-content/uploads/2020/05/Egypt-Time-Travel_0049_Layer-102.jpg?resize=700%2C500&ssl=1" alt="Pyramids of Giza with camel" className="w-full h-full object-cover object-center" /></div>
         <div className="relative container-custom text-white">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <nav className="flex items-center gap-2 text-sm text-white/60 mb-6"><Link to="/" className="hover:text-white">Home</Link><span>/</span><span className="text-white">Day Tours</span></nav>
@@ -2058,7 +2103,7 @@ const DayTours = () => {
         <div className="container-custom">
           <div className="overflow-x-auto">
             <div className="flex gap-2 py-4 justify-center pb-4 flex-nowrap">
-              {[{v:'cairo',l:'Cairo & Giza'},{v:'luxor',l:'Luxor'},{v:'aswan',l:'Aswan'},{v:'hurghada',l:'Hurghada'},{v:'sharm',l:'Sharm El-Sheikh'},{v:'smallgroup',l:'👥 Groups'},{v:'luxury',l:'👑 Luxury'},{v:'christmas',l:'🎄 Christmas'},{v:'easter',l:'🐣 Easter'}].map(c => (
+              {[{v:'cairo',l:'Cairo & Giza'},{v:'luxor',l:'Luxor'},{v:'aswan',l:'Aswan'},{v:'hurghada',l:'Hurghada'},{v:'sharm',l:'Sharm El-Sheikh'}].map(c => (
                 <Link key={c.v} to={`/day-tours?city=${c.v}`} className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all border whitespace-nowrap ${cityFilter === c.v ? 'bg-primary-500 text-white border-primary-500' : 'bg-white text-gray-700 border-gray-200 hover:border-primary-300'}`}>{c.l} ({tours.filter(t => t.city === c.v).length})</Link>
               ))}
             </div>
@@ -2106,7 +2151,7 @@ const DayTours = () => {
                     </button>
                     <div className="flex gap-2">
                       <button onClick={() => { setFormData(p => ({ ...p, selectedTour: tour.title })); document.getElementById('booking-form')?.scrollIntoView({ behavior: 'smooth' }) }} className="btn btn-primary text-xs py-2 flex-1">Book</button>
-                      <button onClick={() => handleStripeCheckout(tour)} disabled={checkoutLoading} className="btn bg-purple-600 hover:bg-purple-700 text-white text-xs py-2 flex-1">Pay</button>
+                      <button onClick={() => handleStripeCheckout(tour)} disabled={checkoutLoading} className="btn bg-sky-500 hover:bg-sky-600 text-white text-xs py-2 flex-1 inline-flex items-center justify-center gap-1"><span className="font-black tracking-wide">P</span>Pay with PayPal</button>
                     </div>
                   </div>
                 </div>
@@ -2163,7 +2208,7 @@ const DayTours = () => {
                       </button>
                       <div className="flex gap-2">
                         <button onClick={() => { setFormData(p => ({ ...p, selectedTour: tour.title })); document.getElementById('booking-form')?.scrollIntoView({ behavior: 'smooth' }) }} className="btn btn-primary text-xs py-2 flex-1">Book</button>
-                        <button onClick={() => handleStripeCheckout(tour)} disabled={checkoutLoading} className="btn bg-purple-600 hover:bg-purple-700 text-white text-xs py-2 flex-1">Pay</button>
+                        <button onClick={() => handleStripeCheckout(tour)} disabled={checkoutLoading} className="btn bg-sky-500 hover:bg-sky-600 text-white text-xs py-2 flex-1 inline-flex items-center justify-center gap-1"><span className="font-black tracking-wide">P</span>Pay with PayPal</button>
                       </div>
                     </div>
                   </div>
@@ -2219,7 +2264,7 @@ const DayTours = () => {
                       <button onClick={() => handleViewDetails(tour)} className="btn btn-primary text-xs py-2 w-full">View Details</button>
                       <div className="flex gap-2">
                         <button onClick={() => { setFormData(p => ({ ...p, selectedTour: tour.title })); document.getElementById('booking-form')?.scrollIntoView({ behavior: 'smooth' }) }} className="btn btn-primary text-xs py-2 flex-1">Book</button>
-                        <button onClick={() => handleStripeCheckout(tour)} disabled={checkoutLoading} className="btn bg-purple-600 hover:bg-purple-700 text-white text-xs py-2 flex-1">Pay</button>
+                        <button onClick={() => handleStripeCheckout(tour)} disabled={checkoutLoading} className="btn bg-sky-500 hover:bg-sky-600 text-white text-xs py-2 flex-1 inline-flex items-center justify-center gap-1"><span className="font-black tracking-wide">P</span>Pay with PayPal</button>
                       </div>
                     </div>
                   </div>
@@ -2231,7 +2276,7 @@ const DayTours = () => {
       )}
 
       {/* Small Group Tours Section */}
-      {!cityFilter && (
+      {showSegmentedCategorySections && !cityFilter && (
         <section className="py-16 bg-gradient-to-br from-blue-50 to-cyan-50 border-t-4 border-blue-400">
           <div className="container-custom">
             <div className="text-center mb-12">
@@ -2275,7 +2320,7 @@ const DayTours = () => {
                       <button onClick={() => handleViewDetails(tour)} className="btn btn-primary text-xs py-2 w-full">View Details</button>
                       <div className="flex gap-2">
                         <button onClick={() => { setFormData(p => ({ ...p, selectedTour: tour.title })); document.getElementById('booking-form')?.scrollIntoView({ behavior: 'smooth' }) }} className="btn btn-primary text-xs py-2 flex-1">Book</button>
-                        <button onClick={() => handleStripeCheckout(tour)} disabled={checkoutLoading} className="btn bg-purple-600 hover:bg-purple-700 text-white text-xs py-2 flex-1">Pay</button>
+                        <button onClick={() => handleStripeCheckout(tour)} disabled={checkoutLoading} className="btn bg-sky-500 hover:bg-sky-600 text-white text-xs py-2 flex-1 inline-flex items-center justify-center gap-1"><span className="font-black tracking-wide">P</span>Pay with PayPal</button>
                       </div>
                     </div>
                   </div>
@@ -2287,7 +2332,7 @@ const DayTours = () => {
       )}
 
       {/* Luxury Tours Section */}
-      {!cityFilter && (
+      {showSegmentedCategorySections && !cityFilter && (
         <section className="py-16 bg-gradient-to-br from-yellow-50 to-amber-50 border-t-4 border-yellow-500">
           <div className="container-custom">
             <div className="text-center mb-12">
@@ -2331,7 +2376,7 @@ const DayTours = () => {
                       <button onClick={() => handleViewDetails(tour)} className="btn btn-primary text-xs py-2 w-full">View Details</button>
                       <div className="flex gap-2">
                         <button onClick={() => { setFormData(p => ({ ...p, selectedTour: tour.title })); document.getElementById('booking-form')?.scrollIntoView({ behavior: 'smooth' }) }} className="btn btn-primary text-xs py-2 flex-1">Book</button>
-                        <button onClick={() => handleStripeCheckout(tour)} disabled={checkoutLoading} className="btn bg-purple-600 hover:bg-purple-700 text-white text-xs py-2 flex-1">Pay</button>
+                        <button onClick={() => handleStripeCheckout(tour)} disabled={checkoutLoading} className="btn bg-sky-500 hover:bg-sky-600 text-white text-xs py-2 flex-1 inline-flex items-center justify-center gap-1"><span className="font-black tracking-wide">P</span>Pay with PayPal</button>
                       </div>
                     </div>
                   </div>
@@ -2343,7 +2388,7 @@ const DayTours = () => {
       )}
 
       {/* Christmas & New Year Section */}
-      {!cityFilter && (
+      {showSegmentedCategorySections && !cityFilter && (
         <section className="py-16 bg-gradient-to-br from-green-50 to-red-50 border-t-4 border-green-500">
           <div className="container-custom">
             <div className="text-center mb-12">
@@ -2387,7 +2432,7 @@ const DayTours = () => {
                       <button onClick={() => handleViewDetails(tour)} className="btn btn-primary text-xs py-2 w-full">View Details</button>
                       <div className="flex gap-2">
                         <button onClick={() => { setFormData(p => ({ ...p, selectedTour: tour.title })); document.getElementById('booking-form')?.scrollIntoView({ behavior: 'smooth' }) }} className="btn btn-primary text-xs py-2 flex-1">Book</button>
-                        <button onClick={() => handleStripeCheckout(tour)} disabled={checkoutLoading} className="btn bg-purple-600 hover:bg-purple-700 text-white text-xs py-2 flex-1">Pay</button>
+                        <button onClick={() => handleStripeCheckout(tour)} disabled={checkoutLoading} className="btn bg-sky-500 hover:bg-sky-600 text-white text-xs py-2 flex-1 inline-flex items-center justify-center gap-1"><span className="font-black tracking-wide">P</span>Pay with PayPal</button>
                       </div>
                     </div>
                   </div>
@@ -2399,7 +2444,7 @@ const DayTours = () => {
       )}
 
       {/* Easter Tours Section */}
-      {!cityFilter && (
+      {showSegmentedCategorySections && !cityFilter && (
         <section className="py-16 bg-gradient-to-br from-purple-50 to-pink-50 border-t-4 border-purple-500">
           <div className="container-custom">
             <div className="text-center mb-12">
@@ -2443,7 +2488,7 @@ const DayTours = () => {
                       <button onClick={() => handleViewDetails(tour)} className="btn btn-primary text-xs py-2 w-full">View Details</button>
                       <div className="flex gap-2">
                         <button onClick={() => { setFormData(p => ({ ...p, selectedTour: tour.title })); document.getElementById('booking-form')?.scrollIntoView({ behavior: 'smooth' }) }} className="btn btn-primary text-xs py-2 flex-1">Book</button>
-                        <button onClick={() => handleStripeCheckout(tour)} disabled={checkoutLoading} className="btn bg-purple-600 hover:bg-purple-700 text-white text-xs py-2 flex-1">Pay</button>
+                        <button onClick={() => handleStripeCheckout(tour)} disabled={checkoutLoading} className="btn bg-sky-500 hover:bg-sky-600 text-white text-xs py-2 flex-1 inline-flex items-center justify-center gap-1"><span className="font-black tracking-wide">P</span>Pay with PayPal</button>
                       </div>
                     </div>
                   </div>
@@ -2469,8 +2514,19 @@ const DayTours = () => {
               <div><label className="block text-sm font-medium text-gray-700 mb-2">Email *</label><input type="email" required value={formData.email} onChange={e => setFormData(p => ({ ...p, email: e.target.value }))} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white" placeholder="john@example.com" /></div>
               <div><label className="block text-sm font-medium text-gray-700 mb-2">Phone / WhatsApp</label><input type="tel" value={formData.phone} onChange={e => setFormData(p => ({ ...p, phone: e.target.value }))} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white" placeholder="+1 234 567 8900" /></div>
               <div><label className="block text-sm font-medium text-gray-700 mb-2">Select Tour *</label>
-                <select required value={formData.selectedTour} onChange={e => setFormData(p => ({ ...p, selectedTour: e.target.value }))} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white">
-                  <option value="">Choose a tour</option>{tours.map(t => <option key={t.id} value={t.title}>{t.title} — ${t.price}/person</option>)}
+                <select
+                  required
+                  value={formData.selectedTour}
+                  onChange={e => setFormData(p => ({ ...p, selectedTour: e.target.value }))}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white"
+                >
+                  <option value="">Choose a tour</option>
+                  {allTours.map(t => (
+                    <option key={t.id} value={t.title}>
+                      {t.title} — ${t.price}/person
+                      {t.fromDb ? ' (live)' : ''}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div><label className="block text-sm font-medium text-gray-700 mb-2">Tour Date *</label><input type="date" required value={formData.tourDate} onChange={e => setFormData(p => ({ ...p, tourDate: e.target.value }))} min={new Date().toISOString().split('T')[0]} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white" /></div>

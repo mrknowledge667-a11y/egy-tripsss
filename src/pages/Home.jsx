@@ -197,9 +197,19 @@ const Home = () => {
   const [checkoutLoading, setCheckoutLoading] = useState(false)
   const [customerEmail, setCustomerEmail] = useState('')
 
-  const API_URL = import.meta.env.VITE_API_URL || ''
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001'
 
-  // Handle Stripe Checkout
+  const parseResponseJsonSafe = async (res) => {
+    const text = await res.text()
+    if (!text) return {}
+    try {
+      return JSON.parse(text)
+    } catch {
+      return {}
+    }
+  }
+
+  // Handle PayPal Checkout
   const handleStripeCheckout = useCallback(async () => {
     const car = carFleet.find(c => c.id === selectedCar)
     const route = transferRoutes.find(r => r.id === selectedRoute)
@@ -210,7 +220,7 @@ const Home = () => {
 
     setCheckoutLoading(true)
     try {
-      const res = await fetch(`${API_URL}/api/create-checkout-session`, {
+      const res = await fetch(`${API_URL}/api/paypal/create-payment`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -227,23 +237,61 @@ const Home = () => {
         }),
       })
 
+      const data = await parseResponseJsonSafe(res)
       if (!res.ok) {
-        const errData = await res.json()
-        throw new Error(errData.error || 'Failed to create checkout session')
+        throw new Error(data.error || `Failed to create PayPal session (HTTP ${res.status})`)
       }
-
-      const data = await res.json()
-      // Redirect to Stripe hosted checkout page
-      if (data.url) {
-        window.location.href = data.url
+      if (data.approveUrl) {
+        window.location.href = data.approveUrl
+      } else {
+        throw new Error('PayPal approve URL was not returned by the server')
       }
     } catch (err) {
-      console.error('Stripe checkout error:', err)
+      console.error('PayPal checkout error:', err)
       alert('Payment setup failed. Please try again or book via WhatsApp.')
     } finally {
       setCheckoutLoading(false)
     }
   }, [selectedCar, selectedRoute, transferDate, transferTime, passengers, customerEmail, API_URL])
+
+  const handleTripPayPalCheckout = useCallback(async (trip) => {
+    if (!trip?.price || Number(trip.price) <= 0) return
+
+    setCheckoutLoading(true)
+    try {
+      const res = await fetch(`${API_URL}/api/paypal/create-payment`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          carName: trip.title,
+          carId: trip.id,
+          routeFrom: 'Egypt Tour',
+          routeTo: trip.duration || trip.city || 'Tour',
+          distance: 0,
+          transferDate: '',
+          transferTime: '',
+          passengers: 1,
+          amount: Number(trip.price),
+          customerEmail: customerEmail || undefined,
+        }),
+      })
+
+      const data = await parseResponseJsonSafe(res)
+      if (!res.ok) {
+        throw new Error(data.error || `Failed to create PayPal session (HTTP ${res.status})`)
+      }
+      if (data.approveUrl) {
+        window.location.href = data.approveUrl
+      } else {
+        throw new Error('PayPal approve URL was not returned by the server')
+      }
+    } catch (err) {
+      console.error('Trip PayPal checkout error:', err)
+      alert('Payment setup failed. Please try again or book via WhatsApp.')
+    } finally {
+      setCheckoutLoading(false)
+    }
+  }, [API_URL, customerEmail])
 
   // Why Choose Us features
   const features = [
@@ -465,15 +513,17 @@ const Home = () => {
                       Book Now
                     </Link>
 
-                    {/* Pay Online — purple with credit card icon */}
+                    {/* Pay with PayPal */}
                     <a
-                      href={`https://wa.me/201212011881?text=${encodeURIComponent(`Hi! I'd like to book the "${trip.title}" package ($${trip.price}). Please send me payment details.`)}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault()
+                        handleTripPayPalCheckout(trip)
+                      }}
                       className="btn bg-secondary-500 hover:bg-secondary-600 text-white text-xs px-3 py-1.5 flex items-center gap-1.5 flex-1 justify-center"
                     >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
-                      Pay Online
+                      <span className="font-black tracking-wide">P</span>
+                      PayPal
                     </a>
                   </div>
                 </div>
@@ -555,7 +605,7 @@ const Home = () => {
                 <h3 className="text-2xl font-bold text-gray-900">Luxury Nile Cruise</h3>
               </div>
               <p className="text-gray-700 text-lg leading-relaxed mb-6">
-                See much of this beautiful world has to offer. Watch as the years of one of the greatest and oldest civilizations that ever existed pass by taking one of our luxury cruises on the Nile. Enjoy a trip to the heart of Egypt and take the Nile Cruise between Luxor and Aswan or a Lake Nasser Cruise. It is the best way to see the incredible ruins of ancient Egypt and modern life along the banks of the Nile that have brought Egypt to life for thousands of years. Explore Egypt by water on Luxury Egypt Nile Cruise 2020, Egypt Time Travel offers several 5 Star Nile Cruises between Luxor, Aswan, Edfu, and Kom Ombo and also from Cairo to Upper Egypt. Decide for yourself with which Nile cruise ship you want to travel and don't miss the chance to visit the breathtaking sights of Egypt such as Luxor Temple, Karnak Temple, Edfu Temple, Kom Ombo Temple, and Aswan Dam. There are Nile cruise ships with a French balcony or only with a window. After the Nile cruise, you can book a bathing stay extra. With an optional bathing stay, you can relax on the beach or enjoy the colorful underwater world of the sea. Book your Luxury Nile cruise now with Egypt Time Travel. The experts are always there for you.
+                See much of this beautiful world has to offer. Watch as the years of one of the greatest and oldest civilizations that ever existed pass by taking one of our luxury cruises on the Nile. Enjoy a trip to the heart of Egypt and take the Nile Cruise between Luxor and Aswan or a Lake Nasser Cruise. It is the best way to see the incredible ruins of ancient Egypt and modern life along the banks of the Nile that have brought Egypt to life for thousands of years. Explore Egypt by water on Luxury Egypt Nile Cruise 2020, EgyptTravelPro offers several 5 Star Nile Cruises between Luxor, Aswan, Edfu, and Kom Ombo and also from Cairo to Upper Egypt. Decide for yourself with which Nile cruise ship you want to travel and don't miss the chance to visit the breathtaking sights of Egypt such as Luxor Temple, Karnak Temple, Edfu Temple, Kom Ombo Temple, and Aswan Dam. There are Nile cruise ships with a French balcony or only with a window. After the Nile cruise, you can book a bathing stay extra. With an optional bathing stay, you can relax on the beach or enjoy the colorful underwater world of the sea. Book your Luxury Nile cruise now with EgyptTravelPro. The experts are always there for you.
               </p>
               <Link to="/nile-cruises" className="btn btn-primary">
                 View Trips

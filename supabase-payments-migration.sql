@@ -1,5 +1,5 @@
 -- ============================================================
--- Egypt Time Travel — Payments Table Migration (Stripe)
+-- EgyptTravelPro — Payments Table Migration (Stripe)
 -- Run this in your Supabase SQL Editor:
 -- https://supabase.com/dashboard → SQL Editor → New Query → Paste → Run
 -- ============================================================

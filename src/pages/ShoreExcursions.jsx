@@ -3,7 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { supabase } from '../lib/supabase'
 
-const API_URL = import.meta.env.VITE_API_URL || ''
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001'
 
 const excursions = [
   // Alexandria Port Excursions (6 trips)
@@ -29,7 +29,7 @@ const excursions = [
     included: ['Private AC vehicle','Licensed guide','All entrance fees','Lunch','Water','Port transfers','Ship guarantee'],
     excluded: ['Tips','Personal expenses','Beverages'],
     rating: 4.8, reviews: 645, bestSeller: true,
-    link: 'https://egypttimetravel.com/tour/alexandria-day-tour-from-alexandria-port/'
+    link: 'https://EgyptTravelPro.com/tour/alexandria-day-tour-from-alexandria-port/'
   },
   {
     id: 'alex-cairo-city-tour',
@@ -54,7 +54,7 @@ const excursions = [
     included: ['Private AC vehicle','Egyptologist guide','All entrance fees','Lunch','Water','Port transfers','Ship guarantee'],
     excluded: ['Tips','Personal items'],
     rating: 4.9, reviews: 523, bestSeller: false,
-    link: 'https://egypttimetravel.com/cairo-city-tour-from-alexandria-port'
+    link: 'https://EgyptTravelPro.com/cairo-city-tour-from-alexandria-port'
   },
   {
     id: 'alex-memphis-sakkara',
@@ -78,7 +78,7 @@ const excursions = [
     included: ['Private AC vehicle','Expert guide','All entrance fees','Lunch','Water','Port transfers','Ship guarantee'],
     excluded: ['Tips','Personal expenses'],
     rating: 4.7, reviews: 412, bestSeller: false,
-    link: 'https://egypttimetravel.com/memphis-and-sakkara-day-tour-from-alexandria-port'
+    link: 'https://EgyptTravelPro.com/memphis-and-sakkara-day-tour-from-alexandria-port'
   },
   {
     id: 'alex-memphis-sakkara-giza',
@@ -103,7 +103,7 @@ const excursions = [
     included: ['Private AC vehicle','Egyptologist guide','All entrance fees','Lunch','Water','Port transfers','Ship guarantee'],
     excluded: ['Tips','Inside pyramid entry','Personal items'],
     rating: 4.9, reviews: 782, bestSeller: true,
-    link: 'https://egypttimetravel.com/memphis-saqqara-and-pyramids-of-giza-tour-from-alexandria-port'
+    link: 'https://EgyptTravelPro.com/memphis-saqqara-and-pyramids-of-giza-tour-from-alexandria-port'
   },
   {
     id: 'alex-dahshur-sakkara',
@@ -127,7 +127,7 @@ const excursions = [
     included: ['Private AC vehicle','Licensed guide','All entrance fees','Lunch','Water','Port transfers','Ship guarantee'],
     excluded: ['Tips','Personal expenses'],
     rating: 4.8, reviews: 356, bestSeller: false,
-    link: 'https://egypttimetravel.com/tour-of-the-pyramids-of-dahshur-and-saqqara-from-alexandria-port'
+    link: 'https://EgyptTravelPro.com/tour-of-the-pyramids-of-dahshur-and-saqqara-from-alexandria-port'
   },
   {
     id: 'alex-giza-museum',
@@ -151,7 +151,7 @@ const excursions = [
     included: ['Private AC vehicle','Egyptologist guide','All entrance fees','Lunch','Water','Port transfers','Ship guarantee'],
     excluded: ['Tips','Inside pyramid entry','Personal items'],
     rating: 4.9, reviews: 698, bestSeller: true,
-    link: 'https://egypttimetravel.com/tour/cairo-tour-from-alexandria-port/'
+    link: 'https://EgyptTravelPro.com/tour/cairo-tour-from-alexandria-port/'
   },
   // Port Said Excursions (6 trips)
   {
@@ -176,7 +176,7 @@ const excursions = [
     included: ['Private vehicle','Licensed guide','All entrance fees','Lunch','Water','Port pickup/dropoff','Ship guarantee'],
     excluded: ['Tips','Personal items'],
     rating: 4.8, reviews: 534, bestSeller: true,
-    link: 'https://egypttimetravel.com/tour/cairo-tour-from-port-said-port/'
+    link: 'https://EgyptTravelPro.com/tour/cairo-tour-from-port-said-port/'
   },
   {
     id: 'port-said-saqqara-giza',
@@ -201,7 +201,7 @@ const excursions = [
     included: ['Private vehicle','Egyptologist guide','All entrance fees','Lunch','Water','Port transfers','Ship guarantee'],
     excluded: ['Tips','Personal expenses'],
     rating: 4.9, reviews: 467, bestSeller: false,
-    link: 'https://egypttimetravel.com/tour/saqqara-and-giza-pyramids-tour-from-port-said/'
+    link: 'https://EgyptTravelPro.com/tour/saqqara-and-giza-pyramids-tour-from-port-said/'
   },
   {
     id: 'port-said-alexandria-day',
@@ -226,7 +226,7 @@ const excursions = [
     included: ['Private AC vehicle','Licensed guide','All entrance fees','Lunch','Water','Port transfers','Ship guarantee'],
     excluded: ['Tips','Personal expenses','Beverages'],
     rating: 4.7, reviews: 389, bestSeller: false,
-    link: 'https://egypttimetravel.com/alexandria-day-tour-from-port-said'
+    link: 'https://EgyptTravelPro.com/alexandria-day-tour-from-port-said'
   },
   {
     id: 'port-said-cairo-city',
@@ -251,7 +251,7 @@ const excursions = [
     included: ['Private transport','Expert guide','All tickets','Lunch','Water','Port transfers','Ship guarantee'],
     excluded: ['Tips','Personal expenses'],
     rating: 4.8, reviews: 398, bestSeller: false,
-    link: 'https://egypttimetravel.com/cairo-city-tour-from-port-said'
+    link: 'https://EgyptTravelPro.com/cairo-city-tour-from-port-said'
   },
   {
     id: 'port-said-memphis-sakkara',
@@ -275,7 +275,7 @@ const excursions = [
     included: ['Private vehicle','Expert guide','All entrance fees','Lunch','Water','Port transfers','Ship guarantee'],
     excluded: ['Tips','Personal expenses'],
     rating: 4.7, reviews: 342, bestSeller: false,
-    link: 'https://egypttimetravel.com/memphis-and-sakkara-day-tour-from-port-said'
+    link: 'https://EgyptTravelPro.com/memphis-and-sakkara-day-tour-from-port-said'
   },
   {
     id: 'port-said-dahshur-sakkara',
@@ -299,7 +299,7 @@ const excursions = [
     included: ['Private AC vehicle','Licensed guide','All entrance fees','Lunch','Water','Port transfers','Ship guarantee'],
     excluded: ['Tips','Personal expenses'],
     rating: 4.8, reviews: 298, bestSeller: false,
-    link: 'https://egypttimetravel.com/tour-of-the-pyramids-of-dahshur-and-saqqara-from-port-said'
+    link: 'https://EgyptTravelPro.com/tour-of-the-pyramids-of-dahshur-and-saqqara-from-port-said'
   },
   // Safaga Port Excursions (7 trips)
   {
@@ -325,7 +325,7 @@ const excursions = [
     included: ['Private AC vehicle','Egyptologist guide','All entrance fees','Lunch','Water','Port transfers','Ship guarantee'],
     excluded: ['Tips','Optional tomb entries','Beverages'],
     rating: 4.9, reviews: 923, bestSeller: true,
-    link: 'https://egypttimetravel.com/tour/luxor-day-tour-from-safaga-port/'
+    link: 'https://EgyptTravelPro.com/tour/luxor-day-tour-from-safaga-port/'
   },
   {
     id: 'safaga-snorkeling',
@@ -349,7 +349,7 @@ const excursions = [
     included: ['Boat trip','Snorkeling equipment','Life jackets','Lunch','Drinks','Port pickup/dropoff','Ship guarantee'],
     excluded: ['Tips','Underwater photos','Personal items'],
     rating: 4.8, reviews: 612, bestSeller: false,
-    link: 'https://egypttimetravel.com/snorkeling-trip-from-safaga-port'
+    link: 'https://EgyptTravelPro.com/snorkeling-trip-from-safaga-port'
   },
   {
     id: 'safaga-semi-submarine',
@@ -372,7 +372,7 @@ const excursions = [
     included: ['Semi-submarine ride','Refreshments','Life jackets','Port transfers','Ship guarantee'],
     excluded: ['Tips','Personal items'],
     rating: 4.7, reviews: 445, bestSeller: false,
-    link: 'https://egypttimetravel.com/semi-submarine-tour-from-safaga-port'
+    link: 'https://EgyptTravelPro.com/semi-submarine-tour-from-safaga-port'
   },
   {
     id: 'safaga-jeep-safari',
@@ -395,7 +395,7 @@ const excursions = [
     included: ['Jeep safari','Camel ride','Bedouin dinner','Tea','Port transfers','Ship guarantee'],
     excluded: ['Tips','Personal items','Extra beverages'],
     rating: 4.8, reviews: 567, bestSeller: false,
-    link: 'https://egypttimetravel.com/jeep-safari-bedouin-dinner-safaga-port'
+    link: 'https://EgyptTravelPro.com/jeep-safari-bedouin-dinner-safaga-port'
   },
   {
     id: 'safaga-quad-sunset',
@@ -418,7 +418,7 @@ const excursions = [
     included: ['Quad bike rental','Safety equipment','Guide','Tea','Port transfers','Ship guarantee'],
     excluded: ['Tips','Personal items','Photos'],
     rating: 4.9, reviews: 489, bestSeller: false,
-    link: 'https://egypttimetravel.com/quad-bike-sunset-safaga-port'
+    link: 'https://EgyptTravelPro.com/quad-bike-sunset-safaga-port'
   },
   {
     id: 'safaga-hot-air-balloon',
@@ -442,7 +442,7 @@ const excursions = [
     included: ['Hot air balloon ride','Transportation','Certificate','Snacks','Port transfers','Ship guarantee'],
     excluded: ['Tips','Personal items'],
     rating: 5.0, reviews: 789, bestSeller: true,
-    link: 'https://egypttimetravel.com/hot-air-balloon-luxor-safaga-port'
+    link: 'https://EgyptTravelPro.com/hot-air-balloon-luxor-safaga-port'
   },
   {
     id: 'safaga-luxor-overnight',
@@ -468,7 +468,7 @@ const excursions = [
     included: ['Hotel accommodation','All meals','Egyptologist guide','All entrance fees','Transport','Port transfers','Ship guarantee'],
     excluded: ['Tips','Personal items','Beverages'],
     rating: 4.9, reviews: 345, bestSeller: false,
-    link: 'https://egypttimetravel.com/overnight-luxor-tour-safaga-port'
+    link: 'https://EgyptTravelPro.com/overnight-luxor-tour-safaga-port'
   },
   // Sokhna Port Excursions (2 trips)
   {
@@ -494,7 +494,7 @@ const excursions = [
     included: ['Private AC vehicle','Egyptologist guide','All entrance fees','Lunch','Water','Port transfers','Ship guarantee'],
     excluded: ['Tips','Inside pyramid entry','Shopping','Personal items'],
     rating: 4.9, reviews: 789, bestSeller: true,
-    link: 'https://egypttimetravel.com/giza-pyramids-museum-khan-sokhna-port'
+    link: 'https://EgyptTravelPro.com/giza-pyramids-museum-khan-sokhna-port'
   },
   {
     id: 'sokhna-giza-memphis-sakkara',
@@ -520,7 +520,7 @@ const excursions = [
     included: ['Private AC vehicle','Egyptologist guide','All entrance fees','Lunch','Water','Port transfers','Ship guarantee'],
     excluded: ['Tips','Inside pyramid entry','Personal expenses'],
     rating: 4.9, reviews: 856, bestSeller: true,
-    link: 'https://egypttimetravel.com/giza-memphis-sakkara-sokhna-port'
+    link: 'https://EgyptTravelPro.com/giza-memphis-sakkara-sokhna-port'
   },
 ]
 
@@ -560,10 +560,10 @@ const ShoreExcursions = () => {
     const fetchShoreExcursions = async () => {
       try {
         const { data, error } = await supabase
-          .from('packages')
+          .from('trips')
           .select('*')
           .eq('is_published', true)
-          .eq('style', 'Shore Excursion')
+          .eq('type', 'short_excursion')
           .order('created_at', { ascending: false })
         
         if (!error && data && data.length > 0) {
@@ -617,13 +617,13 @@ const ShoreExcursions = () => {
   const handleStripeCheckout = async (exc) => {
     setCheckoutLoading(true)
     try {
-      const res = await fetch(`${API_URL}/api/create-checkout-session`, {
+      const res = await fetch(`${API_URL}/api/paypal/create-payment`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ carName: exc.title, carId: exc.id, routeFrom: 'Shore Excursion', routeTo: exc.port, distance: 0, transferDate: formData.arrivalDate || '', transferTime: '', passengers: formData.travelers || 2, amount: exc.price * (formData.travelers || 2), customerEmail: formData.email || undefined }),
       })
       if (!res.ok) throw new Error('Failed')
       const data = await res.json()
-      if (data.url) window.location.href = data.url
+      if (data.approveUrl) window.location.href = data.approveUrl
     } catch { alert('Payment setup failed. Please try via WhatsApp.') }
     finally { setCheckoutLoading(false) }
   }
@@ -632,7 +632,7 @@ const ShoreExcursions = () => {
     <main className="overflow-hidden">
       {/* Hero */}
       <section className="relative pt-32 pb-20 bg-secondary-500 overflow-hidden">
-        <div className="absolute inset-0 opacity-75"><img src="https://i0.wp.com/egypttimetravel.com/wp-content/uploads/2021/06/page-header-52.jpg?resize=1920%2C900&ssl=1" alt="Egyptian coastal port with cruise ships" className="w-full h-full object-cover object-center" /></div>
+        <div className="absolute inset-0 opacity-75"><img src="https://i0.wp.com/EgyptTravelPro.com/wp-content/uploads/2021/06/page-header-52.jpg?resize=1920%2C900&ssl=1" alt="Egyptian coastal port with cruise ships" className="w-full h-full object-cover object-center" /></div>
         <div className="relative container-custom text-white">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <nav className="flex items-center gap-2 text-sm text-white/60 mb-6"><Link to="/" className="hover:text-white">Home</Link><span>/</span><span className="text-white">Shore Excursions</span></nav>
@@ -761,6 +761,13 @@ const ShoreExcursions = () => {
                     >
                       Book Now
                     </button>
+                    <button
+                      onClick={() => handleStripeCheckout(exc)}
+                      className="btn bg-secondary-500 hover:bg-secondary-600 text-white w-full text-sm flex items-center justify-center gap-2"
+                    >
+                      <span className="font-black tracking-wide">P</span>
+                      Pay with PayPal
+                    </button>
                   </div>
                 </div>
               </motion.div>
@@ -869,6 +876,13 @@ const ShoreExcursions = () => {
                       className="btn btn-outline-primary w-full text-sm"
                     >
                       Book Now
+                    </button>
+                    <button
+                      onClick={() => handleStripeCheckout(exc)}
+                      className="btn bg-secondary-500 hover:bg-secondary-600 text-white w-full text-sm flex items-center justify-center gap-2"
+                    >
+                      <span className="font-black tracking-wide">P</span>
+                      Pay with PayPal
                     </button>
                   </div>
                 </div>
@@ -979,6 +993,13 @@ const ShoreExcursions = () => {
                     >
                       Book Now
                     </button>
+                    <button
+                      onClick={() => handleStripeCheckout(exc)}
+                      className="btn bg-secondary-500 hover:bg-secondary-600 text-white w-full text-sm flex items-center justify-center gap-2"
+                    >
+                      <span className="font-black tracking-wide">P</span>
+                      Pay with PayPal
+                    </button>
                   </div>
                 </div>
               </motion.div>
@@ -1088,6 +1109,13 @@ const ShoreExcursions = () => {
                     >
                       Book Now
                     </button>
+                    <button
+                      onClick={() => handleStripeCheckout(exc)}
+                      className="btn bg-secondary-500 hover:bg-secondary-600 text-white w-full text-sm flex items-center justify-center gap-2"
+                    >
+                      <span className="font-black tracking-wide">P</span>
+                      Pay with PayPal
+                    </button>
                   </div>
                 </div>
               </motion.div>
@@ -1113,7 +1141,7 @@ const ShoreExcursions = () => {
               <div><label className="block text-sm font-medium text-gray-700 mb-2">Cruise Ship Name *</label><input type="text" required value={formData.shipName} onChange={e => setFormData(p => ({ ...p, shipName: e.target.value }))} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white" placeholder="e.g. MSC Bellissima" /></div>
               <div><label className="block text-sm font-medium text-gray-700 mb-2">Select Excursion *</label>
                 <select required value={formData.selectedExcursion} onChange={e => setFormData(p => ({ ...p, selectedExcursion: e.target.value }))} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white">
-                  <option value="">Choose an excursion</option>{excursions.map(e => <option key={e.id} value={e.title}>{e.title} — ${e.price}/pp</option>)}
+                  <option value="">Choose an excursion</option>{allExcursions.map(e => <option key={e.id} value={e.title}>{e.title} — ${e.price}/pp</option>)}
                 </select>
               </div>
               <div><label className="block text-sm font-medium text-gray-700 mb-2">Cabin Number</label><input type="text" value={formData.cabinNumber} onChange={e => setFormData(p => ({ ...p, cabinNumber: e.target.value }))} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white" placeholder="e.g. 8042" /></div>

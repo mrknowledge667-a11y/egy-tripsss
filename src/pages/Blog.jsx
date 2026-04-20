@@ -30,24 +30,31 @@ const Blog = () => {
         const { data, error } = await supabase
           .from('blog_posts')
           .select('*')
-          .eq('published', true)
           .order('published_at', { ascending: false })
 
         if (error) throw error
         
         // Transform data to match expected format
         if (data && data.length > 0) {
-          const transformedPosts = data.map(post => ({
+          const transformedPosts = data
+            .filter(post => (post.is_published ?? post.published ?? false) === true)
+            .map(post => ({
             ...post,
+            thumbnail: post.thumbnail || post.image || '',
+            image: post.image || post.thumbnail || '',
+            featured: post.is_featured ?? post.featured ?? false,
             publishedAt: post.published_at,
             readTime: post.read_time,
             author: {
-              name: post.author_name || 'Egypt Travel Pro',
+              name: post.author_name || post.author || 'Egypt Travel Pro',
               avatar: post.author_avatar || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100',
               role: post.author_role || 'Travel Expert'
             }
           }))
-          setBlogPosts(transformedPosts)
+
+          if (transformedPosts.length > 0) {
+            setBlogPosts(transformedPosts)
+          }
         }
       } catch (error) {
         console.error('Error fetching blog posts:', error)
@@ -78,7 +85,7 @@ const Blog = () => {
       
       return matchesCity && matchesActivity && matchesSeason && matchesSearch
     })
-  }, [selectedCity, selectedActivity, selectedSeason, searchQuery])
+  }, [blogPosts, selectedCity, selectedActivity, selectedSeason, searchQuery])
 
   // Featured posts (city guides)
   const featuredPosts = blogPosts.filter(post => post.featured)

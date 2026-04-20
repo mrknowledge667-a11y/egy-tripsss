@@ -90,6 +90,9 @@ export default function AdminDataCleanup() {
 
   const invalidPackages = packages.filter(p => !isValidStyle(p.style))
   const invalidTrips = trips.filter(t => !isValidStyle(t.travel_style))
+  const hiddenSectionOptions = new Set(['Small Group', 'luxury'])
+  const visibleSections = VALID_SECTIONS.filter(s => !hiddenSectionOptions.has(s.value))
+  const visibleStyleOptions = STYLE_OPTIONS.filter(s => !hiddenSectionOptions.has(s))
 
   // Migrate a single package to a valid style
   const migratePackage = async (pkg, newStyle) => {
@@ -226,7 +229,7 @@ export default function AdminDataCleanup() {
       <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-8">
         <h3 className="font-semibold text-blue-800 mb-2">📋 Valid Sections (Connected to Frontend)</h3>
         <div className="flex flex-wrap gap-2">
-          {VALID_SECTIONS.map(s => (
+          {visibleSections.map(s => (
             <span 
               key={s.value}
               className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm"
@@ -275,7 +278,7 @@ export default function AdminDataCleanup() {
                     defaultValue={getMigrationTarget(pkg.style)}
                     onChange={(e) => migratePackage(pkg, e.target.value)}
                   >
-                    {STYLE_OPTIONS.map(s => (
+                    {visibleStyleOptions.map(s => (
                       <option key={s} value={s}>{s}</option>
                     ))}
                   </select>
@@ -323,7 +326,7 @@ export default function AdminDataCleanup() {
                     defaultValue={getMigrationTarget(trip.travel_style)}
                     onChange={(e) => migrateTrip(trip, e.target.value)}
                   >
-                    {STYLE_OPTIONS.map(s => (
+                    {visibleStyleOptions.map(s => (
                       <option key={s} value={s}>{s}</option>
                     ))}
                   </select>
@@ -349,7 +352,7 @@ export default function AdminDataCleanup() {
       <div className="bg-gray-50 rounded-xl p-6 mt-8">
         <h3 className="font-semibold text-gray-800 mb-4">📍 Section → Frontend Page Mapping</h3>
         <div className="grid gap-2">
-          {VALID_SECTIONS.map(s => (
+          {visibleSections.map(s => (
             <div key={s.value} className="flex items-center justify-between py-2 border-b border-gray-200 last:border-0">
               <div className="flex items-center gap-3">
                 <span className="text-lg">{s.label.split(' ')[0]}</span>

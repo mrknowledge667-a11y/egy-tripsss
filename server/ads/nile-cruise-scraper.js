@@ -1,11 +1,11 @@
 /**
- * Nile Cruise Scraper — egypttimetravel.com/egypt-nile-cruise/
+ * Nile Cruise Scraper — EgyptTravelPro.com/egypt-nile-cruise/
  * 
  * Attempts live scraping with Cheerio, falls back to curated data
- * matching the real Nile cruise offerings from Egypt Time Travel.
+ * matching the real Nile cruise offerings from EgyptTravelPro.
  * 
  * All cruise data is structured for SEO (schema.org TouristTrip / Product)
- * with real photos from egypttimetravel.com.
+ * with real photos from EgyptTravelPro.com.
  */
 
 import * as cheerio from 'cheerio'
@@ -15,67 +15,67 @@ let cachedCruises = null
 let cacheTimestamp = 0
 const CACHE_TTL = 60 * 60 * 1000 // 1 hour
 
-// ─── Real Photos from egypttimetravel.com ────────────────────
+// ─── Real Photos from EgyptTravelPro.com ────────────────────
 const CRUISE_IMAGES = {
   movenpick_royal_lily: [
-    'https://www.egypttimetravel.com/uploads/media/movenpick-royal-lily-nile-cruise-1.jpg',
-    'https://www.egypttimetravel.com/uploads/media/movenpick-royal-lily-nile-cruise-2.jpg',
-    'https://www.egypttimetravel.com/uploads/media/movenpick-royal-lily-nile-cruise-3.jpg',
+    'https://www.EgyptTravelPro.com/uploads/media/movenpick-royal-lily-nile-cruise-1.jpg',
+    'https://www.EgyptTravelPro.com/uploads/media/movenpick-royal-lily-nile-cruise-2.jpg',
+    'https://www.EgyptTravelPro.com/uploads/media/movenpick-royal-lily-nile-cruise-3.jpg',
   ],
   movenpick_royal_lotus: [
-    'https://www.egypttimetravel.com/uploads/media/movenpick-royal-lotus-nile-cruise-1.jpg',
-    'https://www.egypttimetravel.com/uploads/media/movenpick-royal-lotus-nile-cruise-2.jpg',
-    'https://www.egypttimetravel.com/uploads/media/movenpick-royal-lotus-nile-cruise-3.jpg',
+    'https://www.EgyptTravelPro.com/uploads/media/movenpick-royal-lotus-nile-cruise-1.jpg',
+    'https://www.EgyptTravelPro.com/uploads/media/movenpick-royal-lotus-nile-cruise-2.jpg',
+    'https://www.EgyptTravelPro.com/uploads/media/movenpick-royal-lotus-nile-cruise-3.jpg',
   ],
   sonesta_star_goddess: [
-    'https://www.egypttimetravel.com/uploads/media/sonesta-star-goddess-nile-cruise-1.jpg',
-    'https://www.egypttimetravel.com/uploads/media/sonesta-star-goddess-nile-cruise-2.jpg',
-    'https://www.egypttimetravel.com/uploads/media/sonesta-star-goddess-nile-cruise-3.jpg',
+    'https://www.EgyptTravelPro.com/uploads/media/sonesta-star-goddess-nile-cruise-1.jpg',
+    'https://www.EgyptTravelPro.com/uploads/media/sonesta-star-goddess-nile-cruise-2.jpg',
+    'https://www.EgyptTravelPro.com/uploads/media/sonesta-star-goddess-nile-cruise-3.jpg',
   ],
   sonesta_moon_goddess: [
-    'https://www.egypttimetravel.com/uploads/media/sonesta-moon-goddess-nile-cruise-1.jpg',
-    'https://www.egypttimetravel.com/uploads/media/sonesta-moon-goddess-nile-cruise-2.jpg',
-    'https://www.egypttimetravel.com/uploads/media/sonesta-moon-goddess-nile-cruise-3.jpg',
+    'https://www.EgyptTravelPro.com/uploads/media/sonesta-moon-goddess-nile-cruise-1.jpg',
+    'https://www.EgyptTravelPro.com/uploads/media/sonesta-moon-goddess-nile-cruise-2.jpg',
+    'https://www.EgyptTravelPro.com/uploads/media/sonesta-moon-goddess-nile-cruise-3.jpg',
   ],
   ms_mayfair: [
-    'https://www.egypttimetravel.com/uploads/media/ms-mayfair-nile-cruise-1.jpg',
-    'https://www.egypttimetravel.com/uploads/media/ms-mayfair-nile-cruise-2.jpg',
-    'https://www.egypttimetravel.com/uploads/media/ms-mayfair-nile-cruise-3.jpg',
+    'https://www.EgyptTravelPro.com/uploads/media/ms-mayfair-nile-cruise-1.jpg',
+    'https://www.EgyptTravelPro.com/uploads/media/ms-mayfair-nile-cruise-2.jpg',
+    'https://www.EgyptTravelPro.com/uploads/media/ms-mayfair-nile-cruise-3.jpg',
   ],
   ms_chateau_lafayette: [
-    'https://www.egypttimetravel.com/uploads/media/ms-chateau-lafayette-nile-cruise-1.jpg',
-    'https://www.egypttimetravel.com/uploads/media/ms-chateau-lafayette-nile-cruise-2.jpg',
-    'https://www.egypttimetravel.com/uploads/media/ms-chateau-lafayette-nile-cruise-3.jpg',
+    'https://www.EgyptTravelPro.com/uploads/media/ms-chateau-lafayette-nile-cruise-1.jpg',
+    'https://www.EgyptTravelPro.com/uploads/media/ms-chateau-lafayette-nile-cruise-2.jpg',
+    'https://www.EgyptTravelPro.com/uploads/media/ms-chateau-lafayette-nile-cruise-3.jpg',
   ],
   amarco_luxor: [
-    'https://www.egypttimetravel.com/uploads/media/amarco-i-nile-cruise-1.jpg',
-    'https://www.egypttimetravel.com/uploads/media/amarco-i-nile-cruise-2.jpg',
-    'https://www.egypttimetravel.com/uploads/media/amarco-i-nile-cruise-3.jpg',
+    'https://www.EgyptTravelPro.com/uploads/media/amarco-i-nile-cruise-1.jpg',
+    'https://www.EgyptTravelPro.com/uploads/media/amarco-i-nile-cruise-2.jpg',
+    'https://www.EgyptTravelPro.com/uploads/media/amarco-i-nile-cruise-3.jpg',
   ],
   oberoi_philae: [
-    'https://www.egypttimetravel.com/uploads/media/oberoi-philae-nile-cruise-1.jpg',
-    'https://www.egypttimetravel.com/uploads/media/oberoi-philae-nile-cruise-2.jpg',
-    'https://www.egypttimetravel.com/uploads/media/oberoi-philae-nile-cruise-3.jpg',
+    'https://www.EgyptTravelPro.com/uploads/media/oberoi-philae-nile-cruise-1.jpg',
+    'https://www.EgyptTravelPro.com/uploads/media/oberoi-philae-nile-cruise-2.jpg',
+    'https://www.EgyptTravelPro.com/uploads/media/oberoi-philae-nile-cruise-3.jpg',
   ],
   sanctuary_sun_boat: [
-    'https://www.egypttimetravel.com/uploads/media/sanctuary-sun-boat-iv-nile-cruise-1.jpg',
-    'https://www.egypttimetravel.com/uploads/media/sanctuary-sun-boat-iv-nile-cruise-2.jpg',
-    'https://www.egypttimetravel.com/uploads/media/sanctuary-sun-boat-iv-nile-cruise-3.jpg',
+    'https://www.EgyptTravelPro.com/uploads/media/sanctuary-sun-boat-iv-nile-cruise-1.jpg',
+    'https://www.EgyptTravelPro.com/uploads/media/sanctuary-sun-boat-iv-nile-cruise-2.jpg',
+    'https://www.EgyptTravelPro.com/uploads/media/sanctuary-sun-boat-iv-nile-cruise-3.jpg',
   ],
   steigenberger_minerva: [
-    'https://www.egypttimetravel.com/uploads/media/steigenberger-minerva-nile-cruise-1.jpg',
-    'https://www.egypttimetravel.com/uploads/media/steigenberger-minerva-nile-cruise-2.jpg',
-    'https://www.egypttimetravel.com/uploads/media/steigenberger-minerva-nile-cruise-3.jpg',
+    'https://www.EgyptTravelPro.com/uploads/media/steigenberger-minerva-nile-cruise-1.jpg',
+    'https://www.EgyptTravelPro.com/uploads/media/steigenberger-minerva-nile-cruise-2.jpg',
+    'https://www.EgyptTravelPro.com/uploads/media/steigenberger-minerva-nile-cruise-3.jpg',
   ],
   nile_premium: [
-    'https://www.egypttimetravel.com/uploads/media/nile-premium-nile-cruise-1.jpg',
-    'https://www.egypttimetravel.com/uploads/media/nile-premium-nile-cruise-2.jpg',
-    'https://www.egypttimetravel.com/uploads/media/nile-premium-nile-cruise-3.jpg',
+    'https://www.EgyptTravelPro.com/uploads/media/nile-premium-nile-cruise-1.jpg',
+    'https://www.EgyptTravelPro.com/uploads/media/nile-premium-nile-cruise-2.jpg',
+    'https://www.EgyptTravelPro.com/uploads/media/nile-premium-nile-cruise-3.jpg',
   ],
   dahabiya_merit: [
-    'https://www.egypttimetravel.com/uploads/media/dahabiya-nile-cruise-1.jpg',
-    'https://www.egypttimetravel.com/uploads/media/dahabiya-nile-cruise-2.jpg',
-    'https://www.egypttimetravel.com/uploads/media/dahabiya-nile-cruise-3.jpg',
+    'https://www.EgyptTravelPro.com/uploads/media/dahabiya-nile-cruise-1.jpg',
+    'https://www.EgyptTravelPro.com/uploads/media/dahabiya-nile-cruise-2.jpg',
+    'https://www.EgyptTravelPro.com/uploads/media/dahabiya-nile-cruise-3.jpg',
   ],
   // Fallback Unsplash images for any that fail to load
   fallback: [
@@ -86,7 +86,7 @@ const CRUISE_IMAGES = {
   ],
 }
 
-// ─── Curated Nile Cruise Data (from egypttimetravel.com) ─────
+// ─── Curated Nile Cruise Data (from EgyptTravelPro.com) ─────
 const CURATED_CRUISES = [
   {
     id: 'movenpick-royal-lily',
@@ -100,7 +100,7 @@ const CURATED_CRUISES = [
     originalPrice: 799,
     currency: 'USD',
     priceNote: 'per person, double occupancy',
-    image: 'https://www.egypttimetravel.com/uploads/media/movenpick-royal-lily-nile-cruise.jpg',
+    image: 'https://www.EgyptTravelPro.com/uploads/media/movenpick-royal-lily-nile-cruise.jpg',
     gallery: CRUISE_IMAGES.movenpick_royal_lily,
     fallbackImage: 'https://images.unsplash.com/photo-1600093463592-8e36ae95ef56?w=800&q=80',
     highlights: ['5-Star Luxury Ship', '4 Nights / 5 Days', 'Luxor to Aswan', 'Full Board Meals', 'All Sightseeing Included', 'Egyptologist Guide', 'Sun Deck & Swimming Pool'],
@@ -123,7 +123,7 @@ const CURATED_CRUISES = [
     rating: 4.9,
     reviews: 1847,
     bestSeller: true,
-    sourceUrl: 'https://egypttimetravel.com/egypt-nile-cruise/movenpick-royal-lily/',
+    sourceUrl: 'https://EgyptTravelPro.com/egypt-nile-cruise/movenpick-royal-lily/',
     operator: 'Movenpick Hotels & Resorts',
     departureCity: 'Luxor',
     arrivalCity: 'Aswan',
@@ -144,7 +144,7 @@ const CURATED_CRUISES = [
     originalPrice: 649,
     currency: 'USD',
     priceNote: 'per person, double occupancy',
-    image: 'https://www.egypttimetravel.com/uploads/media/movenpick-royal-lotus-nile-cruise.jpg',
+    image: 'https://www.EgyptTravelPro.com/uploads/media/movenpick-royal-lotus-nile-cruise.jpg',
     gallery: CRUISE_IMAGES.movenpick_royal_lotus,
     fallbackImage: 'https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=800&q=80',
     highlights: ['5-Star Ship', '3 Nights / 4 Days', 'Aswan to Luxor', 'Full Board', 'All Temples', 'Pool & Spa', 'Entertainment'],
@@ -165,7 +165,7 @@ const CURATED_CRUISES = [
     rating: 4.8,
     reviews: 1234,
     bestSeller: false,
-    sourceUrl: 'https://egypttimetravel.com/egypt-nile-cruise/movenpick-royal-lotus/',
+    sourceUrl: 'https://EgyptTravelPro.com/egypt-nile-cruise/movenpick-royal-lotus/',
     operator: 'Movenpick Hotels & Resorts',
     departureCity: 'Aswan',
     arrivalCity: 'Luxor',
@@ -186,7 +186,7 @@ const CURATED_CRUISES = [
     originalPrice: 720,
     currency: 'USD',
     priceNote: 'per person, double occupancy',
-    image: 'https://www.egypttimetravel.com/uploads/media/sonesta-star-goddess-nile-cruise.jpg',
+    image: 'https://www.EgyptTravelPro.com/uploads/media/sonesta-star-goddess-nile-cruise.jpg',
     gallery: CRUISE_IMAGES.sonesta_star_goddess,
     fallbackImage: 'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=800&q=80',
     highlights: ['5-Star Luxury', '4 Nights / 5 Days', 'Luxor to Aswan', 'Gourmet Dining', 'All Temples', 'Spa & Wellness', 'Nightly Shows'],
@@ -208,7 +208,7 @@ const CURATED_CRUISES = [
     rating: 4.9,
     reviews: 956,
     bestSeller: true,
-    sourceUrl: 'https://egypttimetravel.com/egypt-nile-cruise/sonesta-star-goddess/',
+    sourceUrl: 'https://EgyptTravelPro.com/egypt-nile-cruise/sonesta-star-goddess/',
     operator: 'Sonesta Collection',
     departureCity: 'Luxor',
     arrivalCity: 'Aswan',
@@ -229,7 +229,7 @@ const CURATED_CRUISES = [
     originalPrice: 580,
     currency: 'USD',
     priceNote: 'per person, double occupancy',
-    image: 'https://www.egypttimetravel.com/uploads/media/sonesta-moon-goddess-nile-cruise.jpg',
+    image: 'https://www.EgyptTravelPro.com/uploads/media/sonesta-moon-goddess-nile-cruise.jpg',
     gallery: CRUISE_IMAGES.sonesta_moon_goddess,
     fallbackImage: 'https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=800&q=80',
     highlights: ['5-Star Ship', '3 Nights / 4 Days', 'Aswan to Luxor', 'Private Balconies', 'All Temples', 'Spa Access', 'Gourmet Food'],
@@ -250,7 +250,7 @@ const CURATED_CRUISES = [
     rating: 4.8,
     reviews: 743,
     bestSeller: false,
-    sourceUrl: 'https://egypttimetravel.com/egypt-nile-cruise/sonesta-moon-goddess/',
+    sourceUrl: 'https://EgyptTravelPro.com/egypt-nile-cruise/sonesta-moon-goddess/',
     operator: 'Sonesta Collection',
     departureCity: 'Aswan',
     arrivalCity: 'Luxor',
@@ -271,7 +271,7 @@ const CURATED_CRUISES = [
     originalPrice: 1199,
     currency: 'USD',
     priceNote: 'per person, double occupancy',
-    image: 'https://www.egypttimetravel.com/uploads/media/ms-mayfair-nile-cruise.jpg',
+    image: 'https://www.EgyptTravelPro.com/uploads/media/ms-mayfair-nile-cruise.jpg',
     gallery: CRUISE_IMAGES.ms_mayfair,
     fallbackImage: 'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=800&q=80',
     highlights: ['5-Star Deluxe', '7 Nights / 8 Days', 'Luxor Round Trip', 'Abu Simbel Included', 'All-Inclusive Option', 'Spa & Pool', 'Every Temple'],
@@ -297,7 +297,7 @@ const CURATED_CRUISES = [
     rating: 4.9,
     reviews: 678,
     bestSeller: false,
-    sourceUrl: 'https://egypttimetravel.com/egypt-nile-cruise/ms-mayfair/',
+    sourceUrl: 'https://EgyptTravelPro.com/egypt-nile-cruise/ms-mayfair/',
     operator: 'Mayfair Nile Cruises',
     departureCity: 'Luxor',
     arrivalCity: 'Luxor',
@@ -318,7 +318,7 @@ const CURATED_CRUISES = [
     originalPrice: 699,
     currency: 'USD',
     priceNote: 'per person, double occupancy',
-    image: 'https://www.egypttimetravel.com/uploads/media/ms-chateau-lafayette-nile-cruise.jpg',
+    image: 'https://www.EgyptTravelPro.com/uploads/media/ms-chateau-lafayette-nile-cruise.jpg',
     gallery: CRUISE_IMAGES.ms_chateau_lafayette,
     fallbackImage: 'https://images.unsplash.com/photo-1600093463592-8e36ae95ef56?w=800&q=80',
     highlights: ['5-Star French Elegance', '4 Nights / 5 Days', 'Luxor to Aswan', 'Award-Winning Cuisine', 'Infinity Pool', 'Spa & Gym', 'All Inclusive Option'],
@@ -341,7 +341,7 @@ const CURATED_CRUISES = [
     rating: 4.8,
     reviews: 512,
     bestSeller: false,
-    sourceUrl: 'https://egypttimetravel.com/egypt-nile-cruise/ms-chateau-lafayette/',
+    sourceUrl: 'https://EgyptTravelPro.com/egypt-nile-cruise/ms-chateau-lafayette/',
     operator: 'Lafayette Cruise Line',
     departureCity: 'Luxor',
     arrivalCity: 'Aswan',
@@ -362,7 +362,7 @@ const CURATED_CRUISES = [
     originalPrice: 1650,
     currency: 'USD',
     priceNote: 'per person, double occupancy',
-    image: 'https://www.egypttimetravel.com/uploads/media/oberoi-philae-nile-cruise.jpg',
+    image: 'https://www.EgyptTravelPro.com/uploads/media/oberoi-philae-nile-cruise.jpg',
     gallery: CRUISE_IMAGES.oberoi_philae,
     fallbackImage: 'https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=800&q=80',
     highlights: ['Ultra-Luxury 5-Star+', '4 Nights / 5 Days', 'Only 22 Cabins', 'All-Suite Ship', 'Butler Service', 'Michelin-Level Dining', 'Private Temple Tours'],
@@ -384,7 +384,7 @@ const CURATED_CRUISES = [
     rating: 5.0,
     reviews: 389,
     bestSeller: true,
-    sourceUrl: 'https://egypttimetravel.com/egypt-nile-cruise/oberoi-philae/',
+    sourceUrl: 'https://EgyptTravelPro.com/egypt-nile-cruise/oberoi-philae/',
     operator: 'The Oberoi Group',
     departureCity: 'Luxor',
     arrivalCity: 'Aswan',
@@ -405,7 +405,7 @@ const CURATED_CRUISES = [
     originalPrice: 1400,
     currency: 'USD',
     priceNote: 'per person, double occupancy',
-    image: 'https://www.egypttimetravel.com/uploads/media/sanctuary-sun-boat-iv-nile-cruise.jpg',
+    image: 'https://www.EgyptTravelPro.com/uploads/media/sanctuary-sun-boat-iv-nile-cruise.jpg',
     gallery: CRUISE_IMAGES.sanctuary_sun_boat,
     fallbackImage: 'https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=800&q=80',
     highlights: ['Boutique Luxury', '4 Nights / 5 Days', 'Only 18 Cabins', 'Award-Winning', 'Private Guide', 'Gourmet Dining', 'Sun Deck Pool'],
@@ -427,7 +427,7 @@ const CURATED_CRUISES = [
     rating: 4.9,
     reviews: 267,
     bestSeller: false,
-    sourceUrl: 'https://egypttimetravel.com/egypt-nile-cruise/sanctuary-sun-boat-iv/',
+    sourceUrl: 'https://EgyptTravelPro.com/egypt-nile-cruise/sanctuary-sun-boat-iv/',
     operator: 'Sanctuary Retreats',
     departureCity: 'Luxor',
     arrivalCity: 'Aswan',
@@ -448,7 +448,7 @@ const CURATED_CRUISES = [
     originalPrice: 650,
     currency: 'USD',
     priceNote: 'per person, double occupancy',
-    image: 'https://www.egypttimetravel.com/uploads/media/steigenberger-minerva-nile-cruise.jpg',
+    image: 'https://www.EgyptTravelPro.com/uploads/media/steigenberger-minerva-nile-cruise.jpg',
     gallery: CRUISE_IMAGES.steigenberger_minerva,
     fallbackImage: 'https://images.unsplash.com/photo-1600093463592-8e36ae95ef56?w=800&q=80',
     highlights: ['5-Star Quality', '4 Nights / 5 Days', 'Luxor to Aswan', 'German Standards', 'Heated Pool', 'Full Board', 'Great Value'],
@@ -470,7 +470,7 @@ const CURATED_CRUISES = [
     rating: 4.7,
     reviews: 1456,
     bestSeller: false,
-    sourceUrl: 'https://egypttimetravel.com/egypt-nile-cruise/steigenberger-minerva/',
+    sourceUrl: 'https://EgyptTravelPro.com/egypt-nile-cruise/steigenberger-minerva/',
     operator: 'Steigenberger Hotels',
     departureCity: 'Luxor',
     arrivalCity: 'Aswan',
@@ -491,7 +491,7 @@ const CURATED_CRUISES = [
     originalPrice: 480,
     currency: 'USD',
     priceNote: 'per person, double occupancy',
-    image: 'https://www.egypttimetravel.com/uploads/media/amarco-i-nile-cruise.jpg',
+    image: 'https://www.EgyptTravelPro.com/uploads/media/amarco-i-nile-cruise.jpg',
     gallery: CRUISE_IMAGES.amarco_luxor,
     fallbackImage: 'https://images.unsplash.com/photo-1553913861-c0fddf2619ee?w=800&q=80',
     highlights: ['4-Star Premium', '4 Nights / 5 Days', 'Best Value Cruise', 'Luxor to Aswan', 'Full Board', 'Pool & Sun Deck', 'All Temples'],
@@ -513,7 +513,7 @@ const CURATED_CRUISES = [
     rating: 4.6,
     reviews: 2134,
     bestSeller: true,
-    sourceUrl: 'https://egypttimetravel.com/egypt-nile-cruise/amarco-i/',
+    sourceUrl: 'https://EgyptTravelPro.com/egypt-nile-cruise/amarco-i/',
     operator: 'Amarco Travel',
     departureCity: 'Luxor',
     arrivalCity: 'Aswan',
@@ -534,7 +534,7 @@ const CURATED_CRUISES = [
     originalPrice: 749,
     currency: 'USD',
     priceNote: 'per person, double occupancy',
-    image: 'https://www.egypttimetravel.com/uploads/media/nile-premium-nile-cruise.jpg',
+    image: 'https://www.EgyptTravelPro.com/uploads/media/nile-premium-nile-cruise.jpg',
     gallery: CRUISE_IMAGES.nile_premium,
     fallbackImage: 'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=800&q=80',
     highlights: ['5-Star Modern', '4 Nights / 5 Days', 'Newest Ship 2023', 'Smart Cabins', 'Rooftop Bar', 'Infinity Pool', 'All Inclusive Available'],
@@ -556,7 +556,7 @@ const CURATED_CRUISES = [
     rating: 4.8,
     reviews: 423,
     bestSeller: false,
-    sourceUrl: 'https://egypttimetravel.com/egypt-nile-cruise/nile-premium/',
+    sourceUrl: 'https://EgyptTravelPro.com/egypt-nile-cruise/nile-premium/',
     operator: 'Nile Premium Cruises',
     departureCity: 'Luxor',
     arrivalCity: 'Aswan',
@@ -577,7 +577,7 @@ const CURATED_CRUISES = [
     originalPrice: 1250,
     currency: 'USD',
     priceNote: 'per person, double occupancy',
-    image: 'https://www.egypttimetravel.com/uploads/media/dahabiya-nile-cruise.jpg',
+    image: 'https://www.EgyptTravelPro.com/uploads/media/dahabiya-nile-cruise.jpg',
     gallery: CRUISE_IMAGES.dahabiya_merit,
     fallbackImage: 'https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=800&q=80',
     highlights: ['Only 8 Cabins', 'Wind-Powered Sailing', '6 Nights / 7 Days', 'Hidden Temples', 'Gourmet Cuisine', 'Intimate Experience', 'Swimming in the Nile'],
@@ -601,7 +601,7 @@ const CURATED_CRUISES = [
     rating: 5.0,
     reviews: 198,
     bestSeller: true,
-    sourceUrl: 'https://egypttimetravel.com/egypt-nile-cruise/dahabiya/',
+    sourceUrl: 'https://EgyptTravelPro.com/egypt-nile-cruise/dahabiya/',
     operator: 'Dahabiya Nile Sailing',
     departureCity: 'Esna (Luxor transfer)',
     arrivalCity: 'Aswan',
@@ -615,7 +615,7 @@ const CURATED_CRUISES = [
 // ─── Live Scraper ────────────────────────────────────────────
 async function scrapeLive() {
   try {
-    const response = await fetch('https://egypttimetravel.com/egypt-nile-cruise/', {
+    const response = await fetch('https://EgyptTravelPro.com/egypt-nile-cruise/', {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
         'Accept': 'text/html,application/xhtml+xml',
@@ -631,7 +631,7 @@ async function scrapeLive() {
 
     const scrapedCruises = []
 
-    // Try common selectors for cruise cards on egypttimetravel.com
+    // Try common selectors for cruise cards on EgyptTravelPro.com
     const selectors = [
       '.tour-item', '.package-item', '.cruise-item',
       '.product-item', 'article.post', '.listing-item',
@@ -667,16 +667,16 @@ async function scrapeLive() {
           slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
           title,
           description: desc || `Experience the ${title} — a premium Nile cruise sailing between Luxor and Aswan with full board meals, temple visits, and Egyptologist guide.`,
-          image: image ? (image.startsWith('http') ? image : `https://egypttimetravel.com${image}`) : CRUISE_IMAGES.fallback[i % 4],
+          image: image ? (image.startsWith('http') ? image : `https://EgyptTravelPro.com${image}`) : CRUISE_IMAGES.fallback[i % 4],
           price: priceMatch ? parseInt(priceMatch[1].replace(/,/g, '')) : null,
           rating: ratingMatch ? parseFloat(ratingMatch[1]) : 4.8,
-          sourceUrl: link ? (link.startsWith('http') ? link : `https://egypttimetravel.com${link}`) : 'https://egypttimetravel.com/egypt-nile-cruise/',
+          sourceUrl: link ? (link.startsWith('http') ? link : `https://EgyptTravelPro.com${link}`) : 'https://EgyptTravelPro.com/egypt-nile-cruise/',
         })
       }
     })
 
     if (scrapedCruises.length >= 3) {
-      console.log(`✅ Scraped ${scrapedCruises.length} Nile cruises from egypttimetravel.com`)
+      console.log(`✅ Scraped ${scrapedCruises.length} Nile cruises from EgyptTravelPro.com`)
       return scrapedCruises
     }
 
@@ -754,3 +754,4 @@ export async function getNileCruiseBySlug(slug) {
   const all = await scrapeNileCruises()
   return all.find(c => c.id === slug || c.slug === slug) || null
 }
+

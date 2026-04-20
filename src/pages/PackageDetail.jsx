@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { packages as staticPackages } from '../data/egyptPackages'
 import { supabase } from '../lib/supabase'
 
-const API_URL = import.meta.env.VITE_API_URL || ''
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001'
 
 /**
  * PackageDetail Component
@@ -72,6 +72,50 @@ const PackageDetail = () => {
           return
         } else {
           console.log('⚠️ Supabase lookup failed:', error?.message || 'not found')
+        }
+
+        // Fallback to package-type trips table for moved records.
+        const { data: tripData, error: tripError } = await supabase
+          .from('trips')
+          .select('*')
+          .eq('slug', slug)
+          .eq('type', 'package')
+          .single()
+
+        if (!tripError && tripData) {
+          console.log('✅ Loaded package from trips:', tripData.title)
+          const transformedTrip = {
+            id: tripData.id,
+            slug: tripData.slug,
+            title: tripData.title,
+            description: tripData.short_description || tripData.description,
+            longDescription: tripData.description,
+            duration: tripData.duration ? `${tripData.duration} Days` : 'Custom Duration',
+            durationDays: tripData.duration || 1,
+            durationFilter: '',
+            style: tripData.travel_style || 'Private Tour',
+            tourType: tripData.type || 'package',
+            price: tripData.price || 0,
+            originalPrice: tripData.original_price || tripData.price || 0,
+            currency: tripData.currency || 'USD',
+            image: tripData.image,
+            gallery: tripData.gallery || (tripData.image ? [tripData.image] : []),
+            highlights: tripData.highlights || [],
+            included: tripData.included || [],
+            excluded: tripData.excluded || [],
+            itinerary: tripData.itinerary || [],
+            rating: tripData.rating || 4.5,
+            reviews: tripData.reviews || 0,
+            bestSeller: tripData.best_seller || false,
+            locations: tripData.locations || [],
+            groupSize: tripData.group_size || '',
+            languages: tripData.languages || [],
+            startPoint: tripData.start_point || '',
+            endPoint: tripData.end_point || '',
+          }
+          setPkg(transformedTrip)
+          setLoading(false)
+          return
         }
       } catch (err) {
         console.log('⚠️ Supabase fetch failed, using static data:', err.message)
@@ -161,7 +205,7 @@ const PackageDetail = () => {
   const handleStripeCheckout = async () => {
     setCheckoutLoading(true)
     try {
-      const res = await fetch(`${API_URL}/api/create-checkout-session`, {
+      const res = await fetch(`${API_URL}/api/paypal/create-payment`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -179,7 +223,7 @@ const PackageDetail = () => {
       })
       if (!res.ok) throw new Error('Failed')
       const data = await res.json()
-      if (data.url) window.location.href = data.url
+      if (data.approveUrl) window.location.href = data.approveUrl
     } catch (err) {
       console.error('Checkout error:', err)
       alert('Payment setup failed. Please try via WhatsApp.')

@@ -13,6 +13,16 @@ export default function AdminLogin() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
+  const getFriendlyError = (err) => {
+    const message = err?.message || ''
+
+    if (/failed to fetch|networkerror/i.test(message)) {
+      return 'Cannot reach Supabase Auth. Check VITE_SUPABASE_URL in .env and make sure the Supabase project URL is valid and reachable.'
+    }
+
+    return message || 'Failed to sign in. Please check your credentials.'
+  }
+
   const handleLogin = async (e) => {
     e.preventDefault()
     setLoading(true)
@@ -30,7 +40,7 @@ export default function AdminLogin() {
         navigate('/admin')
       }
     } catch (err) {
-      setError(err.message || 'Failed to sign in. Please check your credentials.')
+      setError(getFriendlyError(err))
     } finally {
       setLoading(false)
     }

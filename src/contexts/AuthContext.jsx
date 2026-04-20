@@ -32,14 +32,26 @@ export const AuthProvider = ({ children }) => {
   }, [])
 
   const signUp = async (email, password, metadata = {}) => {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: metadata,
-      },
-    })
-    return { data, error }
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: metadata,
+          emailRedirectTo: `${window.location.origin}/auth/callback`,
+        },
+      })
+      
+      // If successful signup but user is null, it might be due to email confirmation
+      if (!error && data.user && !data.session) {
+        console.log('Registration successful - please check email for confirmation')
+      }
+      
+      return { data, error }
+    } catch (err) {
+      console.error('Signup error:', err)
+      return { data: null, error: err }
+    }
   }
 
   const signIn = async (email, password) => {

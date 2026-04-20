@@ -61,7 +61,7 @@ const FAQ = () => {
       {
         id: 'b1',
         question: 'How do I book a transfer or tour?',
-        answer: 'You can book through our website by using the "Book Your Transfer" section on the home page, contact us via WhatsApp at +20 121 201 1881 for instant assistance, email us at bookings@egypttimetravel.com, or call our office directly. We\'ll confirm your booking within 24 hours with a detailed quote and pickup instructions.',
+        answer: 'You can book through our website by using the "Book Your Transfer" section on the home page, contact us via WhatsApp at +20 121 201 1881 for instant assistance, email us at bookings@EgyptTravelPro.com, or call our office directly. We\'ll confirm your booking within 24 hours with a detailed quote and pickup instructions.',
       },
       {
         id: 'b2',

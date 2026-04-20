@@ -1,7 +1,7 @@
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
 import { AnimatePresence } from 'framer-motion'
-import { Navbar, Footer, PopupModal, FloatingButtons, EgyptChatbot } from './components'
+import { Navbar, Footer, FloatingButtons, EgyptChatbot } from './components'
 import { Home, PlanTrip, Trips, TripDetails, Destinations, DestinationDetails, Gallery, Blog, BlogPost, About, Contact, FAQ,EgyptPackages, PackageDetail, DayTours, TourDetail, NileCruises, CruiseDetail, ShoreExcursions, ExcursionDetail, AllTours, Transfers, Ads, GroupTours } from './pages'
 import SignUp from './pages/SignUp'
 import SignIn from './pages/SignIn'
@@ -48,9 +48,6 @@ function App() {
   // ─── Public Routes (with Navbar, Footer, etc.) ───
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Popup Modal - Shows on first visit */}
-      <PopupModal imageSrc="/popup.jpg.jpg" delay={2000} />
-
       {/* Navigation */}
       <Navbar />
 

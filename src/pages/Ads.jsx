@@ -75,7 +75,7 @@ const Ads = () => {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="text-white/80 text-lg md:text-xl max-w-2xl mx-auto"
           >
-            Browse {totalAds} curated advertisements from Egypt Time Travel — packages,
+            Browse {totalAds} curated advertisements from EgyptTravelPro — packages,
             tours, cruises, transfers and more.
           </motion.p>
           <div className="section-divider mt-6" />

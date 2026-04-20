@@ -10,10 +10,15 @@ import { scrapeVisitEgyptTrips, refreshVisitEgyptTrips } from './ads/visitegypt-
 // ─── Configuration ───────────────────────────────────────────
 const PORT = process.env.SERVER_PORT || 3001
 const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:3000'
+const SERVER_BASE_URL = process.env.SERVER_BASE_URL || `http://localhost:${PORT}`
 const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY
 const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL
 const SUPABASE_ANON_KEY = process.env.VITE_SUPABASE_ANON_KEY
+const PAYPAL_CLIENT_ID = process.env.PAYPAL_CLIENT_ID
+const PAYPAL_CLIENT_SECRET = process.env.PAYPAL_CLIENT_SECRET
+const PAYPAL_MODE = process.env.PAYPAL_MODE || 'sandbox'
+const PAYPAL_BASE_URL = PAYPAL_MODE === 'live' ? 'https://api-m.paypal.com' : 'https://api-m.sandbox.paypal.com'
 
 // Paymob configuration
 const PAYMOB_API_KEY = process.env.PAYMOB_API_KEY
@@ -29,6 +34,10 @@ if (!STRIPE_SECRET_KEY) {
 
 if (!PAYMOB_API_KEY) {
   console.error('⚠️  PAYMOB_API_KEY is missing in .env — Paymob payments disabled')
+}
+
+if (!PAYPAL_CLIENT_ID || !PAYPAL_CLIENT_SECRET) {
+  console.error('⚠️  PAYPAL_CLIENT_ID / PAYPAL_CLIENT_SECRET missing in .env — PayPal payments disabled')
 }
 
 // ─── Initialize Stripe ───────────────────────────────────────
@@ -104,6 +113,92 @@ async function paymobCreatePaymentKey(authToken, {
   const data = await res.json()
   if (!data.token) throw new Error('Paymob payment key creation failed')
   return data.token
+}
+
+async function paypalGetAccessToken() {
+  if (!PAYPAL_CLIENT_ID || !PAYPAL_CLIENT_SECRET) {
+    throw new Error('PayPal is not configured')
+  }
+
+  const basicAuth = Buffer.from(`${PAYPAL_CLIENT_ID}:${PAYPAL_CLIENT_SECRET}`).toString('base64')
+  const body = new URLSearchParams({ grant_type: 'client_credentials' })
+
+  const res = await fetch(`${PAYPAL_BASE_URL}/v1/oauth2/token`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Basic ${basicAuth}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body,
+  })
+
+  const data = await res.json()
+  if (!res.ok || !data.access_token) {
+    throw new Error(data.error_description || data.error || 'Failed to authenticate PayPal')
+  }
+  return data.access_token
+}
+
+async function paypalCreateOrder(accessToken, {
+  amount,
+  currency = 'USD',
+  itemName,
+  description,
+  customerEmail,
+  metadata,
+}) {
+  const res = await fetch(`${PAYPAL_BASE_URL}/v2/checkout/orders`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      intent: 'CAPTURE',
+      purchase_units: [
+        {
+          amount: {
+            currency_code: currency,
+            value: Number(amount).toFixed(2),
+          },
+          description: description || itemName,
+          custom_id: metadata?.car_id ? String(metadata.car_id).slice(0, 127) : undefined,
+        },
+      ],
+      payer: customerEmail ? { email_address: customerEmail } : undefined,
+      application_context: {
+        user_action: 'PAY_NOW',
+        shipping_preference: 'NO_SHIPPING',
+        return_url: `${SERVER_BASE_URL}/api/paypal/return`,
+        cancel_url: `${SERVER_BASE_URL}/api/paypal/cancel`,
+      },
+    }),
+  })
+
+  const data = await res.json()
+  if (!res.ok || !data.id) {
+    const detail = Array.isArray(data.details) ? data.details.map(d => d.description).join('; ') : ''
+    throw new Error(detail || data.message || JSON.stringify(data) || 'Failed to create PayPal order')
+  }
+
+  const approveUrl = (data.links || []).find(link => link.rel === 'approve')?.href
+  return { order: data, approveUrl }
+}
+
+async function paypalCaptureOrder(accessToken, orderId) {
+  const res = await fetch(`${PAYPAL_BASE_URL}/v2/checkout/orders/${orderId}/capture`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+  })
+
+  const data = await res.json()
+  if (!res.ok) {
+    throw new Error(data.message || 'Failed to capture PayPal order')
+  }
+  return data
 }
 
 function verifyPaymobHmac(reqBody) {
@@ -446,11 +541,11 @@ app.get('/api/payment-status/:sessionId', async (req, res) => {
       })
     }
 
-    // Fallback: check Supabase for Paymob records
+    // Fallback: check Supabase for Paymob / PayPal records
     const { data: payment } = await supabase
       .from('payments')
       .select('*')
-      .eq('paymob_order_id', sessionId)
+      .or(`paymob_order_id.eq.${sessionId},paypal_order_id.eq.${sessionId}`)
       .single()
 
     if (payment) {
@@ -460,7 +555,7 @@ app.get('/api/payment-status/:sessionId', async (req, res) => {
         amountTotal: payment.amount_usd,
         currency: payment.currency,
         dbRecord: payment,
-        provider: 'paymob',
+        provider: payment.payment_provider || 'payment',
       })
     }
 
@@ -471,6 +566,121 @@ app.get('/api/payment-status/:sessionId', async (req, res) => {
       error: 'Failed to retrieve payment status',
       message: err.message,
     })
+  }
+})
+
+app.post('/api/paypal/create-payment', async (req, res) => {
+  if (!PAYPAL_CLIENT_ID || !PAYPAL_CLIENT_SECRET) {
+    return res.status(503).json({ error: 'PayPal is not configured' })
+  }
+
+  try {
+    const {
+      carName,
+      carId,
+      routeFrom,
+      routeTo,
+      distance,
+      transferDate,
+      transferTime,
+      passengers,
+      amount,
+      customerEmail,
+    } = req.body
+
+    if (!carName || !routeFrom || !routeTo || !amount || amount <= 0) {
+      return res.status(400).json({
+        error: 'Missing required fields: carName, routeFrom, routeTo, amount',
+      })
+    }
+
+    const description = [
+      `${routeFrom} -> ${routeTo}`,
+      distance > 0 ? `${distance} km` : null,
+      transferDate ? `Date: ${transferDate}` : null,
+      transferTime ? `Time: ${transferTime}` : null,
+      `${passengers || 1} passenger${(passengers || 1) > 1 ? 's' : ''}`,
+    ].filter(Boolean).join(' • ')
+
+    const accessToken = await paypalGetAccessToken()
+    const { order, approveUrl } = await paypalCreateOrder(accessToken, {
+      amount,
+      currency: 'USD',
+      itemName: `Transfer: ${carName}`,
+      description,
+      customerEmail,
+      metadata: {
+        car_id: carId,
+        car_name: carName,
+        route_from: routeFrom,
+        route_to: routeTo,
+        distance: String(distance || 0),
+        transfer_date: transferDate || '',
+        transfer_time: transferTime || '',
+        passengers: String(passengers || 1),
+      },
+    })
+
+    try {
+      await supabase.from('payments').insert({
+        paypal_order_id: order.id,
+        amount_usd: amount,
+        currency: 'usd',
+        status: 'pending',
+        customer_email: customerEmail || null,
+        car_name: carName,
+        car_id: carId,
+        route_from: routeFrom,
+        route_to: routeTo,
+        distance_km: distance || 0,
+        transfer_date: transferDate || null,
+        transfer_time: transferTime || null,
+        passengers: passengers || 1,
+        payment_provider: 'paypal',
+      })
+    } catch (dbErr) {
+      console.error('⚠️  PayPal: DB insert failed:', dbErr.message)
+    }
+
+    res.json({
+      success: true,
+      orderId: order.id,
+      approveUrl,
+    })
+  } catch (err) {
+    console.error('❌ PayPal create-payment error:', err)
+    res.status(500).json({ error: 'Failed to create PayPal payment', message: err.message })
+  }
+})
+
+app.post('/api/paypal/capture/:orderId', async (req, res) => {
+  if (!PAYPAL_CLIENT_ID || !PAYPAL_CLIENT_SECRET) {
+    return res.status(503).json({ error: 'PayPal is not configured' })
+  }
+
+  try {
+    const { orderId } = req.params
+    const accessToken = await paypalGetAccessToken()
+    const captureData = await paypalCaptureOrder(accessToken, orderId)
+
+    const isCompleted = captureData.status === 'COMPLETED'
+    const status = isCompleted ? 'paid' : 'failed'
+    const captureId = captureData?.purchase_units?.[0]?.payments?.captures?.[0]?.id || null
+
+    await supabase
+      .from('payments')
+      .update({
+        status,
+        payment_method: 'paypal',
+        paypal_capture_id: captureId,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('paypal_order_id', orderId)
+
+    res.json({ success: true, status, captureId, data: captureData })
+  } catch (err) {
+    console.error('❌ PayPal capture error:', err)
+    res.status(500).json({ error: 'Failed to capture PayPal order', message: err.message })
   }
 })
 
@@ -1071,7 +1281,52 @@ app.listen(PORT, () => {
   console.log(`║   Paymob Callback: http://localhost:${PORT}/api/paymob/callback ║`)
   console.log(`║   Client:          ${CLIENT_URL.padEnd(33)}║`)
   console.log(`║   Stripe:          ${stripe ? '✅ Connected' : '❌ Not configured'}${''.padEnd(stripe ? 21 : 16)}║`)
+    console.log(`║   PayPal:          ${(PAYPAL_CLIENT_ID && PAYPAL_CLIENT_SECRET) ? '✅ Connected' : '❌ Not configured'}${''.padEnd((PAYPAL_CLIENT_ID && PAYPAL_CLIENT_SECRET) ? 20 : 15)}║`)
   console.log(`║   Paymob:          ${PAYMOB_API_KEY ? '✅ Connected' : '❌ Not configured'}${''.padEnd(PAYMOB_API_KEY ? 21 : 16)}║`)
   console.log('╚══════════════════════════════════════════════════════╝')
   console.log('')
+})
+
+app.get('/api/paypal/return', async (req, res) => {
+  if (!PAYPAL_CLIENT_ID || !PAYPAL_CLIENT_SECRET) {
+    return res.redirect(`${CLIENT_URL}/payment/cancel?provider=paypal&reason=not_configured`)
+  }
+
+  try {
+    const orderId = req.query.token
+    if (!orderId) {
+      return res.redirect(`${CLIENT_URL}/payment/cancel?provider=paypal&reason=missing_token`)
+    }
+
+    const accessToken = await paypalGetAccessToken()
+    const captureData = await paypalCaptureOrder(accessToken, orderId)
+
+    const isCompleted = captureData.status === 'COMPLETED'
+    const status = isCompleted ? 'paid' : 'failed'
+    const captureId = captureData?.purchase_units?.[0]?.payments?.captures?.[0]?.id || null
+
+    await supabase
+      .from('payments')
+      .update({
+        status,
+        payment_method: 'paypal',
+        paypal_capture_id: captureId,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('paypal_order_id', orderId)
+
+    if (isCompleted) {
+      return res.redirect(`${CLIENT_URL}/payment/success?provider=paypal&order_id=${orderId}&capture_id=${captureId || ''}`)
+    }
+
+    return res.redirect(`${CLIENT_URL}/payment/cancel?provider=paypal&order_id=${orderId}`)
+  } catch (err) {
+    console.error('❌ PayPal return/capture error:', err)
+    return res.redirect(`${CLIENT_URL}/payment/cancel?provider=paypal&reason=capture_failed`)
+  }
+})
+
+app.get('/api/paypal/cancel', (req, res) => {
+  const orderId = req.query.token || ''
+  return res.redirect(`${CLIENT_URL}/payment/cancel?provider=paypal&order_id=${orderId}`)
 })

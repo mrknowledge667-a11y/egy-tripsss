@@ -1,4 +1,4 @@
-// Auto-generated from egypttimetravel.com scraper — 2026-02-16T02:57:30.070Z
+// Auto-generated from EgyptTravelPro.com scraper — 2026-02-16T02:57:30.070Z
 // Category: Nile Cruises
 // Total trips: 12
 
@@ -14,9 +14,9 @@ export const nileCruises = [
     "priceText": "",
     "description": "",
     "duration": "",
-    "image": "https://i0.wp.com/egypttimetravel.com/wp-content/uploads/2021/05/Egypt-Logo.png?fit=250%2C80&ssl=1",
+    "image": "https://i0.wp.com/EgyptTravelPro.com/wp-content/uploads/2021/05/Egypt-Logo.png?fit=250%2C80&ssl=1",
     "gallery": [
-      "https://i0.wp.com/egypttimetravel.com/wp-content/uploads/2021/05/Egypt-Logo.png?fit=250%2C80&ssl=1"
+      "https://i0.wp.com/EgyptTravelPro.com/wp-content/uploads/2021/05/Egypt-Logo.png?fit=250%2C80&ssl=1"
     ],
     "highlights": [],
     "itinerary": [],
@@ -37,9 +37,9 @@ export const nileCruises = [
     "priceText": "",
     "description": "",
     "duration": "",
-    "image": "https://i0.wp.com/egypttimetravel.com/wp-content/uploads/2021/05/Egypt-Logo.png?fit=250%2C80&ssl=1",
+    "image": "https://i0.wp.com/EgyptTravelPro.com/wp-content/uploads/2021/05/Egypt-Logo.png?fit=250%2C80&ssl=1",
     "gallery": [
-      "https://i0.wp.com/egypttimetravel.com/wp-content/uploads/2021/05/Egypt-Logo.png?fit=250%2C80&ssl=1"
+      "https://i0.wp.com/EgyptTravelPro.com/wp-content/uploads/2021/05/Egypt-Logo.png?fit=250%2C80&ssl=1"
     ],
     "highlights": [],
     "itinerary": [],
@@ -54,7 +54,7 @@ export const nileCruises = [
     "category": "Nile Cruises",
     "categorySlug": "nile-cruises",
     "title": "PAGE NOT FOUND",
-    "link": "https://egypttimetravel.com/",
+    "link": "https://EgyptTravelPro.com/",
     "price": 0,
     "originalPrice": 0,
     "priceText": "",
@@ -75,7 +75,7 @@ export const nileCruises = [
     "category": "Nile Cruises",
     "categorySlug": "nile-cruises",
     "title": "PAGE NOT FOUND",
-    "link": "https://egypttimetravel.com/",
+    "link": "https://EgyptTravelPro.com/",
     "price": 0,
     "originalPrice": 0,
     "priceText": "",
@@ -96,7 +96,7 @@ export const nileCruises = [
     "category": "Nile Cruises",
     "categorySlug": "nile-cruises",
     "title": "PAGE NOT FOUND",
-    "link": "https://egypttimetravel.com/",
+    "link": "https://EgyptTravelPro.com/",
     "price": 0,
     "originalPrice": 0,
     "priceText": "",
@@ -117,7 +117,7 @@ export const nileCruises = [
     "category": "Nile Cruises",
     "categorySlug": "nile-cruises",
     "title": "PAGE NOT FOUND",
-    "link": "https://egypttimetravel.com/",
+    "link": "https://EgyptTravelPro.com/",
     "price": 0,
     "originalPrice": 0,
     "priceText": "",
@@ -138,15 +138,15 @@ export const nileCruises = [
     "category": "Nile Cruises",
     "categorySlug": "nile-cruises",
     "title": "Contact Us",
-    "link": "https://www.facebook.com/EgyptTimeTravel/",
+    "link": "https://www.facebook.com/EgyptTravelPro/",
     "price": 0,
     "originalPrice": 0,
     "priceText": "",
     "description": "",
     "duration": "",
-    "image": "https://i0.wp.com/egypttimetravel.com/wp-content/uploads/2021/04/payment-methods.png?resize=195%2C31&ssl=1",
+    "image": "https://i0.wp.com/EgyptTravelPro.com/wp-content/uploads/2021/04/payment-methods.png?resize=195%2C31&ssl=1",
     "gallery": [
-      "https://i0.wp.com/egypttimetravel.com/wp-content/uploads/2021/04/payment-methods.png?resize=195%2C31&ssl=1"
+      "https://i0.wp.com/EgyptTravelPro.com/wp-content/uploads/2021/04/payment-methods.png?resize=195%2C31&ssl=1"
     ],
     "highlights": [],
     "itinerary": [],
@@ -161,15 +161,15 @@ export const nileCruises = [
     "category": "Nile Cruises",
     "categorySlug": "nile-cruises",
     "title": "Contact Us",
-    "link": "https://www.facebook.com/EgyptTimeTravel/",
+    "link": "https://www.facebook.com/EgyptTravelPro/",
     "price": 0,
     "originalPrice": 0,
     "priceText": "",
     "description": "",
     "duration": "",
-    "image": "https://i0.wp.com/egypttimetravel.com/wp-content/uploads/2021/04/payment-methods.png?resize=195%2C31&ssl=1",
+    "image": "https://i0.wp.com/EgyptTravelPro.com/wp-content/uploads/2021/04/payment-methods.png?resize=195%2C31&ssl=1",
     "gallery": [
-      "https://i0.wp.com/egypttimetravel.com/wp-content/uploads/2021/04/payment-methods.png?resize=195%2C31&ssl=1"
+      "https://i0.wp.com/EgyptTravelPro.com/wp-content/uploads/2021/04/payment-methods.png?resize=195%2C31&ssl=1"
     ],
     "highlights": [],
     "itinerary": [],
@@ -184,7 +184,7 @@ export const nileCruises = [
     "category": "Nile Cruises",
     "categorySlug": "nile-cruises",
     "title": "Contact Us",
-    "link": "https://www.facebook.com/EgyptTimeTravel/",
+    "link": "https://www.facebook.com/EgyptTravelPro/",
     "price": 0,
     "originalPrice": 0,
     "priceText": "",
@@ -205,7 +205,7 @@ export const nileCruises = [
     "category": "Nile Cruises",
     "categorySlug": "nile-cruises",
     "title": "Contact Us",
-    "link": "https://www.facebook.com/EgyptTimeTravel/",
+    "link": "https://www.facebook.com/EgyptTravelPro/",
     "price": 0,
     "originalPrice": 0,
     "priceText": "",
@@ -226,7 +226,7 @@ export const nileCruises = [
     "category": "Nile Cruises",
     "categorySlug": "nile-cruises",
     "title": "About Us",
-    "link": "https://egypttimetravel.com/about-us/",
+    "link": "https://EgyptTravelPro.com/about-us/",
     "price": 0,
     "originalPrice": 0,
     "priceText": "",
@@ -247,7 +247,7 @@ export const nileCruises = [
     "category": "Nile Cruises",
     "categorySlug": "nile-cruises",
     "title": "About Us",
-    "link": "https://egypttimetravel.com/about-us/",
+    "link": "https://EgyptTravelPro.com/about-us/",
     "price": 0,
     "originalPrice": 0,
     "priceText": "",
@@ -266,3 +266,5 @@ export const nileCruises = [
 ];
 
 export default nileCruises;
+
+

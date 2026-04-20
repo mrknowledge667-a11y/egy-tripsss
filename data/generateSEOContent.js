@@ -23,7 +23,7 @@ async function generateSEOContent() {
       const seoTitle = `${trip.title} | ${category} Egypt Travel Tours`;
       const seoDesc =
         trip.shortDesc ||
-        `Explore ${trip.title} — one of Egypt's best ${category.toLowerCase()} options offered by Egypt Time Travel. Discover unforgettable experiences, great prices, and expert guides.`;
+        `Explore ${trip.title} — one of Egypt's best ${category.toLowerCase()} options offered by EgyptTravelPro. Discover unforgettable experiences, great prices, and expert guides.`;
 
       const html = `
 <!DOCTYPE html>
@@ -38,7 +38,7 @@ async function generateSEOContent() {
 <meta property="og:image" content="${trip.image}" />
 <meta property="og:url" content="${trip.link}" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="keywords" content="${trip.title}, ${category}, Egypt tours, Nile cruises, travel Egypt, Egypt Time Travel" />
+<meta name="keywords" content="${trip.title}, ${category}, Egypt tours, Nile cruises, travel Egypt, EgyptTravelPro" />
 </head>
 <body>
   <header>

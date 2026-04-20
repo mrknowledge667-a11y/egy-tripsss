@@ -12,11 +12,12 @@ export default function AdminBookings() {
   const [filterStatus, setFilterStatus] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
 
-  const statusOptions = ['pending', 'confirmed', 'paid', 'completed', 'cancelled']
+  const statusOptions = ['pending', 'confirmed', 'paid', 'processed', 'completed', 'cancelled']
   const statusColors = {
     pending: 'bg-yellow-100 text-yellow-800',
     confirmed: 'bg-blue-100 text-blue-800',
     paid: 'bg-green-100 text-green-800',
+    processed: 'bg-indigo-100 text-indigo-800',
     completed: 'bg-emerald-100 text-emerald-800',
     cancelled: 'bg-red-100 text-red-800',
   }
@@ -87,7 +88,8 @@ export default function AdminBookings() {
     total: bookings.length,
     pending: bookings.filter(b => b.status === 'pending').length,
     confirmed: bookings.filter(b => b.status === 'confirmed').length,
-    revenue: bookings.filter(b => b.status === 'paid' || b.status === 'completed')
+    processed: bookings.filter(b => b.status === 'processed').length,
+    revenue: bookings.filter(b => b.status === 'paid' || b.status === 'processed' || b.status === 'completed')
       .reduce((sum, b) => sum + (b.total_price || 0), 0),
   }
 
@@ -127,7 +129,7 @@ export default function AdminBookings() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
         <div className="bg-white rounded-lg shadow p-4">
           <p className="text-sm text-gray-500">Total Bookings</p>
           <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
@@ -139,6 +141,10 @@ export default function AdminBookings() {
         <div className="bg-blue-50 rounded-lg shadow p-4">
           <p className="text-sm text-blue-600">Confirmed</p>
           <p className="text-2xl font-bold text-blue-700">{stats.confirmed}</p>
+        </div>
+        <div className="bg-indigo-50 rounded-lg shadow p-4">
+          <p className="text-sm text-indigo-600">Processed</p>
+          <p className="text-2xl font-bold text-indigo-700">{stats.processed}</p>
         </div>
         <div className="bg-green-50 rounded-lg shadow p-4">
           <p className="text-sm text-green-600">Revenue</p>
