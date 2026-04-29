@@ -3,17 +3,22 @@ import express from 'express'
 import cors from 'cors'
 import Stripe from 'stripe'
 import crypto from 'crypto'
-import { createClient } from '@supabase/supabase-js'
+import {
+  CLIENT_URL as CONFIG_CLIENT_URL,
+  ensureSupabase,
+  getUsdToSarRate,
+  supabase,
+  usdToSar,
+} from '../api/_lib/config.js'
+import { resolveIsAdmin } from '../api/_lib/auth.js'
 import { fetchAds, fetchAdsGrouped, AD_CATEGORIES, CATEGORY_ROUTES } from './ads/ad-fetcher.js'
 import { scrapeVisitEgyptTrips, refreshVisitEgyptTrips } from './ads/visitegypt-scraper.js'
 
 // ─── Configuration ───────────────────────────────────────────
 const PORT = process.env.SERVER_PORT || 3001
-const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:3000'
+const CLIENT_URL = CONFIG_CLIENT_URL
 const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY
 const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET
-const SUPABASE_URL = process.env.VITE_SUPABASE_URL
-const SUPABASE_ANON_KEY = process.env.VITE_SUPABASE_ANON_KEY
 
 // Paymob configuration
 const PAYMOB_API_KEY = process.env.PAYMOB_API_KEY
@@ -21,6 +26,9 @@ const PAYMOB_INTEGRATION_ID = process.env.PAYMOB_INTEGRATION_ID
 const PAYMOB_IFRAME_ID = process.env.PAYMOB_IFRAME_ID
 const PAYMOB_HMAC_SECRET = process.env.PAYMOB_HMAC_SECRET
 const PAYMOB_BASE_URL = 'https://accept.paymob.com/api'
+
+/** Charge currency sent to Accept API (often SAR for USD→SAR conversion). Override if your MID only supports eg EGP/USD. */
+const PAYMOB_CURRENCY = process.env.PAYMOB_CURRENCY || 'SAR'
 
 // Validate required env vars
 if (!STRIPE_SECRET_KEY) {
@@ -35,9 +43,6 @@ if (!PAYMOB_API_KEY) {
 const stripe = STRIPE_SECRET_KEY
   ? new Stripe(STRIPE_SECRET_KEY, { apiVersion: '2024-12-18.acacia' })
   : null
-
-// ─── Initialize Supabase ─────────────────────────────────────
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 
 // ─── Express App ─────────────────────────────────────────────
 const app = express()
@@ -69,7 +74,7 @@ async function paymobCreateOrder(authToken, { amountCents, merchantOrderId, item
       auth_token: authToken,
       delivery_needed: false,
       amount_cents: amountCents,
-      currency: 'EGP',
+      currency: PAYMOB_CURRENCY,
       merchant_order_id: merchantOrderId,
       items: items || [],
     }),
@@ -84,7 +89,7 @@ async function paymobCreatePaymentKey(authToken, {
   amountCents,
   billingData,
   integrationId,
-  currency = 'EGP',
+  currency = PAYMOB_CURRENCY,
   lockOrderWhenPaid = true,
 }) {
   const res = await fetch(`${PAYMOB_BASE_URL}/acceptance/payment_keys`, {
@@ -144,6 +149,12 @@ function verifyPaymobHmac(reqBody) {
 // ─── Stripe Webhook endpoint MUST use raw body (before json middleware) ───
 app.post('/api/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
   if (!stripe) return res.status(503).json({ error: 'Stripe not configured' })
+  if (!supabase) {
+    return res.status(503).json({
+      error: 'Database service unavailable',
+      message: 'Supabase is not configured; cannot reconcile checkout events.',
+    })
+  }
   const sig = req.headers['stripe-signature']
 
   let event
@@ -225,11 +236,15 @@ app.use(express.json())
 
 // ─── Health Check ────────────────────────────────────────────
 app.get('/api/health', (req, res) => {
+  const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL
+  const supabaseConfigured = !!(supabaseUrl && (process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY))
   res.json({
     status: 'ok',
     timestamp: new Date().toISOString(),
     stripe: !!STRIPE_SECRET_KEY,
-    supabase: !!SUPABASE_URL,
+    supabaseClientReady: !!supabase,
+    supabaseEnvPresent: supabaseConfigured,
+    usdToSarRate: getUsdToSarRate(),
   })
 })
 
@@ -317,6 +332,7 @@ app.post('/api/create-checkout-session', async (req, res) => {
   if (!stripe) {
     return res.status(503).json({ error: 'Stripe is not configured. Use Paymob instead.' })
   }
+  if (ensureSupabase(res)) return
   try {
     const {
       carName,
@@ -329,6 +345,7 @@ app.post('/api/create-checkout-session', async (req, res) => {
       passengers,
       amount, // in USD (whole dollars)
       customerEmail,
+      currency,
     } = req.body
 
     // Validate required fields
@@ -380,30 +397,33 @@ app.post('/api/create-checkout-session', async (req, res) => {
       cancel_url: `${CLIENT_URL}/payment/cancel`,
     })
 
-    // Store payment record in Supabase (pending status)
-    try {
-      const { error } = await supabase.from('payments').insert({
-        stripe_session_id: session.id,
-        amount_usd: amount,
-        currency: 'usd',
-        status: 'pending',
-        customer_email: customerEmail || null,
-        car_name: carName,
-        car_id: carId,
-        route_from: routeFrom,
-        route_to: routeTo,
-        distance_km: distance || 0,
-        transfer_date: transferDate || null,
-        transfer_time: transferTime || null,
-        passengers: passengers || 1,
-      })
+    const recordCurrency =
+      currency && typeof currency === 'string' && currency.trim() ? currency.trim().toUpperCase() : 'SAR'
 
-      if (error) {
-        console.error('⚠️  Failed to store payment record:', error)
-        // Don't block checkout — payment record is secondary
-      }
-    } catch (dbErr) {
-      console.error('⚠️  Database insert failed:', dbErr)
+    const { error } = await supabase.from('payments').insert({
+      stripe_session_id: session.id,
+      amount_usd: amount,
+      amount_sar: usdToSar(amount),
+      currency: recordCurrency,
+      payment_provider: 'stripe',
+      status: 'pending',
+      customer_email: customerEmail || null,
+      car_name: carName,
+      car_id: carId,
+      route_from: routeFrom,
+      route_to: routeTo,
+      distance_km: distance || 0,
+      transfer_date: transferDate || null,
+      transfer_time: transferTime || null,
+      passengers: passengers || 1,
+    })
+
+    if (error) {
+      console.error('⚠️  Failed to store payment record:', error)
+      return res.status(503).json({
+        error: 'Failed to create payment record',
+        message: error.message,
+      })
     }
 
     res.json({
@@ -422,6 +442,7 @@ app.post('/api/create-checkout-session', async (req, res) => {
 // ─── Get Payment Status (Stripe) ─────────────────────────────
 app.get('/api/payment-status/:sessionId', async (req, res) => {
   try {
+    if (ensureSupabase(res)) return
     const { sessionId } = req.params
 
     // Try Stripe first
@@ -492,6 +513,7 @@ app.post('/api/paymob/create-payment', async (req, res) => {
   if (!PAYMOB_API_KEY || !PAYMOB_INTEGRATION_ID || !PAYMOB_IFRAME_ID) {
     return res.status(503).json({ error: 'Paymob is not configured' })
   }
+  if (ensureSupabase(res)) return
 
   try {
     const {
@@ -504,6 +526,7 @@ app.post('/api/paymob/create-payment', async (req, res) => {
       transferTime,
       passengers,
       amount, // in USD
+      currency,
       customerEmail,
       customerFirstName,
       customerLastName,
@@ -517,10 +540,10 @@ app.post('/api/paymob/create-payment', async (req, res) => {
       })
     }
 
-    // Convert USD to EGP cents (approximate rate — update as needed or use live rate)
-    const USD_TO_EGP_RATE = 50 // Update this to current rate
-    const amountEGP = Math.round(amount * USD_TO_EGP_RATE)
-    const amountCents = amountEGP * 100
+    const amountSAR = usdToSar(Number(amount))
+
+    /** Smallest currency unit Paymob expects (e.g. halalas when currency is SAR) */
+    const amountMinorUnits = Math.round(amountSAR * 100)
 
     const merchantOrderId = `ETP-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`
 
@@ -529,12 +552,12 @@ app.post('/api/paymob/create-payment', async (req, res) => {
 
     // Step 2: Create order
     const order = await paymobCreateOrder(authToken, {
-      amountCents,
+      amountCents: amountMinorUnits,
       merchantOrderId,
       items: [
         {
           name: `Transfer: ${carName}`,
-          amount_cents: amountCents,
+          amount_cents: amountMinorUnits,
           description: `${routeFrom} → ${routeTo} | ${distance || 0} km | ${passengers || 1} pax`,
           quantity: 1,
         },
@@ -553,43 +576,50 @@ app.post('/api/paymob/create-payment', async (req, res) => {
       building: 'N/A',
       shipping_method: 'N/A',
       postal_code: 'N/A',
-      city: 'Cairo',
-      country: 'EG',
-      state: 'Cairo',
+      city: PAYMOB_CURRENCY === 'SAR' ? 'Riyadh' : 'Cairo',
+      country: PAYMOB_CURRENCY === 'SAR' ? 'SA' : 'EG',
+      state: PAYMOB_CURRENCY === 'SAR' ? 'Riyadh' : 'Cairo',
     }
 
     const paymentKey = await paymobCreatePaymentKey(authToken, {
       orderId: order.id,
-      amountCents,
+      amountCents: amountMinorUnits,
       billingData,
-      integrationId: parseInt(PAYMOB_INTEGRATION_ID),
+      integrationId: parseInt(PAYMOB_INTEGRATION_ID, 10),
     })
 
     // Build iframe URL
     const iframeUrl = `https://accept.paymob.com/api/acceptance/iframes/${PAYMOB_IFRAME_ID}?payment_token=${paymentKey}`
 
-    // Store payment record in Supabase
-    try {
-      await supabase.from('payments').insert({
-        paymob_order_id: String(order.id),
-        merchant_order_id: merchantOrderId,
-        amount_usd: amount,
-        amount_egp: amountEGP,
-        currency: 'EGP',
-        status: 'pending',
-        payment_provider: 'paymob',
-        customer_email: customerEmail || null,
-        car_name: carName,
-        car_id: carId || null,
-        route_from: routeFrom,
-        route_to: routeTo,
-        distance_km: distance || 0,
-        transfer_date: transferDate || null,
-        transfer_time: transferTime || null,
-        passengers: passengers || 1,
+    const recordCurrency =
+      currency && typeof currency === 'string' && currency.trim() ? currency.trim().toUpperCase() : 'SAR'
+
+    const { error: insertErr } = await supabase.from('payments').insert({
+      paymob_order_id: String(order.id),
+      merchant_order_id: merchantOrderId,
+      amount_usd: Number(amount),
+      amount_sar: amountSAR,
+      amount_local: amountMinorUnits / 100,
+      currency: recordCurrency,
+      status: 'pending',
+      payment_provider: 'paymob',
+      customer_email: customerEmail || null,
+      car_name: carName,
+      car_id: carId || null,
+      route_from: routeFrom,
+      route_to: routeTo,
+      distance_km: distance || 0,
+      transfer_date: transferDate || null,
+      transfer_time: transferTime || null,
+      passengers: passengers || 1,
+    })
+
+    if (insertErr) {
+      console.error('⚠️  Paymob: DB insert failed:', insertErr)
+      return res.status(503).json({
+        error: 'Failed to create payment record',
+        message: insertErr.message,
       })
-    } catch (dbErr) {
-      console.error('⚠️  Paymob: DB insert failed:', dbErr.message)
     }
 
     res.json({
@@ -597,8 +627,9 @@ app.post('/api/paymob/create-payment', async (req, res) => {
       merchantOrderId,
       paymentKey,
       iframeUrl,
-      amountEGP,
-      amountCents,
+      amountSAR,
+      currency: PAYMOB_CURRENCY,
+      amountMinorUnits,
     })
   } catch (err) {
     console.error('❌ Paymob create-payment error:', err)
@@ -617,6 +648,14 @@ app.post('/api/paymob/create-payment', async (req, res) => {
 app.post('/api/paymob/callback', async (req, res) => {
   try {
     console.log('📩 Paymob callback received')
+
+    if (!supabase) {
+      console.error('❌ Supabase unavailable for Paymob callback')
+      return res.status(503).json({
+        error: 'Database service unavailable',
+        message: 'Supabase is not configured.',
+      })
+    }
 
     // Verify HMAC
     if (!verifyPaymobHmac(req.body)) {
@@ -682,6 +721,7 @@ app.get('/api/paymob/response', (req, res) => {
  */
 app.get('/api/paymob/status/:orderId', async (req, res) => {
   try {
+    if (ensureSupabase(res)) return
     const { orderId } = req.params
     const { data: payment, error } = await supabase
       .from('payments')
@@ -699,7 +739,8 @@ app.get('/api/paymob/status/:orderId', async (req, res) => {
       orderId: payment.paymob_order_id,
       transactionId: payment.paymob_transaction_id,
       amountUSD: payment.amount_usd,
-      amountEGP: payment.amount_egp,
+      amountSAR: payment.amount_sar,
+      amountLocal: payment.amount_local,
       customerEmail: payment.customer_email,
       dbRecord: payment,
     })
@@ -717,6 +758,13 @@ app.get('/api/paymob/status/:orderId', async (req, res) => {
  * Middleware to verify Supabase auth token
  */
 async function authenticateUser(req, res, next) {
+  if (!supabase) {
+    return res.status(503).json({
+      error: 'Auth service unavailable',
+      message: 'Supabase is not configured.',
+    })
+  }
+
   const authHeader = req.headers.authorization
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return res.status(401).json({ error: 'Missing or invalid authorization header' })
@@ -838,7 +886,7 @@ app.post('/api/bookings', authenticateUser, async (req, res) => {
         end_date: end_date || null,
         number_of_travelers,
         total_price,
-        currency: currency || 'USD',
+        currency: currency || 'SAR',
         contact_name,
         contact_email,
         contact_phone,
@@ -886,7 +934,7 @@ app.put('/api/bookings/:id', authenticateUser, async (req, res) => {
     }
 
     // Users can only update their own bookings (except admin)
-    const isAdmin = req.user.email?.includes('admin')
+    const isAdmin = await resolveIsAdmin(supabase, req.user)
     if (existingBooking.user_id !== req.user.id && !isAdmin) {
       return res.status(403).json({ error: 'Not authorized to update this booking' })
     }
@@ -971,7 +1019,7 @@ app.delete('/api/bookings/:id', authenticateUser, async (req, res) => {
   }
 })
 
-// ─── Book Transfer (no Stripe — just save & notify) ─────────
+// ─── Book Transfer (Saved to Supabase) ─────────────────────────
 app.post('/api/book-transfer', async (req, res) => {
   try {
     const {
@@ -1004,40 +1052,44 @@ app.post('/api/book-transfer', async (req, res) => {
       })
     }
 
-    // Store in Supabase transfers table (or payments table with type)
-    let dbRecord = null
-    try {
-      const { data, error } = await supabase.from('transfer_bookings').insert({
-        pickup_date: pickupDate,
-        pickup_time: pickupTime || null,
-        route_from: routeFrom,
-        route_to: routeTo,
-        route_label: route || `${routeFrom} → ${routeTo}`,
-        transfer_type: transferType || 'one-way',
-        distance_km: distance || 0,
-        vehicle_id: vehicleId || null,
-        vehicle_name: vehicleName,
-        vehicle_price_usd: vehiclePrice || 0,
-        full_name: fullName,
-        email,
-        phone: phone || null,
-        whatsapp: whatsapp || null,
-        flight_number: flightNumber || null,
-        special_requests: specialRequests || null,
-        passengers: passengers || 1,
-        status: 'pending',
-      }).select().single()
+    if (ensureSupabase(res)) return
 
-      if (error) {
-        console.error('⚠️  Supabase insert error (transfer_bookings):', error.message)
-        // If table doesn't exist, still return success — booking came through
-      } else {
-        dbRecord = data
-        console.log('✅ Transfer booking saved:', data.id)
-      }
-    } catch (dbErr) {
-      console.error('⚠️  DB insert failed:', dbErr.message)
+    const priceUsd = Number(vehiclePrice) || 0
+
+    const { data, error } = await supabase.from('transfer_bookings').insert({
+      pickup_date: pickupDate,
+      pickup_time: pickupTime || null,
+      route_from: routeFrom,
+      route_to: routeTo,
+      route_label: route || `${routeFrom} → ${routeTo}`,
+      transfer_type: transferType || 'one-way',
+      distance_km: distance || 0,
+      vehicle_id: vehicleId || null,
+      vehicle_name: vehicleName,
+      vehicle_price_usd: priceUsd,
+      currency: 'SAR',
+      vehicle_price_sar: usdToSar(priceUsd),
+      amount_sar: usdToSar(priceUsd),
+      full_name: fullName,
+      email,
+      phone: phone || null,
+      whatsapp: whatsapp || null,
+      flight_number: flightNumber || null,
+      special_requests: specialRequests || null,
+      passengers: passengers || 1,
+      status: 'pending',
+    }).select().single()
+
+    if (error) {
+      console.error('⚠️  Supabase insert error (transfer_bookings):', error.message)
+      return res.status(503).json({
+        error: 'Failed to save transfer booking',
+        message: error.message,
+      })
     }
+
+    const dbRecord = data
+    console.log('✅ Transfer booking saved:', data.id)
 
     res.json({
       success: true,
@@ -1072,6 +1124,7 @@ app.listen(PORT, () => {
   console.log(`║   Client:          ${CLIENT_URL.padEnd(33)}║`)
   console.log(`║   Stripe:          ${stripe ? '✅ Connected' : '❌ Not configured'}${''.padEnd(stripe ? 21 : 16)}║`)
   console.log(`║   Paymob:          ${PAYMOB_API_KEY ? '✅ Connected' : '❌ Not configured'}${''.padEnd(PAYMOB_API_KEY ? 21 : 16)}║`)
+  console.log(`║   Supabase:        ${supabase ? '✅ Connected' : '❌ Not configured'}${''.padEnd(supabase ? 21 : 16)}║`)
   console.log('╚══════════════════════════════════════════════════════╝')
   console.log('')
 })

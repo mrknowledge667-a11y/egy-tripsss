@@ -1,4 +1,4 @@
-import { supabase, handleCors } from './_lib/config.js'
+import { ensureSupabase, handleCors, supabase, usdToSar } from './_lib/config.js'
 
 export default async function handler(req, res) {
   if (handleCors(req, res)) return
@@ -6,6 +6,8 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })
   }
+
+  if (ensureSupabase(res)) return
 
   try {
     const {
@@ -34,44 +36,45 @@ export default async function handler(req, res) {
       })
     }
 
-    let dbRecord = null
-    try {
-      const { data, error } = await supabase.from('transfer_bookings').insert({
-        pickup_date: pickupDate,
-        pickup_time: pickupTime || null,
-        route_from: routeFrom,
-        route_to: routeTo,
-        route_label: route || `${routeFrom} → ${routeTo}`,
-        transfer_type: transferType || 'one-way',
-        distance_km: distance || 0,
-        vehicle_id: vehicleId || null,
-        vehicle_name: vehicleName,
-        vehicle_price_usd: vehiclePrice || 0,
-        full_name: fullName,
-        email,
-        phone: phone || null,
-        whatsapp: whatsapp || null,
-        flight_number: flightNumber || null,
-        special_requests: specialRequests || null,
-        passengers: passengers || 1,
-        status: 'pending',
-      }).select().single()
+    const priceUsd = Number(vehiclePrice) || 0
 
-      if (error) {
-        console.error('⚠️  Supabase insert error (transfer_bookings):', error.message)
-      } else {
-        dbRecord = data
-        console.log('✅ Transfer booking saved:', data.id)
-      }
-    } catch (dbErr) {
-      console.error('⚠️  DB insert failed:', dbErr.message)
+    const { data, error } = await supabase.from('transfer_bookings').insert({
+      pickup_date: pickupDate,
+      pickup_time: pickupTime || null,
+      route_from: routeFrom,
+      route_to: routeTo,
+      route_label: route || `${routeFrom} → ${routeTo}`,
+      transfer_type: transferType || 'one-way',
+      distance_km: distance || 0,
+      vehicle_id: vehicleId || null,
+      vehicle_name: vehicleName,
+      vehicle_price_usd: priceUsd,
+      currency: 'SAR',
+      vehicle_price_sar: usdToSar(priceUsd),
+      amount_sar: usdToSar(priceUsd),
+      full_name: fullName,
+      email,
+      phone: phone || null,
+      whatsapp: whatsapp || null,
+      flight_number: flightNumber || null,
+      special_requests: specialRequests || null,
+      passengers: passengers || 1,
+      status: 'pending',
+    }).select().single()
+
+    if (error) {
+      console.error('⚠️  Supabase insert error (transfer_bookings):', error.message)
+      return res.status(503).json({
+        error: 'Failed to save transfer booking',
+        message: error.message,
+      })
     }
 
     res.json({
       success: true,
       message: 'Transfer booking received! We will confirm within 1 hour.',
       booking: {
-        id: dbRecord?.id || `TRF-${Date.now()}`,
+        id: data.id,
         pickupDate,
         pickupTime,
         route: route || `${routeFrom} → ${routeTo}`,
